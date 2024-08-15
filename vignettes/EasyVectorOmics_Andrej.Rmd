@@ -1,3 +1,4 @@
+
 # Dokumentation
 
 
@@ -516,4 +517,4 @@ Roxygen2: Verwenden Sie Roxygen2 für eine formale Funktionsdokumentation.
 
 
 
-- eventuell roxygen2 beschreibungen importieren
+- eventuell roxygen2 beschreibungen importiere
