@@ -1,111 +1,228 @@
 
 # Dokumentation
 
-
 ## Metadata
 
-- R, Rstudio etc. , Version 
-- Projektinformationen
-
-
-
-## Reproduction of original results [1], Vorgehensweise, Ordnerstruktur
-
-- 4 Sections unterteilt, Data, exec, inst, R
-- 
-
-
-
-## required Packages
-
-- auflisten
-
-
-
-## RData Files aus Server runtergeladen, Objecte geladen 
-
-
-- `RNA_Seq_RPKM_and_profiles.RData` --> (contains: `rna.seq.exp.profils` + `rpkm.rna.seq.counts`)
-- `codingSequences.RData` --> (aet.cds, aly.cds, ath.cds, bra.cds, chi.cds, cru.cds, esa.cds, tpa.cds, all.cds)
+- R version 4.1.2 (2021-11-01) -- "Bird Hippie"
+- Ubuntu os 
+- Visual Studio Code
+- Git version
 
 <br>
 
-- `ExpressionProfileDistances.RData` --> (contains: )
-- `orthologsTandems.RData` --> 
-- `GeneGroups.RData` --> 
-- `families.RData` --> 
+- Project name: GeneFamilies
+- GitHub repository: 
+- erstellt/bearbeitet von: 
+- Github account:
+- GitHub branch: 
 
 <br>
 
-- BUSTED_Results
-- cafe_result
-
-- ExpressionProfileDistanceDistributions
-- fubar_results
-
-- rpkmExpressionProfiles
-- tandemsDf
-- fam.pos.sel
-- families.exp
-
-
-## `1. Load tissue specific expression data`
-
-### 1.1 Description Section-1
-
-`RPKM_counts_table.tsv` (id / tissue / expression) (Input)
-
-
-
-### 1.2 Input/Output
-
-- exec: loadRpkmRnaSeqCounts.R, loadCodingSequences.R
-
----
-<br>
-
-exec/loadRpkmRnaSeqCounts.R <-- `RPKM_counts_table.tsv` (id / tissue / expression) (Input)
-
-`rna.seq.exp.profils`
-
-exec/loadRpkmRnaSeqCounts.R --> `RNA_Seq_RPKM_and_profiles.RData` (Output) (contains: `rna.seq.exp.profils` + `rpkm.rna.seq.counts`)
-                            --> save rna.seq.exp.profils as `RNA_Seq_RPKM_and_profiles.tsv`
-
-- description to loadRpkmRnaSeqCounts.R --> roxygen2 file
+- GeneFamilies Package:
+- The R package GeneFamilies includes all the code, data, and executables 
+used to analyse the gene families generated from 8 Brassicaceaen genomes.
+- This R package relys on results provided by external Bioinformatics tools. 
+- Among these sequence similarity search tools, like Blast and Blat, 
+- gene family clustering results, obtained by Markov Clustering with mcl, 
+- a species tree generated with fasttree from concatonated alignments of orthologous genes generated with mafft, etc.
 
 <br>
 
----
+- references:
+- Refer to the Vignette `./vignettes/GeneFamilies.Rmd`. 
+-> The steps and data required to carry out the original analysis
+
+- attached presentation `./inst/GeneFunctionEvolution.pdf` 
+-> some results of the expression vector space analysis
+
+- `_Cardamine hirsuta_ genome project` ->
+
 <br>
 
-exec/loadCodingSequences.R <-- Input: `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa`  (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
-
-`all.cds`-> list containing (aet.cds, aly.cds, ath.cds, bra.cds, chi.cds, cru.cds, esa.cds, tpa.cds)
-
-exec/loadCodingSequences.R --> `codingSequences.RData` (Output) (aet.cds, aly.cds, ath.cds, bra.cds, chi.cds, cru.cds, esa.cds, tpa.cds, all.cds)
-
-- description to loadCodingSequences.R --> roxygen2 file
+- roxagen2 Beschreibungen der Funktionen
 
 
+## Setting Up Environment and Installing Required R Packages
 
-### 1.3 Datentypen, Datenstruktur
 
-- Übersicht Files for Section-1:
+- required Openvpn --> fb2 firewall
+- openvpn config file
+- fb2 Account
+- command for installing and running openvpn via Ubuntu Terminal
+-  
+
+
+- required and used packages:
+- library(parallel) -> for mclapply
+
+- The following command was used to install the required packages, 
+either from the R terminal or the R-GUI:
+
+- install.packages("MyPackage", lib="C:\\Program Files\\R\\R-3.0.1\\library")
+- .libPaths()   command to check the directory R installs packages By default 
+
+
+## Background Knowledge used or required for this Project 
+
+- `_Cardamine hirsuta_ genome project`
+- 8 Brassicaceaen
+
+
+- Expression
+- contigs
+- tandems
+- euclidean Distance
+- Venn Graphs
+- mcl 
+- orthologous genes, tandem duplicated genes
+- Blast Hit method to identify Orhtologs
+- "all-vs-all" Blast, information about pairwise sequence similarity
+
+
+## Project description
+
+- Project-Goal: 
+
+> - reproduction of the `expression vector space analyses` results as done in the `_Cardamine hirsuta_ genome project`. -> for the 8 Brassicaceaen genomes
+> - isolate required R-Code for this purpose
+> - make the R-Code usable with _any_ data.
+> - use the R-Code to analyse public open access data of model species
+
+The steps and data required to carry out the original analysis are devided into 4 Sections (folderstructure:  Data, exec, inst, R)
+
+- `1. Load tissue specific expression data` (Section-1) 
+- `2. Compute pairwise gene expression profile distances within gene groups` (Section-2) 
+- `3. Expression Profile based Function Diversity` (Section-3) 
+- `4. Expression vector space analysis` (Section-4) 
+
+
+## Overview of R Scripts (Executables) & RData Files in Each Section
+
+- Each step or section includes specific R scripts that process the provided data inputs to generate plots, tsv-files and objects wich can be stored inform of RData files.
+
+- Below are the R scripts & RData files used in each section for the data processing:
+
+
+- the RData files are located on the fb2 server: ...
+- RData-File directory: cd /media/BioNAS/ag_hallab/GeneFamilies/data/
+- scp user@143.93.91.124:/path to RData file  /path to local directory -> for downloading required files from server
+
+###  -------------------------------------------------------------------------------
+
+- R Scripts & RData-Files (Section-1) 
+
+<br>
+
+- `exec/loadRpkmRnaSeqCounts.R` 
+- `exec/loadCodingSequences.R` 
+
+<br>
+
+- `RNA_Seq_RPKM_and_profiles.RData` 
+- `codingSequences.RData` 
+
+###  -------------------------------------------------------------------------------
+
+- R Scripts & RData-Files (Section-2)
+
+<br>
+
+- `exec/computeExpressionProfileDistances.R` 
+- `exec/LoadOrthologsAndTandems.R`
+- `exec/defineGeneSets.R`
+- `exec/loadGeneFamilies.R`
+
+<br>
+
+- `ExpressionProfileDistances.RData` 
+- `orthologsTandems.RData`  
+- `GeneGroups.RData` 
+- `families.RData`  
+
+###  -------------------------------------------------------------------------------
+
+- R Scripts & RData Files for Section-3 (`3. Expression Profile based Function Diversity`)
+
+###  -------------------------------------------------------------------------------
+
+- R Scripts & RData Files for Section-4 (`4. Expression vector space analysis`)
+
+
+
+
+
+
+
+
+# `1. Load tissue specific expression data`
+
+## 1.1 Description (Section-1)
+
+> l
+
+## 1.2 R-Scripts (executables) & Inputs/Outputs (Section-1)
+
+- `loadRpkmRnaSeqCounts.R`
+- `loadCodingSequences.R`
+
+### -------------------------------------------------------------------------------
+
+`loadRpkmRnaSeqCounts.R`
+
+- description: 
+
+  > Use expresion data to generate expression profiles for different sets of genes and enable 
+  > comparison of them, also on the level of the tissue.
+
+- Input: `RPKM_counts_table.tsv` (id / tissue / expression)
+
+- Objects/Variables generated: `rna.seq.exp.profils`
+
+- Output: `RNA_Seq_RPKM_and_profiles.RData` (Output) (contains: `rna.seq.exp.profils` + `rpkm.rna.seq.counts`)
+
+- Save: `rna.seq.exp.profils` as `RNA_Seq_RPKM_and_profiles.tsv`
+                      
+### -------------------------------------------------------------------------------
+
+`loadCodingSequences.R`
+
+- description: 
+
+  > 
+
+- Input: `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa`  (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
+
+- Objects/Variables generated: `all.cds`-> list containing (`aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa`)
+
+- Output: `codingSequences.RData` (Output) (`aet.cds, aly.cds, ath.cds, bra.cds, chi.cds, cru.cds, esa.cds, tpa.cds, all.cds`)
+
+- Save:
+
+
+## 1.3 Data Structure & Description of Files (Section-1)
+
+- Overview of files used in Section-1:
 
 - `RPKM_counts_table.tsv` --> `rpkm.rna.seq.counts`
+
 - `RNA_Seq_RPKM_and_profiles.tsv` --> `rna.seq.exp.profils`
-- `RNA_Seq_RPKM_and_profiles.RData` --> (contains: `rna.seq.exp.profils` + `rpkm.rna.seq.counts`)
 
 - `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa` --> (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
+
 - `all.cds` 
-- `codingSequences.RData` --> (contains: `aet.cds, aly.cds, ath.cds, bra.cds, chi.cds, cru.cds, esa.cds, tpa.cds, all.cds`)
 
-<br>
 
----
-<br>
+### -------------------------------------------------------------------------------
 
-- `RPKM_counts_table.tsv`  --> `rpkm.rna.seq.counts`
+- `RPKM_counts_table.tsv` --> `rpkm.rna.seq.counts`
+
+- description:
+
+> This is a table in which each row represents the expression vector of a gene in the expression vector space. Axes are the different plant tissues. Gene Identifier (IDs) are given both in the pure form, e.g. `AT1G01010`, and the splice variant, e.g. `AT1G01010.1`.
+> - expression  -> 
+> - ID          -> 
+> - tissue      -> 
+
 
 <br>
 
@@ -121,6 +238,8 @@ exec/loadCodingSequences.R --> `codingSequences.RData` (Output) (aet.cds, aly.cd
 # 5 AT1G01010        flower stage 9       0.35894135
 # 6 AT1G01020        cotyledon            0.16516131
 
+--------------------------------------------------------------------------------
+
 > str(`RPKM_counts_table.tsv`) 
 
 # 'data.frame':   284370 obs. of  3 variables:
@@ -128,17 +247,15 @@ exec/loadCodingSequences.R --> `codingSequences.RData` (Output) (aet.cds, aly.cd
 # $ id        : chr  "AT1G01010" "AT1G01010" "AT1G01010" "AT1G01010" ...
 # $ tissue    : chr  "cotyledon" "developing leaf" "seedling" "flower stage 16" ...
 # $ expression: num  0.2064 0.087 0.2776 0.0701 0.3589 ...
-
 ```
-- discription to `RPKM_counts_table.tsv`
-- expression ->
-- tissue -> 
-- id ->
 
----
-<br>
+### -------------------------------------------------------------------------------
 
 - `RNA_Seq_RPKM_and_profiles.tsv` --> `rna.seq.exp.profils`
+
+- description:
+
+> l
 
 <br>
 
@@ -154,6 +271,8 @@ exec/loadCodingSequences.R --> `codingSequences.RData` (Output) (aet.cds, aly.cd
 # 5 0.079472192      0.11188537       0.1738841      0.34547414       0.2892842       AT1G01050
 # 6 0.003454131      0.08389586       0.5113684      0.27232766       0.1289540       AT1G01060
 
+--------------------------------------------------------------------------------
+
 > str(`RNA_Seq_RPKM_and_profiles.tsv`)
 
 # 'data.frame':   56874 obs. of  6 variables:
@@ -164,45 +283,39 @@ exec/loadCodingSequences.R --> `codingSequences.RData` (Output) (aet.cds, aly.cd
 # $ flower.stage.16: num  0.0701 0.0884 0.0708 0.0845 0.3455 ...
 # $ flower.stage.9 : num  0.359 0.415 0.539 0.307 0.289 ...
 # $ gene           : chr  "AT1G01010" "AT1G01020" "AT1G01030" "AT1G01040" ...
- 
 ```
-<br>
 
-- `RNA_Seq_RPKM_and_profiles.RData` --> (contains: `rna.seq.exp.profils` + `rpkm.rna.seq.counts`)
+- `RNA_Seq_RPKM_and_profiles.tsv`
 
-- discription to `RNA_Seq_RPKM_and_profiles.tsv`
-- 
+- description:
+
+> l
+
 
 ---
-<br>
 
 - `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa` --> (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
 
-- `all.cds` 
+- description:
 
-```md
-
-
-
-
-```
-<br>
-
-- `codingSequences.RData` --> (contains: `aet.cds, aly.cds, ath.cds, bra.cds, chi.cds, cru.cds, esa.cds, tpa.cds, all.cds`)
-
-<br>
-
-
-
+> l
 
 
 ## `2. Compute pairwise gene expression profile distances within gene groups`
 
-### 2.1 Description Section-2
+## 2.1 Description (Section-2)
 
-<br>
+> Differences in expression are correlated with function diversification. In
+> order to detect such diversification of function we measure euclidean
+> distances between expression profiles of genes within gene groups. Distances
+> are computed between whole expression profiles as well as on each euclidean
+> dimension (tissue).
 
-### 2.2 Input/Output
+This is the first result of our expression vector space analysis. See attached
+presentation `./inst/GeneFunctionEvolution.pdf`, slide fourteen (14).
+
+
+## 2.2 R-Scripts (executables) & Inputs/Outputs (Section-2)
 
 - exec: 
 - `computeExpressionProfileDistances.R` 
@@ -215,14 +328,15 @@ exec/loadCodingSequences.R --> `codingSequences.RData` (Output) (aet.cds, aly.cd
 - R-functions:
 - `expression_funks.R`
 
-<br>
+### -------------------------------------------------------------------------------
 
----
-<br>
+`computeExpressionProfileDistances.R` 
 
-exec/`computeExpressionProfileDistances.R` <-- `tandems.lst`, `orthologs.lst`, `families.lst`, `expressionProfilesDists` (Input)
+- description:
 
-<br>
+> Differences in expression are correlated with function diversification. In order to detect such diversification of function we measure euclidean distances between expression profiles of genes within gene groups. Distances are computed between whole expression profiles as well as on each euclidean dimension (tissue).
+
+- Input: `tandems.lst`, `orthologs.lst`, `families.lst`, `expressionProfilesDists`
 
 - Objects/Variables generated: 
 
@@ -230,88 +344,135 @@ exec/`computeExpressionProfileDistances.R` <-- `tandems.lst`, `orthologs.lst`, `
 - `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`
 - `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`
 
-<br>
+- Output: `ExpressionProfileDistances.RData`
 
-exec/`computeExpressionProfileDistances.R` --> `ExpressionProfileDistances.RData` (Output) (contains the above Objects/variables)
+- Save:
 
-<br>
+### -------------------------------------------------------------------------------
 
----
-<br>
+- `LoadOrthologsAndTandems.R`
 
-- fehlende Inputs: `tandems.lst` (list), `orthologs.lst` (list), `families.lst` (list), `expressionProfilesDists`
+- description:
 
-<br>
+> Load information about Pairwise Sequence Similarities, Orthologs, and Tandems identified within the eight Brassicaceaen Genomes
 
----
-<br>
-
-exec/`LoadOrthologsAndTandems.R` <-- `eight_brassicaceae_tandems.txt`, `eight_brassicaceae_orthologs.txt`
+- Input: `eight_brassicaceae_tandems.txt`, `eight_brassicaceae_orthologs.txt`
 
 - Objects/Variables generated: `orthologs` & `tandems`
 
-exec/`LoadOrthologsAndTandems.R` --> `orthologsTandems.RData` (contains the above Objects/variables)
+- Output: `orthologsTandems.RData`
 
-<br>
+- Save:
 
----
-<br>
 
-exec/`defineGeneSets.R` <-- `orthologs` & `tandems`
+Cluster of Orthologs were inferred using reciprocal best hits in an all-vs-all Sequence-Similarity-Search with validation of 1 gene per other species matching to the TAIR10 (A. thaliana) reference. 
+
+Tandems were inferred in a similar manner, where the sequence similarity searches were carried out within each species' genome separately, and the validation was a maximum neighborhood of 9 genes in the genome.
+
+### -------------------------------------------------------------------------------
+
+- `defineGeneSets.R`
+
+- description:
+
+>
+
+- message (pfad): `Rscript ./exec/defineGeneSets.R path/2/GeneFamilies-source-package`
+
+- Input: `orthologs` & `tandems`
 
 - Objects/Variables generated: `orthologs.lst` & `tandems.lst`
 
-exec/`defineGeneSets.R` --> `GeneGroups.RData` (contains the above Objects/variables)
+- Output: `GeneGroups.RData`
 
-<br>
+- Save:
 
----
-<br>
+--> Per gene group function diversity is assessed in two ways. For all eight Brassicaceaen proteomes using domain architecture diversity within given gene groups, and as median distance between expression profiles of the proteomes of _A. thaliana_ and _C. hirsuta_. Mainly four classes of gene groups are investigated: 
+* Orthologs (Orth)
+* Tandem Duplicates (Tand)
+* Expanded Gene Families (Exp)
+* Gene Families showing signs of positive selection (PSel)
 
-exec/`loadGeneFamilies.R` <-- `mcl_output.txt` , `mcl_table.tsv` (from markov clustering tool mcl)
+Define the above gene-sets with the following R-script:
 
-- Objects/Variables generated: `families.lst` & (families.genes.df, families.df) (nicht essentiel)
 
-exec/`loadGeneFamilies.R` --> `families.RData` (contains the above Objects/variables)
 
-<br>
+The single argument needs to point to the local source package directory. After the script has generated the required RData-sets, the package needs to be re-installed.
 
----
-<br>
+The distributions of the two function diversity measures are plotted for each class of gene group. Furthermore within each class the function diversity distributions are compared between Orthologs and Non-Orthologs. Finally t-tests are carried out to detect significant differences between these distributions.
 
-R-functions/`expression_funks.R` <-- gene.accessions (??), rna.seq.exp.profils (aus Section-1)
+
+### -------------------------------------------------------------------------------
+
+`loadGeneFamilies.R`
+
+- description:
+
+>
+
+- Input: `mcl_output.txt` , `mcl_table.tsv` (from markov clustering tool mcl)
+
+- Objects/Variables generated: `families.lst` & (families.genes.df, families.df)
+
+- Output: `families.RData`
+
+- Save:
+
+On all coding sequences available for the eight genomes ran an all-vs-all BLAT. Using this the results were fed into Markov Clustering based on Pairwise Sequence Similarities in percent. The MCL algorithm is implemented in the popular `mcl` program (`mcl 14-137, van Dongen`). It's output has been read in by the following script. Furthermore, the results were parsed and provided as a table in which each family was assigned a name (e.g. 'cluster\_1') and for each of the eight species the number of gene members is provided. The Perl-Script `mcl2orthoformat.pl` can be used to convert the MCL output into the table.
+
+Use R-script `exec/loadGeneFamilies.R` and re-install package after execution.o
+
+_Note_: Using these Shell commandos will enable to reduce the all-vs-all tabular separated Blast output table. Filtering will retain non self-matches, and per gene pair only the highest scoring local alignment, and will be sorted by sequence similarity, and if this is identical by alignment score:
+
+`sort -k1,1 -k2,2 -k3,3nr -k12,12nr ~all_vs_all_blast_out_tabular.tsv~ | awk -F "\t" 'BEGIN{x=""; y=""}{if($1 != $2 && (x != $1 || y != $2)){ x=$1; y=$2; print $0}}' > filtered_all_vs_all_blast_out_tabular.tsv`
+
+### -------------------------------------------------------------------------------
+
+`expression_funks.R`
+
+- description:
+
+>
+
+- Input: gene.accessions (??), `rna.seq.exp.profils`
 
 - Objects/Variables generated: `expressionProfilesDists`
 
-R-functions/`expression_funks.R` --> `expressionProfilesDists`
+- Output:
 
-<br>
+- Save:
 
----
 
-### 2.3 Datentypen, Datenstruktur
 
-<br>
+
+
+
+
+
+## 2.3 Data Structure & Description of Files (Section-1)
+
 
 - `tandems.lst`, `orthologs.lst`, `families.lst`, `expressionProfilesDists` (Inputs)
+
 - `families.exp.prof.dists` & `families.exp.prof.dists.tissue`
 - `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`
 - `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`
+
 - `eight_brassicaceae_tandems.txt`, `eight_brassicaceae_orthologs.txt`
+
 - `orthologs` & `tandems`
+
 - `mcl_output.txt` , `mcl_table.tsv`
 
-<br>
-
----
-<br>
+### -------------------------------------------------------------------------------
 
 - `tandems.lst` , `orthologs.lst` , `families.lst`
 
-<br>
+- description
+
+> l
 
 ```md
-
 > str(`tandems.lst`)
 
 List of 3266 (Key: Value pairs)
@@ -323,6 +484,8 @@ List of 3266 (Key: Value pairs)
 # $ tandem_cluster_5   : chr [1:126] "Thhalv10015283m" "Thhalv10015331m" "Thhalv10015353m" "Thhalv10015652m" ...
 # $ tandem_cluster_6   : chr [1:101] "aet_11297" "aet_11303" "CARHR050860.1" "475168" ...
 ...
+
+--------------------------------------------------------------------------------
 
 > str(`orthologs.lst`)
 
@@ -344,18 +507,42 @@ List of 10111 (Key: Value pairs)
   ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
 ...
 
+--------------------------------------------------------------------------------
+
 > length(`families.lst`)   
 [1] 23716
-
 ```
-- description
 
----
-<br>
+### -------------------------------------------------------------------------------
 
 - `families.exp.prof.dists` & `families.exp.prof.dists.tissue`
 - `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`
 - `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`
+
+description:
+
+> - `families.exp.prof.dists` - A list of R `dist` objects, one for each gene
+  family. Note, that the names ("keys") of the list are the names of the gene
+  families, e.g. `cluster_1`. Note that the `dist` objects contain the
+  Euclidean distance between pairs of genes.
+> - `families.exp.prof.dists.tissue` - This is a list of lists, where on the
+  first level the gene families are contained (see previous
+  `families.exp.prof.dists`). On the next level the tissues are listed. For
+  each tissue a R `dist` object contains the Euclidean distances between pairs
+  of genes just regarding a single axis, i.e. tissue.
+> - `orthologs.exp.prof.dists` - Like the above `families.exp.prof.dists` but
+  with distances between pairs of genes that belong to the same group of
+  orthologs. So here, instead of grouping genes by gene family membership, they
+  are grouped by being orthologs to each other.
+> - `orthologs.exp.prof.dists.tissue` - Like the above
+  `families.exp.prof.dists.tissue` but for ortholog groups instead of gene
+  families.
+> - `tandems.exp.prof.dists` - Like the above `families.exp.prof.dists` but for
+  genes belong to a tandem cluster, i.e. these genes are paralogs that are
+  neighbors in the genome. The latter means that their coordinates are close to
+  each other.
+> - `tandems.exp.prof.dists.tissue` - Like the above
+  `families.exp.prof.dists.tissue` but for genes belonging to tandem clusters.
 
 <br>
 
@@ -400,6 +587,8 @@ List of 16910 (Key: Value pairs)
   ..- attr(*, "method")= chr "euclidean"
   ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
 ...
+
+--------------------------------------------------------------------------------
 
 > str(`families.exp.prof.dists.tissue`)
 
@@ -490,19 +679,309 @@ List of 16910
 
   ...
 
+--------------------------------------------------------------------------------
+
+> str(`orthologs.exp.prof.dists`)
+
+List of 10111
+
+ $ ortholog_cluster_1    : 'dist' num 0.137
+  ..- attr(*, "Size")= int 2
+  ..- attr(*, "Labels")= chr [1:2] "AT1G01790" "CARHR000530"
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+ $ ortholog_cluster_2    : 'dist' num 0.155
+  ..- attr(*, "Size")= int 2
+  ..- attr(*, "Labels")= chr [1:2] "AT1G01510" "CARHR000860"
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+ $ ortholog_cluster_3    : 'dist' num 0.776
+  ..- attr(*, "Size")= int 2
+  ..- attr(*, "Labels")= chr [1:2] "AT1G01460" "CARHR000910"
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+ $ ortholog_cluster_4    : 'dist' num 0.21
+  ..- attr(*, "Size")= int 2
+  ..- attr(*, "Labels")= chr [1:2] "AT1G01190" "CARHR001280"
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+ $ ortholog_cluster_5    : 'dist' num 0.172
+  ..- attr(*, "Size")= int 2
+  ..- attr(*, "Labels")= chr [1:2] "AT1G02280" "CARHR001580"
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+--------------------------------------------------------------------------------
+
+> str(`orthologs.exp.prof.dists.tissue`)
+
+List of 10111
+
+ $ ortholog_cluster_1    :List of 5
+  ..$ cotyledon      : 'dist' num 0.119
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01790" "CARHR000530"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ developing leaf: 'dist' num 0.00555
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01790" "CARHR000530"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ seedling       : 'dist' num 0.0372
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01790" "CARHR000530"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ flower stage 16: 'dist' num 0.0236
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01790" "CARHR000530"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ flower stage 9 : 'dist' num 0.0524
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01790" "CARHR000530"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+$ ortholog_cluster_2    :List of 5
+  ..$ cotyledon      : 'dist' num 0.00484
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01510" "CARHR000860"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ developing leaf: 'dist' num 0.12
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01510" "CARHR000860"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ seedling       : 'dist' num 0.0636
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01510" "CARHR000860"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ flower stage 16: 'dist' num 0.0194
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01510" "CARHR000860"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ flower stage 9 : 'dist' num 0.071
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "Labels")= chr [1:2] "AT1G01510" "CARHR000860"
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+...
+
+--------------------------------------------------------------------------------
+
+> str(`tandems.exp.prof.dists`)
+
+List of 3266
+
+ $ tandem_cluster_1   : 'dist' num [1:2016] 0.331 0.3021 0.2136 0.0758 0.2073 ...
+  ..- attr(*, "Size")= int 64
+  ..- attr(*, "Labels")= chr [1:64] "AT4G23130" "AT4G23140" "AT4G23150" "AT4G23160" ...
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+ $ tandem_cluster_2   : 'dist' num [1:1081] 0.802 0.24 NA 0.683 1.108 ...
+  ..- attr(*, "Size")= int 47
+  ..- attr(*, "Labels")= chr [1:47] "AT3G58200" "AT3G58210" "AT3G58220" "AT3G58230" ...
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+ $ tandem_cluster_3   : 'dist' num [1:861] 0.122 0.474 0.84 0.778 0.883 ...
+  ..- attr(*, "Size")= int 42
+  ..- attr(*, "Labels")= chr [1:42] "AT5G45200" "AT5G45210" "AT5G45220" "AT5G45230" ...
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+ $ tandem_cluster_4   : 'dist' num [1:861] 0.36 0.183 0.244 0.8 0.611 ...
+  ..- attr(*, "Size")= int 42
+  ..- attr(*, "Labels")= chr [1:42] "AT1G66830" "AT1G66880" "AT1G66910" "AT1G66920" ...
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+ $ tandem_cluster_5   : 'dist' num [1:666] 0.289 0.361 NA NA 0.493 ...
+  ..- attr(*, "Size")= int 37
+  ..- attr(*, "Labels")= chr [1:37] "AT5G56325" "AT5G56370" "AT5G56380" "AT5G56390" ...
+  ..- attr(*, "Diag")= logi FALSE
+  ..- attr(*, "Upper")= logi FALSE
+  ..- attr(*, "method")= chr "euclidean"
+  ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+
+> str(`tandems.exp.prof.dists.tissue`)
+
+--------------------------------------------------------------------------------
+
+List of 3266
+
+ $ tandem_cluster_1   :List of 5
+  ..$ cotyledon      : 'dist' num [1:2016] 0.2753 0.2249 0.1609 0.0546 0.1753 ...
+  .. ..- attr(*, "Size")= int 64
+  .. ..- attr(*, "Labels")= chr [1:64] "AT4G23130" "AT4G23140" "AT4G23150" "AT4G23160" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ developing leaf: 'dist' num [1:2016] 0.00124 0.0037 0.01191 0.00502 0.09395 ...
+  .. ..- attr(*, "Size")= int 64
+  .. ..- attr(*, "Labels")= chr [1:64] "AT4G23130" "AT4G23140" "AT4G23150" "AT4G23160" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ seedling       : 'dist' num [1:2016] 0.1667 0.1881 0.0911 0.0515 0.0194 ...
+  .. ..- attr(*, "Size")= int 64
+  .. ..- attr(*, "Labels")= chr [1:64] "AT4G23130" "AT4G23140" "AT4G23150" "AT4G23160" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ flower stage 16: 'dist' num [1:2016] 0.06474 0.032311 0.103953 0.000895 0.007356 ...
+  .. ..- attr(*, "Size")= int 64
+  .. ..- attr(*, "Labels")= chr [1:64] "AT4G23130" "AT4G23140" "AT4G23150" "AT4G23160" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ flower stage 9 : 'dist' num [1:2016] 0.04259 0.06544 0.02215 0.00906 0.05457 ...
+  .. ..- attr(*, "Size")= int 64
+  .. ..- attr(*, "Labels")= chr [1:64] "AT4G23130" "AT4G23140" "AT4G23150" "AT4G23160" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+$ tandem_cluster_2   :List of 5
+  ..$ cotyledon      : 'dist' num [1:1081] 0.0432 0.0793 NA 0.0432 0.9568 ...
+  .. ..- attr(*, "Size")= int 47
+  .. ..- attr(*, "Labels")= chr [1:47] "AT3G58200" "AT3G58210" "AT3G58220" "AT3G58230" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ developing leaf: 'dist' num [1:1081] 0.091 0.0642 NA 0.091 0.091 ...
+  .. ..- attr(*, "Size")= int 47
+  .. ..- attr(*, "Labels")= chr [1:47] "AT3G58200" "AT3G58210" "AT3G58220" "AT3G58230" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ seedling       : 'dist' num [1:1081] 0.10727 0.00709 NA 0.10727 0.10727 ...
+  .. ..- attr(*, "Size")= int 47
+  .. ..- attr(*, "Labels")= chr [1:47] "AT3G58200" "AT3G58210" "AT3G58220" "AT3G58230" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ flower stage 16: 'dist' num [1:1081] 0.665 0.206 NA 0.335 0.335 ...
+  .. ..- attr(*, "Size")= int 47
+  .. ..- attr(*, "Labels")= chr [1:47] "AT3G58200" "AT3G58210" "AT3G58220" "AT3G58230" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+  ..$ flower stage 9 : 'dist' num [1:1081] 0.4233 0.0693 NA 0.5767 0.4233 ...
+  .. ..- attr(*, "Size")= int 47
+  .. ..- attr(*, "Labels")= chr [1:47] "AT3G58200" "AT3G58210" "AT3G58220" "AT3G58230" ...
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  .. ..- attr(*, "method")= chr "euclidean"
+  .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
+
+...
+```
+### -------------------------------------------------------------------------------
+
+- `orthologs` & `tandems`
+
+<br>
+
+```md
+> str(`orthologs`)
+
+'data.frame':   10111 obs. of  8 variables:
+
+# $ aly: chr  "311263" "311286" "311290" "311315" ...
+# $ ath: chr  "AT1G01790" "AT1G01510" "AT1G01460" "AT1G01190" ...
+# $ cru: chr  "Carubv10011770m" "Carubv10011468m" "Carubv10009221m" "Carubv10008749m" ...
+# $ chi: chr  "CARHR000530" "CARHR000860" "CARHR000910" "CARHR001280" ...
+# $ aet: chr  "aet_11800" "aet_11763" "aet_11791" "aet_11742" ...
+# $ bra: chr  "Bra032651" "Bra033258" "Bra033262" "Bra033278" ...
+# $ esa: chr  "Thhalv10006595m" "Thhalv10007060m" "Thhalv10009579m" "Thhalv10007320m" ...
+# $ tpa: chr  "Tp1g00490" "Tp1g00800" "Tp1g00850" "Tp1g01100" ...
+
+--------------------------------------------------------------------------------
+
+> str(`tandems`)
+
+'data.frame':   38188 obs. of  2 variables:
+
+# $ Family: chr  "tandem_cluster_1" "tandem_cluster_1" "tandem_cluster_1" "tandem_cluster_1" ...
+# $ Gene  : chr  "CARHR230400.1" "CARHR230340.1" "Carubv10004324m" "Bra013677" ...
 ```
 
-
-
-
-
 ## `3. Expression Profile based Function Diversity`
-
-### 3.1 Description
-
-### 3.2 Input/Output
-
-### 3.3 Datentypen, Datenstruktur
 
 ## `4. Expression vector space analysis`
 
@@ -510,11 +989,3 @@ List of 16910
 
 
 
-
-Kommentare: Beschreiben Sie Funktionen und wichtige Codeabschnitte.
-
-Roxygen2: Verwenden Sie Roxygen2 für eine formale Funktionsdokumentation.
-
-
-
-- eventuell roxygen2 beschreibungen importiere
