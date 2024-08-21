@@ -693,6 +693,12 @@ naAsZero <- function(x) {
 #' @return Numeric - The length of the difference vector being outside the
 #' respective clouds' deviances.
 distVectorClouds <- function(cl.a, cl.b) {
+    print("Contenido de cl.a:")
+    print(cl.a)
+    
+    print("Contenido de cl.b:")
+    print(cl.b)
+    
     if (is.na(cl.a) || is.na(cl.b)) 
         return(NA)
     cl.diff <- cl.a$stat.vec - cl.b$stat.vec
