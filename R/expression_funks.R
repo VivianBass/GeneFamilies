@@ -699,7 +699,7 @@ distVectorClouds <- function(cl.a, cl.b) {
     print("Contenido de cl.b:")
     print(cl.b)
     
-    if (is.na(cl.a) || is.na(cl.b)) 
+    if (is.null(cl.a) || is.null(cl.b)) 
         return(NA)
     cl.diff <- cl.a$stat.vec - cl.b$stat.vec
     dev.proj.a <- naAsZero(scalarProjection(cl.a$deviance.vec, cl.diff))
