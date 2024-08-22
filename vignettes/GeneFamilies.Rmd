@@ -271,8 +271,6 @@ Again, the single argument needs to point to the local source package directory.
 
 ##### Developmental hourglass or expression diversity per tissue
 
-In order to investigate which classes of gene groups mostly contribute to developmental diversity, measure and subsequently compare the distributions of expression profile distances within the different tissues. In this also compare Non-Orthologs with Orthologs.
-
 The following script computes the tissue specific distances between expression profiles:
 
 `Rscript ./exec/investigateDistributionsOfExpressionProfileDistancesPerTissue.R path/2/GeneFamilies-source-package`

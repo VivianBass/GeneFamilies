@@ -65,18 +65,259 @@ either from the R terminal or the R-GUI:
 ## Background Knowledge used or required for this Project 
 
 - `_Cardamine hirsuta_ genome project`
-- 8 Brassicaceaen
 
 
-- Expression
-- contigs
-- tandems
-- euclidean Distance
-- Venn Graphs
-- mcl 
-- orthologous genes, tandem duplicated genes
-- Blast Hit method to identify Orhtologs
-- "all-vs-all" Blast, information about pairwise sequence similarity
+# 1. Genome Assembly
+
+- Genome Sequencing: shotgun sequencing strategy (involves Fragmentation: DNA is randomly broken into smaller fragments. 
+/ PCR Cloning or PCR: These fragments are then cloned or amplified to generate numerous copies for sequencing.) --> short reads (short DNA sequences)
+- Modern sequencing technologies generate millions of short DNA sequences (reads) from a genome.
+- Contigs Assembly: short reads were first assembled into contigs (SOAPdenovo tool)
+--> The reads often overlap with each other, and these overlaps can be used to piece together the reads into longer continuous sequences.(contigs)
+--> By aligning and merging these overlapping reads, a contiguous sequence of DNA, known as a contig, is formed.
+--> Contigs represent the segments of DNA that are contiguous in the genome
+- Superscaffolds Construction: Contigs were linked into superscaffolds (Bayesian framework-based algorithm called BAMLINK)
+- Superscaffolds were anchored and oriented using: 8,249 bacterial artificial chromosome (BAC)
+
+
+
+- tandems: Tandemly duplicated genes are copies of a gene that are located next to each other on the same chromosome.
+--> basically gene copies, located in direct neighbourhood, Wiederhohlungseinheiten (wie ein loop)
+--> dublicated genes (These repeats occur in a head-to-tail manner)
+--> These occur when genes are duplicated in adjacent segments of the genome. (during Replication)
+--> Tandem duplications typically result from errors during DNA replication or recombination events, 
+where segments of DNA are copied and inserted right next to the original segment.
+- Role in Morphological Differences:
+--> contribute to the diversity in leaf shapes by providing additional copies of genes that may have evolved new functions or regulatory roles.
+--> Gene Dosage Effect: An increase in the number of copies of a gene might lead to an increase in the amount of the gene's product (e.g., protein),
+--> which can have significant effects on cellular processes or organismal traits.
+
+
+Orthologs: Genes in different species that originate from a common ancestral gene through speciation, 
+typically retaining similar functions across species. They reflect shared ancestry and can perform similar roles 
+even if their sequences are slightly different. 
+
+Identification: Orthologous genes are identified by comparing gene sequences across species. 
+Sequence alignment and phylogenetic analysis help confirm their 
+evolutionary relationships and predict gene functions in newly sequenced genomes.
+they offer insights into gene conservation and functional diversity.
+
+Paralogs: Genes that originate from gene duplications within the same species. 
+They can diverge to have different functions or specialized roles, 
+contributing to complex traits and adaptations.
+
+Gene Families: Include both orthologs and paralogs. Orthologs are conserved across species, 
+while paralogs arise from gene duplications within the same species and may have similar but divergent functions.
+
+
+
+# 2. Genome Annotation ----------------------------------------------------------------------------
+
+- involves identifying and labeling genes within a genome sequence (characterize)
+- Gene Prediction: Identifying regions of the genome that encode genes.
+- Functional Annotation: Determining the function of these genes based on known data.
+- Structural Annotation: Describing the structure of genes, including exons, introns, and regulatory elements.
+
+
+--> Vorarbeit um das C. hirsuta genome zu erhalten
+--------------------------------------------------------------------------------------------------
+
+# 3. C. hirsuta genome (Results of Genome Assembly & Annotation)
+
+- Cardamine hirsuta (commonly known as hairy bittercress) is a small flowering plant that belongs to the Brassicaceae family.
+- It has 8 chromosomes in its diploid cells, organized as 4 pairs, making its chromosome number 2n = 16.
+- A total of 29,458 protein-coding genes with 37,997 transcripts 
+and 579 nuclear-encoded tRNA genes were identified in the C. hirsuta genome.
+
+
+--------------------------------------------------------------------------------------------------
+
+# 4. Central Dogma of Molecular Biology
+
+- describes the flow of genetic information within a biological system
+- DNA basically encodes Aminoacid-Sequences (Proteins)
+- from DNA -- 1. --> RNA -- 2. --> Protein  (1. Transcription / 2. Translation)
+- also RNA -- 3. --> cDNA (3. reverse Transcription)
+
+- Transcription: DNA (double Helix) is transcribed into RNA (ribonucleic acid) (single-stranded molecule)
+- Translation: RNA is translated into a protein (Aminoacid-Sequence) --> RNA determines the sequence of amino acids in a protein.
+
+--------------------------------------------------------------------------------------------------
+
+# 5. Expression (Transcriptome)
+
+Transcriptome (Expression): Transcriptome data refers to the collection of RNA sequences transcribed from DNA
+--> representing the genes that are actively expressed in different tissues or under various conditions.
+
+Illumina Transcriptome Data: RNA-Seq datasets provide detailed information about gene expression across different tissues.
+
+Differential Expression Analysis: refers to the process of measuring and comparing the expression levels of genes under different conditions
+--> such as in different tissues, developmental stages, or environmental contexts. 
+--> Different tissues express different sets of genes depending on their function, even though each cell of the species has the same DNA sequence. 
+--> This analysis highlights which genes are upregulated, downregulated, or repressed during this process. (switched on/off/repressed)
+--> Differential expression analysis provides a detailed view of how gene activity changes in response to different conditions
+--> contributing to the understanding of morphological variations (like shape/form and phenotype)
+
+Insights into Leaf Development in C. hirsuta: 
+--> These differences can reveal important insights into the genetic mechanisms underlying leaf shape and structure. 
+--> This analysis helps identify key genes involved in leaf development and their expression patterns.
+--> In this context, it involves comparing gene expression during early leaf development in C. hirsuta 
+to understand how gene expression changes contribute to leaf morphology.
+--> In the study of Cardamine hirsuta and Arabidopsis thaliana, differential gene expression analysis is used 
+to identify genes that are expressed at different levels during early leaf development.
+--> This analysis helps pinpoint genes that may be responsible for the differences in leaf shape between the two species.
+
+# 6. RNA Sequencing (RNA-Seq) of the Expression (Transcriptome) (Measurment)
+
+RNA Sequencing (RNA-Seq)/or Microarrays: A common technique used to measure gene expression levels across different conditions.
+- It involves sequencing the complete set of RNA transcripts (the transcriptome) in a sample.
+- RNA-Seq can compare the transcriptome (all the RNA molecules) of two or more samples, identifying genes that are expressed at different levels.
+- RNA from a sample is converted into complementary DNA (cDNA) (reverse Transcription), which is then sequenced using high-throughput sequencing technologies.
+- The resulting sequences are mapped back to a reference genome, and the number of reads corresponding to each gene is counted.
+--> so count number represents: how often a specific gene was expressed (transcribet to RNA) bzw. gene copies of that gene
+
+--> This count reflects the expression level of each gene. 
+--> (count number (specific Gene) --- represents ---> gene expression level (specific Gene))
+
+# 7. Normalization of the Expression (Transcriptome) data
+
+Normalization (for fair Gene Expression Comparisson):
+Purpose: adjusts for technical variations between samples (e.g., differences in sequencing depth or RNA quality) 
+to make expression levels comparable across conditions.
+Normalization-Methods: TPM (Transcripts Per Million), FPKM (Fragments Per Kilobase of transcript per Million mapped reads), 
+or RPKM (Reads Per Kilobase of transcript, per Million mapped reads).
+
+--> RPKM (Reads Per Kilobase of transcript, per Million mapped reads) (method used in RNA sequencing)
+--> help compare gene expression levels between different samples. 
+--> Reads Per Kilobase (thousands of base pairs):  different Genes and transcribet RNAs varie in Sequence lenghts and lenghts and count of their reads. 
+--> If a gene is long, it might get more reads just because it’s long, not because it's more active -> berücksichtgt quasi die länge of genes
+-> to compare genes of different lengths more fairly
+--> RPKM divides the number of reads by the length of the gene in Kilobases --> number of reads (per gene) / lenght of respective gene (Normalization) 
+--> Per Million Mapped Reads: Different samples might have different total reads 
+--> To account for this, RPKM also divides by the total number of reads (scaled to a million) (total reads aller Sample die auf das spezielle gene bezogen sind??)
+--> This helps ensure that differences in the total number of reads between samples don't skew the comparison.
+--> RPKM lets scientists compare how active different genes are across different samples
+
+
+# 8. Gene Expression Regulation: ----------------------------------------------------------------
+
+- Gene Activity (Gene Expression): This regulation determines which genes are switched on, off, or repressed under different conditions.
+--> Gene Regulation in Cells ensures that the correct proteins are produced in the right amounts, at the right times, and in the right places.
+
+- Transcription Factors: These proteins regulate gene expression by binding to specific DNA sequences, 
+--> thereby controlling whether genes are transcribed into RNA or repressed, influencing overall gene expression levels.
+
+- Role in Leaf Development of C. hirsuta: 
+--> Transcription factors are crucial for orchestrating the complex gene expression changes needed for proper leaf development, 
+--> influencing cell differentiation and growth patterns.
+
+
+# 9. phylogenetic tree: --------------------------------------------------------------------
+
+- illustrates evolutionary relationships among species or genes or gene families
+- showing how gene families have evolved over time. (or a specific Gene Family)
+
+-> Gene Families: Groups of related genes evolved from a common ancestor, (similar sequences and functions)
+-> Branches: represent expansion/contraction of gene families (each branch represents a group of genes/Gene Families)
+-> Expansion and Contraction: Identifies gene families that have increased or decreased in gene number 
+-> points where the branches split (nodes) represent common ancestors.
+
+-> Comparative Analysis: Examines how gene families are conserved, expanded, or contracted across species, providing insights into evolutionary patterns.
+
+-> Leaf Development: Expanded gene families may enhance functional diversity or provide more precise control over leaf development, 
+-> leading to variations in leaf shape and structure. (Genotyp --> Phenotype)
+
+
+
+10. euclidean Distance of Gene Expression / Gene Famile Expression ----------------------------------------------------------------------------------
+
+- measure how different two things are from each other, using numbers 
+- in this context difference in Gene Expression Levels (Gene Activity)
+--> basically difference in Count numbers (Expression, Gene-Activity) of the specific Genes
+
+- High Expression -> Gene is active, produces a lot of RNA (switched on)
+- Low Expression -> Gene is inactive/repressed, produces little to no RNA (switched off or repressed)
+
+- Comparing Gene Expression:
+- Small Euclidean Distance -> the gene expression levels in two samples are very similar. (same Gene Expression Activity)
+- Large Euclidean Distance: -> gene expression levels in two samples differ (difference in Gene Expression Activity)
+--> helps researchers quickly see how gene expression changes between different conditions, tissues, or times.
+
+- Plot-Points: (Count number (Gene) : specific Gene (ID / Name)
+- two or more samples --> as points in a multi-dimensional space (where each dimension (Achsis) represents a different gene/Gene Family etc.)
+
+
+
+
+
+## Diagramms (used/generated) --------------------------------------------------------------
+
+
+
+# 11. Venn Diagram (Figure 2a) -------------------------------------------
+
+- Visualization of Gene Families --> basically wich gene Families are present within each species
+- highlighting shared and unique gene families (among multiple species or conditions) 
+- The central area of the diagram represents gene families common to all compared species 
+--> indicating conserved genes across the species.
+- Outer segments display gene families unique to each species
+--> revealing species-specific traits and adaptations.
+
+--> aiding in understanding evolutionary relationships and functional differences.
+
+- bezogen auf the 8 shared among the eight different species within the Brassicaceae family.
+
+- The center of the diagram (12,654 gene families) are common to all eight species, (conserved gene families across this plant family.)
+- C. hirsuta has 694 unique gene families , A. thaliana has 1,020 , C. rubella has 541 
+
+
+##. Scatterplot (Figure 2b) -----------------------------------------------------
+
+Purpose: The scatterplot compares the number of species-specific gene family members between C. hirsuta (y-axis) and A. thaliana (x-axis) to show gene family expansions or contractions.
+
+Axes: The x-axis shows the number of gene family members in A. thaliana, and the y-axis shows the number in C. hirsuta.
+
+Diagonal Line: The grey line represents equal numbers of gene family members in both species; points on this line have the same number of members in both species.
+
+Dots Above the Line:
+Pink Dots: Gene families expanded in C. hirsuta.
+Pale Pink Dots: Gene families unique to C. hirsuta.
+
+Dots Below the Line:
+Green Dots: Gene families expanded in A. thaliana.
+Pale Green Dots: Gene families unique to A. thaliana.
+
+Arrows: Indicate specific gene families, such as those with pectin methylesterase and transcription factors, 
+-> highlighting notable differences and potential links to species-specific adaptations in leaf morphology.
+
+
+
+
+## Tools (used) ----------------------------------------------------------------
+
+12. Markov Clustering ----------------------------------------------------
+
+- groups similar items together by finding clusters within data based on their similarities or connections. (Gruppierung von Elementen)
+- Uses a similarity matrix that shows how closely items (e.g., genes, proteins) are related or connected.
+- Produces clusters where items within each cluster are more similar to each other than to items in other clusters.
+- used to cluster genes or proteins with similar expression patterns. 
+- could be used to categorize genes into Gene Families
+
+
+13. Blast ----------------------------------------------------------------
+
+- BLAST (Basic Local Alignment Search Tool)
+- BLAST performs a local alignment, identifying matching segments between the query sequence and sequences in the database.
+- It scores the alignments based on how well the sequences match and calculates statistical significance. (Match-Score)
+- is used to find regions of similarity between biological sequences (DNA, RNA, or proteins)
+- used for predicting gene functions, finding orthologs and paralogs, identifying homologous sequences,
+- and annotating newly sequenced genomes by comparing them to well-characterized databases.
+
+
+
+
+
+
 
 
 ## Project description
@@ -96,6 +337,80 @@ The steps and data required to carry out the original analysis are devided into 
 - `4. Expression vector space analysis` (Section-4) 
 
 
+- Differences in expression --> Gene expression profiles
+- they are are correlated with function diversification. --> meassure euclidean distances
+
+- meassure euclidean distances, between expression profiles of genes, within gene groups.
+-> Gene Groups (orthologs, tandems, etc. , ) -> 4 Gene Groups
+-> Expression profiles of Genes within these Groups (innerhalb)
+-> euclidean distances -> between Expresion profiles of these Genes
+
+- Distances are computed between whole expression profiles as well as on each euclidean dimension (tissue).
+
+
+This is the first result of our expression vector space analysis. See attached
+presentation `./inst/GeneFunctionEvolution.pdf`, slide fourteen (14).
+
+- man benötigt Genes for each Gene-Group --> Daten Informationen zu Orthologs, Tandems etc. 
+- man muss sie ersteinmal Identifizieren
+
+
+> Cluster of Orthologs were inferred using reciprocal best hits in an all-vs-all Sequence-Similarity-Search 
+  with validation of 1 gene per other species matching to the TAIR10 (A. thaliana) reference.
+> Tandems were inferred in a similar manner, where the sequence similarity searches were carried out 
+  within each species' genome separately, and the validation was a maximum neighborhood of 9 genes in the genome
+??
+
+
+-------------------------------------------
+
+- Gene Groups (beeing investigated): 
+- Orthologs (Orth) / Tandem Duplicates, tandems (Tand) 
+- Expanded Gene Families (Exp) / and Gene Families showing signs of positive selection (PSel) 
+
+-------------------------------------------
+
+- Assesment of Function Diversity (per Gene Group) -> do for each Gene Group (4 in total)
+
+> 1. For all 8 Brassicaceaen Proteomes !!! -> using domain architecture diversity within given gene groups,
+
+	--> repeat 4 times (4 Gene Groups)
+
+> 2. For _A. thaliana_ and _C. hirsuta_  
+- expression profiles of their Proteomes !!! (DNA -> RNA -> Protein)
+- median distance between the 2 Proteom expression profiles (A. thaliana and C. hirsuta)
+
+	--> repeat 4 times (4 Gene Groups)
+
+-------------------------------------------
+
+==> you get 2 function diversity measures ((1.) 8 Brassicaceaen Proteomes / (2.) _A. thaliana_ and _C. hirsuta_)
+
+- Plotting Process: (function diversity distributions)
+- Plot Distributions of the 2 function diversity measures
+--> do that for each class of Gene Group 
+
+-------------------------------------------
+
+- within each class (Gene Group) compare function diversity distributions between Orthologs and Non-Orthologs. 
+- Finally t-tests are carried out to detect significant differences between these distributions.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 ## Overview of R Scripts (Executables) & RData Files in Each Section
 
 - Each step or section includes specific R scripts that process the provided data inputs to generate plots, tsv-files and objects wich can be stored inform of RData files.
@@ -103,49 +418,313 @@ The steps and data required to carry out the original analysis are devided into 
 - Below are the R scripts & RData files used in each section for the data processing:
 
 
-- the RData files are located on the fb2 server: ...
-- RData-File directory: cd /media/BioNAS/ag_hallab/GeneFamilies/data/
-- scp user@143.93.91.124:/path to RData file  /path to local directory -> for downloading required files from server
+--------------------------------------------------------------------------------------------------
+# RScripts and Files Overview Section-1 
+--------------------------------------------------------------------------------------------------
 
-###  -------------------------------------------------------------------------------
+- Rscripts 
+- rpkm.rna.seq.counts				(Step-1)
+- loadRpkmRnaSeqCounts.R			(Step-2)
 
-- R Scripts & RData-Files (Section-1) 
 
-<br>
+- Files
+- RPKM_counts_table.tsv (requirred, main Input)
+- `RNA_Seq_RPKM_and_profiles.tsv (generated)
+- `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa` --> (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
+- all.cds
 
-- `exec/loadRpkmRnaSeqCounts.R` 
-- `exec/loadCodingSequences.R` 
 
-<br>
+- RData-Files
+- `RNA_Seq_RPKM_and_profiles.RData` (Output) (contains: `rna.seq.exp.profils` + `rpkm.rna.seq.counts`)
+- `codingSequences.RData` (Output) (`aet.cds, aly.cds, ath.cds, bra.cds, chi.cds, cru.cds, esa.cds, tpa.cds, all.cds`)
 
-- `RNA_Seq_RPKM_and_profiles.RData` 
-- `codingSequences.RData` 
 
-###  -------------------------------------------------------------------------------
 
-- R Scripts & RData-Files (Section-2)
+--------------------------------------------------------------------------------------------------
+# RScripts and Files Overview  Section-2
+--------------------------------------------------------------------------------------------------
 
-<br>
 
-- `exec/computeExpressionProfileDistances.R` 
-- `exec/LoadOrthologsAndTandems.R`
-- `exec/defineGeneSets.R`
-- `exec/loadGeneFamilies.R`
+- required exec:
+ 
+- 1 `LoadOrthologsAndTandems.R`			(Step-1)
+- 2 `defineGeneSets.R`				(Step-2)
+- 3 `loadGeneFamilies.R`				(Step-3)
+- 4 `computeExpressionProfileDistances.R` 	(Step-4)
 
-<br>
 
-- `ExpressionProfileDistances.RData` 
-- `orthologsTandems.RData`  
-- `GeneGroups.RData` 
-- `families.RData`  
+- Files (used & generated) ------------------------------------
 
-###  -------------------------------------------------------------------------------
+- `eight_brassicaceae_tandems.txt`, `eight_brassicaceae_orthologs.txt`  	(as input -> 1) (fehlen)
+- `orthologs` & `tandems` 										(1 -> generated / as input -> 2)
+- `orthologs.lst` & `tandems.lst` 								(2 -> generated / as input -> 4)
 
-- R Scripts & RData Files for Section-3 (`3. Expression Profile based Function Diversity`)
+- `mcl_output.txt` , `mcl_table.tsv` (from markov clustering tool mcl) 	(as input -> 3) (fehlen)
+- `families.lst` & (families.genes.df, families.df) 					(3 -> generated / as input -> 4)
 
-###  -------------------------------------------------------------------------------
+- `families.exp.prof.dists` & `families.exp.prof.dists.tissue`			(4 -> generated)
+- `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`			(4 -> generated)
+- `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`				(4 -> generated)
 
-- R Scripts & RData Files for Section-4 (`4. Expression vector space analysis`)
+
+- R-functions -------------------------------------------------
+
+- `expression_funks.R` --> function: `expressionProfilesDists`			(as input -> 4)
+
+
+- RData -------------------------------------------------------
+
+- (1) `orthologsTandems.RData` --> [1] "orthologs" "tandems"			
+
+- (2) `GeneGroups.RData` 				 
+
+ [1] 		                                                                            "busted.fams"
+ [4] "busted.genes"                           "busted.genes.nev"                       "dupl.classifier"
+ [7] "dupl.expr"                              "dupl.expr.nev"                          "dupl.psel.classifier"
+[10] "dupl.w.orths"                           "families.conserved"                     "families.conserved.genes"
+[13] "families.conserved.genes.nev"           "families.exp"                           "families.exp.cnt"
+[16] "families.exp.cnt.genes"                 "families.exp.cnt.genes.nev"             "families.exp.cnt.unq"
+[19] "families.exp.cnt.unq.genes"             "families.exp.cnt.unq.genes.nev"         "families.exp.genes"
+[22] "families.exp.genes.nev"                 "families.spec.cols"                     "families.unq"
+[25] "families.unq.genes"                     "families.unq.genes.nev"                 "fams.pos.sel"
+[28] "fubar.fams.decisive.evidence.genes"     "fubar.fams.decisive.evidence.genes.nev" "genes.pos.sel"
+[31] "genes.pos.sel.nev"                      		                                "orthologs.genes"
+[34] "orthologs.lst"   (X)                    "orths.expr"                             "psel.classifier"
+[37] "psel.expr"                              "psel.expr.nev"                          "psel.w.orths"
+[40] "tand.classifier"                        "tand.psel.classifier"                   
+[43] "tandems.genes"                          "tandems.genes.nev"                      "tandems.lst"  (X)
+[46] "tands.expr"                             "tands.expr.nev"                         "tands.w.orths"
+
+
+- (3) `families.RData` --> [1] "families.df"  "families.genes.df" "families.lst"
+
+- (4) `ExpressionProfileDistances.RData` 	
+
+[1] "families.exp.prof.dists"         "families.exp.prof.dists.tissue"  	"orthologs.exp.prof.dists"        
+[5] "tandems.exp.prof.dists"          "tandems.exp.prof.dists.tissue"		"orthologs.exp.prof.dists.tissue"
+
+
+
+
+--------------------------------------------------------------------------------------------------
+# RScripts and Files Overview  Section-3
+--------------------------------------------------------------------------------------------------
+
+- required exec:
+
+- computeExpressionProfileDistances.R (aus Section-2 schon berechnet und erstellt) (Docu-2 / Step-4)
+
+- (1) investigateDistributionsOfExpressionProfileDistances.R					(Step-1)
+
+-----------------------------										(Sidestep-DefineGeneSets)
+- (10) parseCafeResult.R
+
+- (11) exec/loadBustedResults.R
+
+- (12) exec/defineGeneSets.R 
+------------------------------
+
+- (2) plotDistributionsOfExpressionProfileDistances.R						(Step-2)
+
+
+
+- `families.exp.prof.dists` 			(aus Docu 2 Step-4 generated / as input (1)) 
+- `families.exp.prof.dists.tissue`		(aus Docu 2 Step-4 generated / ) 
+- `orthologs.exp.prof.dists` 			(aus Docu 2 Step-4 generated / as input (1)) 
+- `orthologs.exp.prof.dists.tissue`		(aus Docu 2 Step-4 generated / )
+- `tandems.exp.prof.dists` 				(aus Docu 2 Step-4 generated / as input (1)) 
+- `tandems.exp.prof.dists.tissue`		(aus Docu 2 Step-4 generated / )
+
+
+
+
+----------------------------------
+- cafe.result.df  					((10) generated / as input -> (12)) 
+- busted.df						((11) generated / as input -> (12)
+
+
+- families.exp 						((12) generated /as input -> (2) ) 
+- fams.pos.sel						((12) generated /as input -> (2) )
+--> Summary of Inputs Required:
+fams.pos.sel:
+
+fubar.fams.decisive.evidence
+busted.df
+families.lst
+families.exp:
+
+cafe.result.df
+families.df
+families.spec.cols
+col.maps (generated within the script) 
+-------------------------------------------------------
+
+
+- tandems.exp.prof.dists.orth.dist, 
+- tandems.exp.prof.dists.orth.dist.df, 	((1) generated /as input -> (2) )
+- families.exp.prof.dists.orth.dist, 
+- families.exp.prof.dists.orth.dist.df, 	((1) generated /as input -> (2) )
+- orthologs.exp.prof.dists.stats
+- orthologs.exp.prof.dists.stats.df		((1) generated /as input -> (2) )
+
+
+- erstellte Plots ((2) generated)
+
+- medianExpressionProfileDistancesPerGeneGroupClassesBoxplot.pdf
+- medianExpressionProfileDistancesPerGeneGroupClassesBoxplot_NoPosSel.pdf
+- medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot.pdf
+- medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot_NoPosSel.pdf
+- medianExpressionDistsTandemNonOrthsAndExpandedNonOrthsHist.pdf
+
+
+
+
+
+- RData-Files
+- `ExpressionProfileDistances.RData` 	(aus Docu 2 Step-4 generated / ) 
+r$> ls()
+[1] "families.exp.prof.dists"
+[2] "families.exp.prof.dists.tissue"
+[3] "orthologs.exp.prof.dists"
+[4] "orthologs.exp.prof.dists.tissue"
+[5] "tandems.exp.prof.dists"
+[6] "tandems.exp.prof.dists.tissue"
+
+- ExpressionProfileDistanceDistributions.RData
+r$> ls()
+[1] "families.exp.prof.dists.orth.dist"
+[2] "families.exp.prof.dists.orth.dist.df"
+[3] "orthologs.exp.prof.dists.stats.df"
+[4] "tandems.exp.prof.dists.orth.dist"
+[5] "tandems.exp.prof.dists.orth.dist.df"
+
+
+- families.exp.RData
+r$> ls()
+[1] "families.exp"
+
+- BUSTED_Results.RData --> [1] "busted.df"
+
+
+- GeneGroups.RData
+
+r$> ls()
+ [1] "busted.fams"                            "busted.genes"                           "busted.genes.nev"
+ [4] "dupl.classifier"                        "dupl.expr"                              "dupl.expr.nev"
+ [7] "dupl.psel.classifier"                   "dupl.w.orths"                           "families.conserved"
+[10] "families.conserved.genes"               "families.conserved.genes.nev"           "families.exp"   (X)
+[13] "families.exp.cnt"                       "families.exp.cnt.genes"                 "families.exp.cnt.genes.nev"
+[16] "families.exp.cnt.unq"                   "families.exp.cnt.unq.genes"             "families.exp.cnt.unq.genes.nev"
+[19] "families.exp.genes"                     "families.exp.genes.nev"                 "families.spec.cols"
+[22] "families.unq"                           "families.unq.genes"                     "families.unq.genes.nev"
+[25] "fams.pos.sel"  (X)                      "fubar.fams.decisive.evidence.genes"     "fubar.fams.decisive.evidence.genes.nev"
+[28] "genes.pos.sel"                          "genes.pos.sel.nev"                      "orthologs.genes"
+[31] "orthologs.lst"                          "orths.expr"                             "psel.classifier"
+[34] "psel.expr"                              "psel.expr.nev"                          "psel.w.orths"
+[37] "tand.classifier"                        "tand.psel.classifier"                   "tandems.genes"
+[40] "tandems.genes.nev"                      "tandems.lst"                            "tands.expr"
+[43] "tands.expr.nev"                         "tands.w.orths"
+
+
+- R scripts
+- (1) generateRpkmExpressionProfiles.R 
+- (11) defineGeneSets.R
+- (2) expressionAngles.R
+
+
+
+rpkm.rna.seq.counts / as `RPKM_counts_table.tsv` 	(main Input, from Section-1)(as input -> 1)
+
+rpkm.expr.profiles.df ((1) generated 
+
+
+
+
+tands.expr, orths.expr, dupl.expr, psel.expr ---> sind in GeneGroups.RData 
+
+tands.w.orths, --> defineGeneSets.R
+
+dupl.w.orths
+
+ 
+ 
+tands.w.orths.angles.df
+
+tands.psel.w.orths.angles.df
+
+dupl.w.orths.angles.df 
+
+dupl.psel.w.orths.angles.df
+ 
+ 
+ 
+ 
+ 
+- R functions
+exprVecSpaceEvolutionAfterDupl, in expression_funks.R
+cosDiag: in expression_funks.R script.  
+ 
+ 
+ 
+  - Plots
+ meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf
+
+This plot shows the mean difference in tissue versatility after duplication for different gene groups.
+meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf
+
+This plot consists of histograms depicting the distribution of the mean difference in tissue versatility after duplication for duplicated and tandem gene groups.
+afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf
+
+This plot displays the angles between orthogonal vectors in expression space for different gene groups after duplication.
+afterDuplicationAngleBetweenOrth2DiagVecsHistograms.pdf
+
+This plot includes histograms showing the distribution of angles between orthogonal vectors in expression space for duplicated and tandem gene groups after duplication.
+meanChangeInAngleBetweenOrthOnDiagsBoxplot.pdf
+
+This plot presents the mean change in angle between diagonal orthologs for duplicated and tandem gene groups.
+absLog2FoldChangeIntraSpeciesBoxplots.pdf
+
+This plot shows the absolute log2 fold change within intra-species differentially expressed genes for ortholog, tandem, and duplicated gene groups.
+
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+
+- RData
+
+- rpkmExpressionProfiles.RData -> [1] "rpkm.expr.profiles.df"
+
+ - GeneGroups.RData
+
+r$> ls()
+ [1] "busted.fams"                            "busted.genes"                           "busted.genes.nev"
+ [4] "dupl.classifier"                        "dupl.expr"                              "dupl.expr.nev"
+ [7] "dupl.psel.classifier"                   "dupl.w.orths"                           "families.conserved"
+[10] "families.conserved.genes"               "families.conserved.genes.nev"           "families.exp"   (X)
+[13] "families.exp.cnt"                       "families.exp.cnt.genes"                 "families.exp.cnt.genes.nev"
+[16] "families.exp.cnt.unq"                   "families.exp.cnt.unq.genes"             "families.exp.cnt.unq.genes.nev"
+[19] "families.exp.genes"                     "families.exp.genes.nev"                 "families.spec.cols"
+[22] "families.unq"                           "families.unq.genes"                     "families.unq.genes.nev"
+[25] "fams.pos.sel"  (X)                      "fubar.fams.decisive.evidence.genes"     "fubar.fams.decisive.evidence.genes.nev"
+[28] "genes.pos.sel"                          "genes.pos.sel.nev"                      "orthologs.genes"
+[31] "orthologs.lst"                          "orths.expr"                             "psel.classifier"
+[34] "psel.expr"                              "psel.expr.nev"                          "psel.w.orths"
+[37] "tand.classifier"                        "tand.psel.classifier"                   "tandems.genes"
+[40] "tandems.genes.nev"                      "tandems.lst"                            "tands.expr"
+[43] "tands.expr.nev"                         "tands.w.orths"
+
+ 
+ # load("RData-Files/families.RData")
+# load("RData-Files/families.exp.RData")
+# load("RData-Files/codingSequences.RData")
+ 
+
+
 
 
 
@@ -156,39 +735,133 @@ The steps and data required to carry out the original analysis are devided into 
 
 # `1. Load tissue specific expression data`
 
-## 1.1 Description (Section-1)
+--------------------------------------------------------------------------------
+Step-1: Description - rpkm.rna.seq.counts.R
+--------------------------------------------------------------------------------
 
-> l
+Description:
 
-## 1.2 R-Scripts (executables) & Inputs/Outputs (Section-1)
+- We need to load the RPKM_counts_table.tsv file into a DataFrame. This is the first input file required.
+- It contains 284,370 observations of 3 variables: id, tissue, and expression (DataFrame header).
+- Each row represents the expression vector of a gene in the expression vector space.
+- Axes represent different plant tissues.
+- The dataset includes 5 different tissues or conditions: cotyledon, developing leaf, seedling, flower stage 16, and flower stage 9.
+- ID is the Gene Identifier representing genes of Cardamine hirsuta.
+- In each tissue of Cardamine hirsuta, the same DNA is present, and thus the same set of genes is available.
+- Each gene is expressed differently depending on the tissue.
+- We compare the expression levels of each gene based on the tissue in which it is expressed.
+- Expression indicates gene activity, showing how much DNA (specific gene) is transcribed into its RNA counterpart.
+- Each gene is assigned a count number representing its expression activity, which indicates whether the gene is active or inactive in a given tissue (ON/OFF/Repressed).  
 
-- `loadRpkmRnaSeqCounts.R`
-- `loadCodingSequences.R`
+  ```md
+  > head(`RPKM_counts_table.tsv`)
 
-### -------------------------------------------------------------------------------
+  # id                 tissue               expression
 
-`loadRpkmRnaSeqCounts.R`
+  # 1 AT1G01010        cotyledon            0.20638414
+  # 2 AT1G01010        developing leaf      0.08695488
+  # 3 AT1G01010        seedling             0.27762869
+  # 4 AT1G01010        flower stage 16      0.07009093
+  # 5 AT1G01010        flower stage 9       0.35894135
+  # 6 AT1G01020        cotyledon            0.16516131
+  ```
+
+- the Script `exec/loadRpkmRnaSeqCounts.R` is used to generate `rna.seq.exp.profils`
+- `loadRpkmRnaSeqCounts.R` loads `RPKM_counts_table.tsv` (`rpkm.rna.seq.counts`) --> `rna.seq.exp.profils`
+
+- rna.seq.exp.profiles DataFrame:
+- It is a data.frame with 56,874 observations of 6 variables.
+- This data shows the expression (count value) for each gene of Cardamine hirsuta in various tissues (locations/time conditions).
+- The expression data for 56,874 genes in Cardamine hirsuta is assigned an expression value (gene activity) based on the tissue in which they are expressed (transcribed to RNA).
+- The first step is to create gene expression profiles.
+
+  ```md
+  > head(`RNA_Seq_RPKM_and_profiles.tsv`)
+
+  #     cotyledon      developing.leaf  seedling       flower.stage.16  flower.stage.9  gene
+
+  # 1 0.206384145      0.08695488       0.2776287      0.07009093       0.3589414       AT1G01010
+  # 2 0.165161313      0.10448020       0.2267613      0.08841315       0.4151840       AT1G01020
+  # 3 0.086191341      0.15355937       0.1500006      0.07077711       0.5394716       AT1G01030
+  # 4 0.330792887      0.09427257       0.1829741      0.08449369       0.3074667       AT1G01040
+  # 5 0.079472192      0.11188537       0.1738841      0.34547414       0.2892842       AT1G01050
+  # 6 0.003454131      0.08389586       0.5113684      0.27232766       0.1289540       AT1G01060
+  ```
+--------------------------------------------------------------------------------
+Step-1: Inputs/Outputs Overview 
+--------------------------------------------------------------------------------
+
+`loadRpkmRnaSeqCounts.R`  (path: exec/loadRpkmRnaSeqCounts.R)
 
 - description: 
 
   > Use expresion data to generate expression profiles for different sets of genes and enable 
   > comparison of them, also on the level of the tissue.
 
-- Input: `RPKM_counts_table.tsv` (id / tissue / expression)
+- message (for running R-Script):
+  
+  message("USAGE: Rscript path/2/GeneFamilies/exec/loadRpkmRnaSeqCounts.R RPKM_counts_table.tsv path/2/GeneFamilies")
+  message("Note, that the table in argument file 'RPKM_counts_table.tsv' is expected to be TAB-Delimited and have a header line:\n", 
+    "id tissue rank expression variance")
+  
+  > Rscript exec/loadRpkmRnaSeqCounts.R data/RPKM_counts_table.tsv C:/Users/andre/Desktop/GeneFamilies   (from bash/Ubuntu Shell)
+
+- Input: `RPKM_counts_table.tsv` (id / tissue / expression) (path: "data/RPKM_counts_table.tsv")
+
+  ```md
+  > str(`RPKM_counts_table.tsv`) 
+
+  # 'data.frame':   284370 obs. of  3 variables:
+
+  # $ id        : chr  "AT1G01010" "AT1G01010" "AT1G01010" "AT1G01010" ...
+  # $ tissue    : chr  "cotyledon" "developing leaf" "seedling" "flower stage 16" ...
+  # $ expression: num  0.2064 0.087 0.2776 0.0701 0.3589 ...
+  ```
 
 - Objects/Variables generated: `rna.seq.exp.profils`
+
+  > str(`RNA_Seq_RPKM_and_profiles.tsv`)
+
+  # 'data.frame':   56874 obs. of  6 variables:
+
+  # $ cotyledon      : num  0.2064 0.1652 0.0862 0.3308 0.0795 ...
+  # $ developing.leaf: num  0.087 0.1045 0.1536 0.0943 0.1119 ...
+  # $ seedling       : num  0.278 0.227 0.15 0.183 0.174 ...
+  # $ flower.stage.16: num  0.0701 0.0884 0.0708 0.0845 0.3455 ...
+  # $ flower.stage.9 : num  0.359 0.415 0.539 0.307 0.289 ...
+  # $ gene           : chr  "AT1G01010" "AT1G01020" "AT1G01030" "AT1G01040" ...
+  ```
 
 - Output: `RNA_Seq_RPKM_and_profiles.RData` (Output) (contains: `rna.seq.exp.profils` + `rpkm.rna.seq.counts`)
 
 - Save: `rna.seq.exp.profils` as `RNA_Seq_RPKM_and_profiles.tsv`
-                      
-### -------------------------------------------------------------------------------
 
+--------------------------------------------------------------------------------
+Step-2: Description - loadRpkmRnaSeqCounts.R
+--------------------------------------------------------------------------------
+- Loading DNA Fasta Files:
+- We need to load the DNA Fasta files for each of the 8 Brassicaceae family members.
+- These files represent the genomic sequences of each species in Fasta format.
+- The individual Fasta files are combined to create a comprehensive family Fasta file named all.cds, 
+which includes the combined genomes of the 8 Brassicaceae family members.
+- The script exec/loadCodingSequences.R is used to load these DNA Fasta files.
+
+
+--------------------------------------------------------------------------------
+Step-2:  Inputs/Outputs  
+--------------------------------------------------------------------------------
 `loadCodingSequences.R`
 
-- description: 
+- R-Script-description: 
 
-  > 
+  > loads the 8 DNA-Fasta-Files, for 8 Brassicaceaen genomes, stores them into Objects/Variables
+  > generates `all.cds` for the the combined 8 Brassicaceaen genomes
+
+- message (for running R-Script):
+
+  message("USAGE: Rscript path/2/GeneFamilies/exec/loadCodingSequences.R path/2/GeneFamilies/data aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa")
+
+  > Rscript
 
 - Input: `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa`  (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
 
@@ -199,144 +872,354 @@ The steps and data required to carry out the original analysis are devided into 
 - Save:
 
 
-## 1.3 Data Structure & Description of Files (Section-1)
-
-- Overview of files used in Section-1:
-
-- `RPKM_counts_table.tsv` --> `rpkm.rna.seq.counts`
-
-- `RNA_Seq_RPKM_and_profiles.tsv` --> `rna.seq.exp.profils`
-
-- `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa` --> (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
-
-- `all.cds` 
-
-
-### -------------------------------------------------------------------------------
-
-- `RPKM_counts_table.tsv` --> `rpkm.rna.seq.counts`
-
-- description:
-
-> This is a table in which each row represents the expression vector of a gene in the expression vector space. Axes are the different plant tissues. Gene Identifier (IDs) are given both in the pure form, e.g. `AT1G01010`, and the splice variant, e.g. `AT1G01010.1`.
-> - expression  -> 
-> - ID          -> 
-> - tissue      -> 
-
-
-<br>
-
-```md
-> head(`RPKM_counts_table.tsv`)
-
-# id                 tissue               expression
-
-# 1 AT1G01010        cotyledon            0.20638414
-# 2 AT1G01010        developing leaf      0.08695488
-# 3 AT1G01010        seedling             0.27762869
-# 4 AT1G01010        flower stage 16      0.07009093
-# 5 AT1G01010        flower stage 9       0.35894135
-# 6 AT1G01020        cotyledon            0.16516131
-
---------------------------------------------------------------------------------
-
-> str(`RPKM_counts_table.tsv`) 
-
-# 'data.frame':   284370 obs. of  3 variables:
-
-# $ id        : chr  "AT1G01010" "AT1G01010" "AT1G01010" "AT1G01010" ...
-# $ tissue    : chr  "cotyledon" "developing leaf" "seedling" "flower stage 16" ...
-# $ expression: num  0.2064 0.087 0.2776 0.0701 0.3589 ...
-```
-
-### -------------------------------------------------------------------------------
-
-- `RNA_Seq_RPKM_and_profiles.tsv` --> `rna.seq.exp.profils`
-
-- description:
-
-> l
-
-<br>
-
-```md
-> head(`RNA_Seq_RPKM_and_profiles.tsv`)
-
-#     cotyledon      developing.leaf  seedling       flower.stage.16  flower.stage.9  gene
-
-# 1 0.206384145      0.08695488       0.2776287      0.07009093       0.3589414       AT1G01010
-# 2 0.165161313      0.10448020       0.2267613      0.08841315       0.4151840       AT1G01020
-# 3 0.086191341      0.15355937       0.1500006      0.07077711       0.5394716       AT1G01030
-# 4 0.330792887      0.09427257       0.1829741      0.08449369       0.3074667       AT1G01040
-# 5 0.079472192      0.11188537       0.1738841      0.34547414       0.2892842       AT1G01050
-# 6 0.003454131      0.08389586       0.5113684      0.27232766       0.1289540       AT1G01060
-
---------------------------------------------------------------------------------
-
-> str(`RNA_Seq_RPKM_and_profiles.tsv`)
-
-# 'data.frame':   56874 obs. of  6 variables:
-
-# $ cotyledon      : num  0.2064 0.1652 0.0862 0.3308 0.0795 ...
-# $ developing.leaf: num  0.087 0.1045 0.1536 0.0943 0.1119 ...
-# $ seedling       : num  0.278 0.227 0.15 0.183 0.174 ...
-# $ flower.stage.16: num  0.0701 0.0884 0.0708 0.0845 0.3455 ...
-# $ flower.stage.9 : num  0.359 0.415 0.539 0.307 0.289 ...
-# $ gene           : chr  "AT1G01010" "AT1G01020" "AT1G01030" "AT1G01040" ...
-```
-
-- `RNA_Seq_RPKM_and_profiles.tsv`
-
-- description:
-
-> l
-
-
----
-
-- `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa` --> (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
-
-- description:
-
-> l
-
 
 ## `2. Compute pairwise gene expression profile distances within gene groups`
 
-## 2.1 Description (Section-2)
+Differences in expression are correlated with function diversification. 
+In order to detect such diversification of function we measure euclidean distances between expression 
+profiles of genes within gene groups. Distances are computed between whole expression profiles as well as on each euclidean dimension (tissue).
 
-> Differences in expression are correlated with function diversification. In
-> order to detect such diversification of function we measure euclidean
-> distances between expression profiles of genes within gene groups. Distances
-> are computed between whole expression profiles as well as on each euclidean
-> dimension (tissue).
+The following R-script generates the data-set `ExpressionProfileDistances.RData`:
 
-This is the first result of our expression vector space analysis. See attached
-presentation `./inst/GeneFunctionEvolution.pdf`, slide fourteen (14).
+`Rscript ./exec/computeExpressionProfileDistances.R path/2/GeneFamilies`
+
+The single argument _must_ point to this R-package's local source directory. 
+It will generate the above data file and thus it is required that you re-install the package after successfull completion of the script.
 
 
-## 2.2 R-Scripts (executables) & Inputs/Outputs (Section-2)
 
-- exec: 
-- `computeExpressionProfileDistances.R` 
-- `LoadOrthologsAndTandems.R`
-- `defineGeneSets.R`
-- `loadGeneFamilies.R`
 
-<br>
 
-- R-functions:
-- `expression_funks.R`
 
-### -------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
+Step-1: Description  `LoadOrthologsAndTandems.R` (1)
+--------------------------------------------------------------------------------------------------
 
-`computeExpressionProfileDistances.R` 
+- we want to identify Differences in expression between the 8 Brassicaceaen Genomes
+- the differences in expression are correlated with function diversification. (Funktion)
 
-- description:
+- load Information about the 8 Brassicaceaen Genomes 
+- we need Information about the Orthologs and Tandems identified within the eight Brassicaceaen Genomes
 
-> Differences in expression are correlated with function diversification. In order to detect such diversification of function we measure euclidean distances between expression profiles of genes within gene groups. Distances are computed between whole expression profiles as well as on each euclidean dimension (tissue).
+- `eight_brassicaceae_tandems.txt`, `eight_brassicaceae_orthologs.txt` (fehlt) (server ??)
+- the txt Files contain Information about: 
+- Pairwise Sequence Similarities / Orthologs / Tandems
 
-- Input: `tandems.lst`, `orthologs.lst`, `families.lst`, `expressionProfilesDists`
+- `LoadOrthologsAndTandems.R` loads the txt files and converts them into Dataframes
+-  the Output is saved in: `orthologsTandems.RData`
+
+
+- orthologs (Dataframe, 10111 obs , Header: (aly, ath, cru, chi, aet, bra, esa, tpa))
+
+r$> head(orthologs)
+
+     aly       ath             cru         chi       aet       bra             esa       tpa
+     
+1 311263 AT1G01790 Carubv10011770m CARHR000530 aet_11800 Bra032651 Thhalv10006595m Tp1g00490
+2 311286 AT1G01510 Carubv10011468m CARHR000860 aet_11763 Bra033258 Thhalv10007060m Tp1g00800
+3 311290 AT1G01460 Carubv10009221m CARHR000910 aet_11791 Bra033262 Thhalv10009579m Tp1g00850
+4 311315 AT1G01190 Carubv10008749m CARHR001280 aet_11742 Bra033278 Thhalv10007320m Tp1g01100
+5 311338 AT1G02280 Carubv10010930m CARHR001580 aet_11721 Bra032612 Thhalv10008332m Tp1g01360
+6 311357 AT1G02475 Carubv10010960m CARHR001800 aet_11714 Bra033330 Thhalv10008722m Tp1g01550
+
+
+--------------------------------------------------------------------------------------------------
+
+- tandems (Dataframe, 38188 obs. of  2 variables, Header: (Family / Gene)
+
+r$> head(tandems)
+
+            Family            Gene
+            
+1 tandem_cluster_1   CARHR230400.1
+2 tandem_cluster_1   CARHR230340.1
+3 tandem_cluster_1 Carubv10004324m
+4 tandem_cluster_1       Bra013677
+5 tandem_cluster_1     AT4G23280.1
+6 tandem_cluster_1       Bra013678
+
+
+
+
+
+
+
+----------------------------------------------------------------------------------------------------
+Step-2: Description `defineGeneSets.R` (2)
+----------------------------------------------------------------------------------------------------
+
+- `defineGeneSets.R` (2) takes 2 Inputs orthologs & tandems (Dataframes)
+- generates orthologs.lst (list) & tandems.lst (list)
+
+----------------------------------------------------------------------------------------------------
+
+- tandems (Dataframe, with Header: (Family / Gene ID), 38188 obs.) 
+- tandems: Tandemly duplicated genes are copies of a gene that are located next to each other on the same chromosome.
+
+- used as an input for `defineGeneSets.R` (2)
+
+r$> head(tandems)
+
+            Family            Gene
+1 tandem_cluster_1   CARHR230400.1
+2 tandem_cluster_1   CARHR230340.1
+3 tandem_cluster_1 Carubv10004324m
+
+----------------------------------------------------------------------------------------------------
+
+- orthologs (Dataframe, with Header: (aly, ath, cru, aet, bra, esa, tpa), 10111 obs.) 
+- orthologs: Genes in different species that originate from a common ancestral gene
+- retaining similar functions and Sequences 
+
+- used as an input for `defineGeneSets.R` (2)
+
+r$> head(orthologs)
+
+     aly       ath             cru         chi       aet       bra             esa       tpa
+1 311263 AT1G01790 Carubv10011770m CARHR000530 aet_11800 Bra032651 Thhalv10006595m Tp1g00490
+2 311286 AT1G01510 Carubv10011468m CARHR000860 aet_11763 Bra033258 Thhalv10007060m Tp1g00800
+3 311290 AT1G01460 Carubv10009221m CARHR000910 aet_11791 Bra033262 Thhalv10009579m Tp1g00850
+...
+
+----------------------------------------------------------------------------------------------------
+
+- `defineGeneSets.R` generates orthologs.lst (list) & tandems.lst (list)
+
+- orthologs.lst (List of 10111 obj., 10111 ortholog clusters are listed) 
+- each ortholog cluster referencing a Vector c(aly, ath, cru, chi, aet, bra, esa, tpa)
+
+
+r$> head(orthologs.lst)
+
+$ortholog_cluster_1
+              aly               ath               cru               chi               aet               bra               esa               tpa
+         "311263"       "AT1G01790" "Carubv10011770m"     "CARHR000530"       "aet_11800"       "Bra032651" "Thhalv10006595m"       "Tp1g00490"
+
+$ortholog_cluster_2
+              aly               ath               cru               chi               aet               bra               esa               tpa
+         "311286"       "AT1G01510" "Carubv10011468m"     "CARHR000860"       "aet_11763"       "Bra033258" "Thhalv10007060m"       "Tp1g00800"
+
+
+r$> str(orthologs.lst) List of 10111
+
+ $ ortholog_cluster_1    : Named chr [1:8] "311263" "AT1G01790" "Carubv10011770m" "CARHR000530" ...
+  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
+ $ ortholog_cluster_2    : Named chr [1:8] "311286" "AT1G01510" "Carubv10011468m" "CARHR000860" ...
+  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
+ $ ortholog_cluster_3    : Named chr [1:8] "311290" "AT1G01460" "Carubv10009221m" "CARHR000910" ...
+   ...
+
+----------------------------------------------------------------------------------------------------
+
+- tandems.lst (List of 3266 obj., 3266 tandem clusters are listed) 
+- refrencing an other List containig the Gene ID names
+
+r$> str(tandems.lst) List of 3266
+
+ $ tandem_cluster_1   : chr [1:152] "CARHR230400.1" "CARHR230340.1" "Carubv10004324m" "Bra013677" ...
+ $ tandem_cluster_2   : chr [1:125] "Bra007390" "Bra007392" "Bra014571" "Thhalv10005920m" ...
+ $ tandem_cluster_3   : chr [1:137] "Thhalv10001065m" "Thhalv10001146m" "Thhalv10001152m" "Tp2g10040" ...
+ ...
+
+r$> head(tandems.lst)
+$tandem_cluster_1 [1:152]
+  [1] "CARHR230400.1"   "CARHR230340.1"   "Carubv10004324m" "Bra013677"       "AT4G23280.1"     "Bra013678"       "AT4G23230.1"     "Bra013679"
+  [9] "CARHR230550.1"   "Bra019316"       "Bra013681"       "CARHR230650.1"   "Bra019317"       "Bra013682"       "CARHR230620.1"   "Bra019319"
+ [17] "Bra013683"       "Carubv10004575m" "Bra019320"       "Bra013684"       "Bra013676"       "Thhalv10024579m" "Bra019321"       "Bra019313"
+ [25] "Thhalv10024598m" "Bra019322"       "Bra019314"       "Thhalv10024603m" "Bra019323"       "Bra019315"       "Thhalv10024894m" "Thhalv10024606m"
+ [33] "Bra019324"       "Tp7g21190"       "CARHR230390.1"   "Thhalv10024615m" "Tp7g21200"       "492542"          "Thhalv10024630m" "Bra019326"
+ [41] "aet_19556"       "Tp7g21210"       "Carubv10007749m" "Thhalv10024631m" "Bra019329"       "aet_19557"       "889852"          "Tp7g21220"
+ [49] "AT4G23270.1"     "Thhalv10024643m" "aet_19563"       "CARHR230360.1"   "Tp7g21230"       "CARHR230660.1"   "Thhalv10024670m" "CARHR230270.1"
+ [57] "Tp7g21240"       "889845"          "Thhalv10024843m" "CARHR230320.1"   "Carubv10004297m" "Tp7g21250"       "889847"          "CARHR230490.1"
+ [65] "AT4G23200.1"     "Tp7g21260"       "AT4G23210.3"     "AT4G23250.1"     "Carubv10004321m" "aet_19555"       "889849"          "CARHR230350.1"
+ [73] "AT4G23180.1"     "492543"          "889850"          "Carubv10004608m" "Carubv10004334m" "Carubv10006289m" "AT4G23220.1"     "CARHR230230.1"
+ [81] "492548"          "AT4G23140.2"     "Carubv10006953m" "Carubv10007481m" "CARHR230370.1"   "CARHR230610.1"   "CARHR230310.1"   "AT4G23160.1"
+ [89] "CARHR230570.1"   "CARHR230240.1"   "CARHR230460.1"   "AT4G23300.1"     "CARHR230210.1"   "CARHR230290.1"   "CARHR230500.1"   "Carubv10004335m"
+ [97] "Carubv10006694m" "Carubv10004319m" "AT4G23260.1"     "AT4G23290.2"     "CARHR230540.1"   "492544"          "CARHR230630.1"   "CARHR230520.1"
+[105] "CARHR230380.1"   "CARHR230530.1"   "Carubv10007464m" "CARHR230200.1"   "AT4G23150.1"     "CARHR230480.1"   "CARHR230250.1"   "Carubv10004781m"
+[113] "Carubv10004309m" "Carubv10004308m" "CARHR230280.1"   "AT4G23320.1"     "AT4G23190.1"     "329316"          "AT4G23240.1"     "Carubv10004380m"
+[121] "Carubv10004289m" "AT4G23170.1"     "CARHR230300.1"   "AT4G23130.2"     "Carubv10006547m" "CARHR230260.1"   "Carubv10004325m" "CARHR230580.1"
+[129] "CARHR230470.1"   "CARHR230220.1"   "Carubv10006279m" "CARHR230410.1"   "Carubv10004328m" "492547"          "Carubv10004176m" "CARHR230640.1"
+[137] "CARHR230440.1"   "Carubv10006609m" "CARHR230590.1"   "CARHR230510.1"   "Carubv10005820m" "945791"          "CARHR230600.1"   "889841"
+[145] "889839"          "889838"          "Carubv10007730m" "CARHR230450.1"   "Carubv10004290m" "AT4G23310.1"     "492546"          "CARHR230330.1"
+
+$tandem_cluster_2 [1:125]
+....
+
+
+
+
+----------------------------------------------------------------------------------------------------
+Step-3: Description - `loadGeneFamilies.R`
+----------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+Blast:
+Blast: all coding sequences available for the eight genomes (input) --> run all-vs-all BLAT on them --> Blast Results
+
+- reults based on Pairwise Sequence Similarities in percent.
+
+Markov Clustering: 
+Markov Clustering: results from Blast as Input -->  mcl Programm (`mcl 14-137, van Dongen`)  --> `mcl_output.txt` , `mcl_table.tsv` as Output
+
+
+> Furthermore, the results were parsed and provided as a table in which each family was assigned a name (e.g. 'cluster\_1')
+> and for each of the eight species the number of gene members is provided.
+
+
+Perl-Script `mcl2orthoformat.pl`: can be used to convert the MCL output into the table.
+-> `mcl_output.txt` ---->  `mcl_table.tsv`
+
+
+- `loadGeneFamilies.R` takes the Output from Markov Clustering mcl_output.txt` , `mcl_table.tsv` as Input
+
+- Input: `mcl_output.txt` , `mcl_table.tsv` (from markov clustering tool mcl)  (fehlt) (auf Server ??)
+
+- Objects/Variables generated: `families.lst` & (families.genes.df, families.df) --> Output: `families.RData`
+
+
+
+- families.lst (List of 23716 obj, called clusters, )
+- each cluster has a list assigned with Genes 
+
+
+r$> head(families.lst)
+$cluster_1
+$cluster_1[[1]]
+[1] "Bra033048"
+
+$cluster_1[[2]]
+[1] "Tp2g18110"
+
+$cluster_1[[3]]
+[1] "aet_21504"
+
+$cluster_1[[4]]
+[1] "Carubv10026871m"
+....
+
+
+r$> str(families.lst)
+List of 23716
+ $ cluster_1    :List of 682
+  ..$ : chr "Bra033048"
+  ..$ : chr "Tp2g18110"
+  ..$ : chr "aet_21504"
+  ..$ : chr "Carubv10026871m"
+  ..$ : chr "Bra023380"
+  ..$ : chr "AT3G30210.1"
+  ..$ : chr "Bra022888"
+  ..$ : chr "aet_22751"
+  ..$ : chr "Carubv10028573m"
+  ..$ : chr "Bra020647"
+  ..$ : chr "Bra008740"
+  ..$ : chr "Tp4g14530"
+  ..$ : chr "aet_2851"
+  ..$ : chr "CARHR205450.1"
+  ..$ : chr "aet_5955"
+  ..$ : chr "AT3G13540.1"
+  ..$ : chr "478645"
+  ..$ : chr "892702"
+  ..$ : chr "Bra012641"
+  ..$ : chr "482173"
+  ..$ : chr "484660"
+  ..$ : chr "925774"
+  ..$ : chr "487856"
+  ..$ : chr "950898"
+  ..$ : chr "488379"
+  ..$ : chr "AT1G06180.1"
+  ..$ : chr "496754"
+  ..$ : chr "AT3G12820.1"
+  ..$ : chr "AT1G08810.1"
+  ..$ : chr "497036"
+  ..$ : chr "AT3G28910.1"
+  ..$ : chr "AT1G34670.1"
+  ..$ : chr "897842"
+  ..$ : chr "Thhalv10010576m"
+  ..$ : chr "AT3G49690.1"
+  ..$ : chr "AT1G66230.1"
+  ..$ : chr "900923"
+  ..$ : chr "Thhalv10013018m"
+  ..$ : chr "AT3G61250.1"
+  ..$ : chr "AT2G31180.1"
+  ..$ : chr "919629"
+  ..$ : chr "Thhalv10014028m"
+  ..$ : chr "Bra003443"
+  ..$ : chr "AT4G12350.1"
+  ..$ : chr "AT2G32460.1"
+  ..$ : chr "Thhalv10021048m"
+  ..$ : chr "Thhalv10014101m"
+  ..$ : chr "Bra004155"
+  ..$ : chr "AT5G15310.1"
+  ..$ : chr "AT3G01140.1"
+  ..$ : chr "Thhalv10021926m"
+  ..$ : chr "Thhalv10016567m"
+  ..$ : chr "Bra006055"
+  ..$ : chr "AT5G55020.1"
+  ..$ : chr "AT3G06490.1"
+  ..$ : chr "Thhalv10022405m"
+  ..$ : chr "Thhalv10017136m"
+  ..$ : chr "Bra015481"
+  ..$ : chr "Bra006166"
+  ..$ : chr "AT5G61420.2"
+  ..$ : chr "Tp2g28330"
+  ..$ : chr "Thhalv10029512m"
+  ..$ : chr "Thhalv10018705m"
+  ..$ : chr "Bra015939"
+  ..$ : chr "AT1G57560.1"
+  ..$ : chr "Bra006296"
+  ..$ : chr "488535"
+  ..$ : chr "Tp3g00980"
+  ..$ : chr "Tp1g04990"
+  ..$ : chr "Thhalv10018933m"
+  ..$ : chr "Bra017963"
+  ..$ : chr "AT3G12720.1"
+  ..$ : chr "Bra007588"
+  ..$ : chr "AT5G65230.1"
+  ..$ : chr "489795"
+  ..$ : chr "Tp3g10980"
+  ..$ : chr "Tp1g07450"
+  ..$ : chr "Bra028063"
+  ..$ : chr "Thhalv10018962m"
+  ..$ : chr "Bra018267"
+  ..$ : chr "AT3G28470.1"
+  ..$ : chr "Bra008705"
+  ..$ : chr "Bra001472"
+  ..$ : chr "490838"
+  ..$ : chr "Tp5g34230"
+  ..$ : chr "Tp3g22080"
+  ..$ : chr "Tp1g29770"
+  ..$ : chr "Bra028593"
+  ..$ : chr "Bra020016"
+  ..$ : chr "Thhalv10019852m"
+  ..$ : chr "Bra021382"
+  ..$ : chr "AT4G01680.2"
+  ..$ : chr "Bra009044"
+  ..$ : chr "AT4G17785.1"
+  ..$ : chr "493095"
+  ..$ : chr "Tp6g05240"
+  ..$ : chr "Tp4g13670"
+  ..$ : chr "Tp2g17530"
+  ..$ : chr "Bra029553"
+  .. [list output truncated]
+ $ cluster_2    :List of 457
+
+
+
+
+---------------------------------------------------------------------------------------------------
+Step-4: Description - `computeExpressionProfileDistances.R`
+---------------------------------------------------------------------------------------------------
+
+
+- `computeExpressionProfileDistances.R` takes 4 Inputs `tandems.lst`, `orthologs.lst`, `families.lst`, 
+and the function from `expressionProfilesDists` from expression_funks.R
+
+exec/computeExpressionProfileDistances.R <-- tandems.lst, orthologs.lst, families.lst, expressionProfilesDists (Input)
 
 - Objects/Variables generated: 
 
@@ -344,207 +1227,275 @@ presentation `./inst/GeneFunctionEvolution.pdf`, slide fourteen (14).
 - `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`
 - `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`
 
-- Output: `ExpressionProfileDistances.RData`
-
-- Save:
-
-### -------------------------------------------------------------------------------
-
-- `LoadOrthologsAndTandems.R`
-
-- description:
-
-> Load information about Pairwise Sequence Similarities, Orthologs, and Tandems identified within the eight Brassicaceaen Genomes
-
-- Input: `eight_brassicaceae_tandems.txt`, `eight_brassicaceae_orthologs.txt`
-
-- Objects/Variables generated: `orthologs` & `tandems`
-
-- Output: `orthologsTandems.RData`
-
-- Save:
-
-
-Cluster of Orthologs were inferred using reciprocal best hits in an all-vs-all Sequence-Similarity-Search with validation of 1 gene per other species matching to the TAIR10 (A. thaliana) reference. 
-
-Tandems were inferred in a similar manner, where the sequence similarity searches were carried out within each species' genome separately, and the validation was a maximum neighborhood of 9 genes in the genome.
-
-### -------------------------------------------------------------------------------
-
-- `defineGeneSets.R`
-
-- description:
-
->
-
-- message (pfad): `Rscript ./exec/defineGeneSets.R path/2/GeneFamilies-source-package`
-
-- Input: `orthologs` & `tandems`
-
-- Objects/Variables generated: `orthologs.lst` & `tandems.lst`
-
-- Output: `GeneGroups.RData`
-
-- Save:
-
---> Per gene group function diversity is assessed in two ways. For all eight Brassicaceaen proteomes using domain architecture diversity within given gene groups, and as median distance between expression profiles of the proteomes of _A. thaliana_ and _C. hirsuta_. Mainly four classes of gene groups are investigated: 
-* Orthologs (Orth)
-* Tandem Duplicates (Tand)
-* Expanded Gene Families (Exp)
-* Gene Families showing signs of positive selection (PSel)
-
-Define the above gene-sets with the following R-script:
+exec/computeExpressionProfileDistances.R --> `ExpressionProfileDistances.RData` (Output) (contains the above Objects/variables)
 
 
 
-The single argument needs to point to the local source package directory. After the script has generated the required RData-sets, the package needs to be re-installed.
+------------------------------------------
 
-The distributions of the two function diversity measures are plotted for each class of gene group. Furthermore within each class the function diversity distributions are compared between Orthologs and Non-Orthologs. Finally t-tests are carried out to detect significant differences between these distributions.
+r$> str(orthologs.lst) List of 10111
 
+ $ ortholog_cluster_1    : Named chr [1:8] "311263" "AT1G01790" "Carubv10011770m" "CARHR000530" ...
+  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
+ $ ortholog_cluster_2    : Named chr [1:8] "311286" "AT1G01510" "Carubv10011468m" "CARHR000860" ...
+  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
+ $ ortholog_cluster_3    : Named chr [1:8] "311290" "AT1G01460" "Carubv10009221m" "CARHR000910" ...
+   ...
+   
+------------------------------------------
 
-### -------------------------------------------------------------------------------
+r$> str(tandems.lst) List of 3266
 
-`loadGeneFamilies.R`
+ $ tandem_cluster_1   : chr [1:152] "CARHR230400.1" "CARHR230340.1" "Carubv10004324m" "Bra013677" ...
+ $ tandem_cluster_2   : chr [1:125] "Bra007390" "Bra007392" "Bra014571" "Thhalv10005920m" ...
+ $ tandem_cluster_3   : chr [1:137] "Thhalv10001065m" "Thhalv10001146m" "Thhalv10001152m" "Tp2g10040" ...
+ ...
 
-- description:
+------------------------------------------
 
->
+r$> str(families.lst)
+List of 23716
+ $ cluster_1    :List of 682
+  ..$ : chr "Bra033048"
+  ..$ : chr "Tp2g18110"
+  ..$ : chr "aet_21504"
+  ..$ : chr "Carubv10026871m"
+....
+ $ cluster_2    :List of 457
+ 
+ r$> head(families.df)
+         id A.thaliana A.lyrata C.rubella C.hirsuta A.arabicum B.rapa E.salsugineum S.parvula size
+1 cluster_1         78       79        77        83         66    149            75        76  683
+2 cluster_2         70      106        67       110          1     47            46        10  457
+3 cluster_3         39       40        56        93         32     68            34        32  394
+4 cluster_4         51       53        35        42         29     67            25        44  346
+5 cluster_5         44       24        30        61         21     36            43        35  294
+6 cluster_6         31       31        30        32         29     58            34        33  278
 
-- Input: `mcl_output.txt` , `mcl_table.tsv` (from markov clustering tool mcl)
+------------------------------------------
+ 
+--> each list contains Genes beeing Grouped in Clusters 
+-> orthologs.lst : ortholog Genes are Grouped in ortholog Clusters 
+-> (List of Clusters , each Object containing itself a list of ortholog Genes within that Cluster)
+-> tandems.lst : tandem Genes are Grouped in tandem Clusters 
+-> (List of Clusters , each Object containing itself a list of tandem Genes within that Cluster)
+-> families.lst: 
 
-- Objects/Variables generated: `families.lst` & (families.genes.df, families.df)
+Clusters in Gene Families
+In the context of gene families, a cluster refers to a group of genes that are related by sequence similarity 
+and are assumed to have evolved from a common ancestor. These clusters are identified by analyzing the sequences 
+of genes across multiple species, finding similarities, and grouping them based on these similarities.
 
-- Output: `families.RData`
+Clusters represent groups of related genes, identified by their sequence similarity across different species.
+These clusters can include different types of gene groups, such as orthologs (genes in different species with a common ancestor), tandem duplicates (genes duplicated within the same genome), expanded families, and genes under positive selection.
+By analyzing these clusters, you can assess functional diversification within gene families and across different species, which is critical for understanding evolutionary processes.
 
-- Save:
+Connection to Gene Groups
+Orthologs:
 
-On all coding sequences available for the eight genomes ran an all-vs-all BLAT. Using this the results were fed into Markov Clustering based on Pairwise Sequence Similarities in percent. The MCL algorithm is implemented in the popular `mcl` program (`mcl 14-137, van Dongen`). It's output has been read in by the following script. Furthermore, the results were parsed and provided as a table in which each family was assigned a name (e.g. 'cluster\_1') and for each of the eight species the number of gene members is provided. The Perl-Script `mcl2orthoformat.pl` can be used to convert the MCL output into the table.
+Orthologs are genes in different species that evolved from a common ancestral gene through speciation. 
+They typically retain the same function across species. In your dataset, when you refer to a "cluster" that includes 
+genes from multiple species (e.g., A. thaliana, A. lyrata), you're likely talking about a group of orthologous genes. 
+These genes are found in the same cluster because they share a high degree of sequence similarity, which suggests that they are orthologs.
 
-Use R-script `exec/loadGeneFamilies.R` and re-install package after execution.o
+Tandem Duplicates:
 
-_Note_: Using these Shell commandos will enable to reduce the all-vs-all tabular separated Blast output table. Filtering will retain non self-matches, and per gene pair only the highest scoring local alignment, and will be sorted by sequence similarity, and if this is identical by alignment score:
-
-`sort -k1,1 -k2,2 -k3,3nr -k12,12nr ~all_vs_all_blast_out_tabular.tsv~ | awk -F "\t" 'BEGIN{x=""; y=""}{if($1 != $2 && (x != $1 || y != $2)){ x=$1; y=$2; print $0}}' > filtered_all_vs_all_blast_out_tabular.tsv`
-
-### -------------------------------------------------------------------------------
-
-`expression_funks.R`
-
-- description:
-
->
-
-- Input: gene.accessions (??), `rna.seq.exp.profils`
-
-- Objects/Variables generated: `expressionProfilesDists`
-
-- Output:
-
-- Save:
+Tandem duplicates are genes that have duplicated within the same genome, often appearing next to each other on the chromosome.
+If a cluster includes multiple genes from the same species that are very similar to each other, these may be tandem duplicates. 
+These genes are grouped together in the cluster because they have very similar sequences due to recent duplication events.
 
 
 
 
 
-
-
-
-## 2.3 Data Structure & Description of Files (Section-1)
-
-
-- `tandems.lst`, `orthologs.lst`, `families.lst`, `expressionProfilesDists` (Inputs)
+- and generates the following Objects/Variables wich are then stored in the `ExpressionProfileDistances.RData"
 
 - `families.exp.prof.dists` & `families.exp.prof.dists.tissue`
 - `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`
 - `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`
 
-- `eight_brassicaceae_tandems.txt`, `eight_brassicaceae_orthologs.txt`
+- euclidean distances are beeing calculated
 
-- `orthologs` & `tandems`
+- 5 different tissues
+  ..$ cotyledon      
+  ..$ developing leaf
+  ..$ seedling         
+  ..$ flower stage 16  
+  ..$ flower stage 9 
 
-- `mcl_output.txt` , `mcl_table.tsv`
-
-### -------------------------------------------------------------------------------
-
-- `tandems.lst` , `orthologs.lst` , `families.lst`
-
-- description
-
-> l
-
-```md
-> str(`tandems.lst`)
-
-List of 3266 (Key: Value pairs)
-
-# $ tandem_cluster_1   : chr [1:152] "CARHR230400.1" "CARHR230340.1" "Carubv10004324m" "Bra013677" ...
-# $ tandem_cluster_2   : chr [1:125] "Bra007390" "Bra007392" "Bra014571" "Thhalv10005920m" ...
-# $ tandem_cluster_3   : chr [1:137] "Thhalv10001065m" "Thhalv10001146m" "Thhalv10001152m" "Tp2g10040" ...
-# $ tandem_cluster_4   : chr [1:96] "475793" "CARHR059360.1" "CARHR059200.1" "908232" ...
-# $ tandem_cluster_5   : chr [1:126] "Thhalv10015283m" "Thhalv10015331m" "Thhalv10015353m" "Thhalv10015652m" ...
-# $ tandem_cluster_6   : chr [1:101] "aet_11297" "aet_11303" "CARHR050860.1" "475168" ...
-...
-
---------------------------------------------------------------------------------
-
-> str(`orthologs.lst`)
-
-List of 10111 (Key: Value pairs)
-
-# $ ortholog_cluster_1    : Named chr [1:8] "311263" "AT1G01790" "Carubv10011770m" "CARHR000530" ...
-  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
-
-# $ ortholog_cluster_2    : Named chr [1:8] "311286" "AT1G01510" "Carubv10011468m" "CARHR000860" ...
-  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
-
-# $ ortholog_cluster_3    : Named chr [1:8] "311290" "AT1G01460" "Carubv10009221m" "CARHR000910" ...
-  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
-
-# $ ortholog_cluster_4    : Named chr [1:8] "311315" "AT1G01190" "Carubv10008749m" "CARHR001280" ...
-  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
-
-# $ ortholog_cluster_5    : Named chr [1:8] "311338" "AT1G02280" "Carubv10010930m" "CARHR001580" ...
-  ..- attr(*, "names")= chr [1:8] "aly" "ath" "cru" "chi" ...
-...
-
---------------------------------------------------------------------------------
-
-> length(`families.lst`)   
-[1] 23716
-```
-
-### -------------------------------------------------------------------------------
-
-- `families.exp.prof.dists` & `families.exp.prof.dists.tissue`
-- `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`
-- `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`
 
 description:
 
-> - `families.exp.prof.dists` - A list of R `dist` objects, one for each gene
+> - `families.exp.prof.dists` 
+- A list of R `dist` objects, one for each gene
   family. Note, that the names ("keys") of the list are the names of the gene
   families, e.g. `cluster_1`. Note that the `dist` objects contain the
   Euclidean distance between pairs of genes.
+  
+  > str(`families.exp.prof.dists`)
+
+List of 16910 (Key: Value pairs)
+
+# $ cluster_1    : 'dist' num [1:12880] 0.61 0.962 0.436 0.681 0.336 ...
+# $ cluster_2    : 'dist' num [1:16110] 0.936 NA NA NA NA ...
+# $ cluster_3    : 'dist' num [1:8646] 0.396 0.342 0.648 0.706 0.635 ...
+# $ cluster_4    : 'dist' num [1:4278] 0.993 0.906 0.992 0.993 0.973 ...
+...
+
+  
 > - `families.exp.prof.dists.tissue` - This is a list of lists, where on the
   first level the gene families are contained (see previous
   `families.exp.prof.dists`). On the next level the tissues are listed. For
   each tissue a R `dist` object contains the Euclidean distances between pairs
   of genes just regarding a single axis, i.e. tissue.
+  
+   > str(`families.exp.prof.dists.tissue`)
+  
+  $ cluster_1 :List of 5, [1:161] Genes in List, [1:12880] pairwise dist numbers of gene expressions
+
+  ..$ cotyledon      : 'dist' num [1:12880] 0.1874 0.0163 0.0128 0.5367 0.1525 ...
+  ..$ developing leaf: 'dist' num [1:12880] 0.304 0.342 0.337 0.326 0.147 ...
+  ..$ seedling       : 'dist' num [1:12880] 0.0389 0.1536 0.0444 0.078 0.1069 ...
+  ..$ flower stage 16: 'dist' num [1:12880] 0.3857 0.8275 0.2403 0.0392 0.2113 ...
+  ..$ flower stage 9 : 'dist' num [1:12880] 0.308 0.316 0.128 0.25 0.11 ...
+  ...
+
+  
 > - `orthologs.exp.prof.dists` - Like the above `families.exp.prof.dists` but
   with distances between pairs of genes that belong to the same group of
   orthologs. So here, instead of grouping genes by gene family membership, they
   are grouped by being orthologs to each other.
+  
+    > str(`orthologs.exp.prof.dists`)
+
+List of 10111
+
+ $ ortholog_cluster_1    : 'dist' num 0.137
+ $ ortholog_cluster_2    : 'dist' num 0.155
+ $ ortholog_cluster_3    : 'dist' num 0.776
+ $ ortholog_cluster_4    : 'dist' num 0.21
+ $ ortholog_cluster_5    : 'dist' num 0.172
+...
+
+  
 > - `orthologs.exp.prof.dists.tissue` - Like the above
   `families.exp.prof.dists.tissue` but for ortholog groups instead of gene
   families.
+  
+  > str(`orthologs.exp.prof.dists.tissue`)
+
+List of 10111
+
+ $ ortholog_cluster_1    :List of 5
+  ..$ cotyledon      : 'dist' num 0.119
+  ..$ developing leaf: 'dist' num 0.00555
+  ..$ seedling       : 'dist' num 0.0372
+  ..$ flower stage 16: 'dist' num 0.0236
+  ..$ flower stage 9 : 'dist' num 0.0524
+
+  
 > - `tandems.exp.prof.dists` - Like the above `families.exp.prof.dists` but for
   genes belong to a tandem cluster, i.e. these genes are paralogs that are
   neighbors in the genome. The latter means that their coordinates are close to
   each other.
+  
+  > str(`tandems.exp.prof.dists`)
+
+List of 3266
+
+ $ tandem_cluster_1   : 'dist' num [1:2016] 0.331 0.3021 0.2136 0.0758 0.2073 ...
+ $ tandem_cluster_2   : 'dist' num [1:1081] 0.802 0.24 NA 0.683 1.108 ...
+ $ tandem_cluster_3   : 'dist' num [1:861] 0.122 0.474 0.84 0.778 0.883 ...
+ $ tandem_cluster_4   : 'dist' num [1:861] 0.36 0.183 0.244 0.8 0.611 ...
+ $ tandem_cluster_5   : 'dist' num [1:666] 0.289 0.361 NA NA 0.493 ...
+
+  
 > - `tandems.exp.prof.dists.tissue` - Like the above
   `families.exp.prof.dists.tissue` but for genes belonging to tandem clusters.
 
+> str(`tandems.exp.prof.dists.tissue`)
+
+List of 3266
+
+ $ tandem_cluster_1   :List of 5
+  ..$ cotyledon      : 'dist' num [1:2016] 0.2753 0.2249 0.1609 0.0546 0.1753 ...
+  ..$ developing leaf: 'dist' num [1:2016] 0.00124 0.0037 0.01191 0.00502 0.09395 ...
+  ..$ seedling       : 'dist' num [1:2016] 0.1667 0.1881 0.0911 0.0515 0.0194 ...
+  ..$ flower stage 16: 'dist' num [1:2016] 0.06474 0.032311 0.103953 0.000895 0.007356 ...
+  ..$ flower stage 9 : 'dist' num [1:2016] 0.04259 0.06544 0.02215 0.00906 0.05457 ...
+
+
 <br>
+
+overview Data Step-4-------------------------------------------------------------------------
+
+- `families.exp.prof.dists` & `families.exp.prof.dists.tissue`
+- `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`
+- `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`
+
+
+'dist' num [1:12880] 0.61 0.962 0.436 0.681 0.336 ...:
+This is a distance object storing pairwise Euclidean distances between the gene expression profiles within the cluster.
+The values (0.61, 0.962, 0.436, etc.) represent the Euclidean distances between pairs of genes within the cluster.
+[1:12880] indicates that there are 12,880 pairwise distances calculated for cluster_1. 
+Each distance object (dist) within a cluster is a condensed form of a symmetric matrix that stores the Euclidean distances between all pairs of genes in that cluster.
+The distances are stored in a single vector, where each element corresponds to the distance between a unique pair of genes.
+For example, the first value in the vector might represent the distance between the first and second genes in the cluster, the second value might represent the distance between the first and third genes, and so on.
+For cluster_1:
+161 genes, so the number of pairwise comparisons is ​
+ =12,880.
+The distances are given as a numeric vector with length 12,880.
+The first distance value might be the Euclidean distance between "AT1G06180" and "AT1G08810", the second between "AT1G06180" and "AT1G09540", etc.
+--> nimmt man ein Cluster hervor, so werden alle Gene die sich in diesem cluster befinden gepaart (alle möglichen Paarungen) und für jede Paarung
+die euclidean Distance berechnet
+-> euclidean distance vergleicht quasi die expression profiles of each gene and compares them pairwise (Genaktivität verglichen)
+
+
+
+"Size": The number of genes (or expression profiles) in the cluster. For example, cluster_1 has 161 genes, so Size = 161.
+"Labels": The names/IDs of the genes within the cluster, like "AT1G06180", "AT1G08810", etc. --> 161 unique genes within this Cluster (within these Genfamilie)
+"Diag": A logical value indicating whether the diagonal of the distance matrix (which would be all zeros) is stored. In this case, it’s FALSE, meaning the diagonal is not stored (since distances between the same gene would be zero and are typically excluded).
+"Upper": A logical value indicating whether only the upper triangle of the distance matrix is stored. This is FALSE as well, which means the full distance matrix is stored but likely only the lower triangle and the diagonal are excluded.
+"method": The method used to calculate the distances, which is "euclidean" in this case.
+"call": The command used to generate the distance object, indicating that it was created using the dist function on expression profiles (exp.profs) across different tissues.
+
+
+Understanding the Sorting/Arrangement in the dist Vector
+When the dist function in R computes pairwise distances between the rows of a matrix (in this case, gene expression profiles), it returns a dist object. This object is essentially a compact representation of the lower triangular part of the distance matrix (excluding the diagonal, as the distance from a gene to itself is always zero).
+
+The order of the distances in the dist vector is as follows:
+
+Gene 1 vs. Gene 2
+Gene 1 vs. Gene 3
+Gene 1 vs. Gene 4
+...
+Gene 1 vs. Gene n
+Gene 2 vs. Gene 3
+Gene 2 vs. Gene 4
+...
+Gene 2 vs. Gene n
+Gene 3 vs. Gene 4
+...
+Gene (n-1) vs. Gene n
+
+
+Example
+If you have 4 genes, say 
+𝐴
+,
+𝐵
+,
+𝐶
+,
+𝐷
+A,B,C,D, the distances are stored in the vector in this order:
+
+1st element: Distance between A and B
+2nd element: Distance between A and C
+3rd element: Distance between A and D
+4th element: Distance between B and C
+5th element: Distance between B and D
+6th element: Distance between C and D
 
 ```md
 > str(`families.exp.prof.dists`)
@@ -586,6 +1537,16 @@ List of 16910 (Key: Value pairs)
   ..- attr(*, "Upper")= logi FALSE
   ..- attr(*, "method")= chr "euclidean"
   ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+...
+
+> str(`families.exp.prof.dists`)
+
+List of 16910 (Key: Value pairs)
+
+# $ cluster_1    : 'dist' num [1:12880] 0.61 0.962 0.436 0.681 0.336 ...
+# $ cluster_2    : 'dist' num [1:16110] 0.936 NA NA NA NA ...
+# $ cluster_3    : 'dist' num [1:8646] 0.396 0.342 0.648 0.706 0.635 ...
+# $ cluster_4    : 'dist' num [1:4278] 0.993 0.906 0.992 0.993 0.973 ...
 ...
 
 --------------------------------------------------------------------------------
@@ -677,6 +1638,15 @@ List of 16910
   .. ..- attr(*, "method")= chr "euclidean"
   .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
 
+-> zusammengefasst
+
+$ cluster_1 :List of 5, [1:161] Genes in List, [1:12880] pairwise dist numbers of gene expressions
+
+  ..$ cotyledon      : 'dist' num [1:12880] 0.1874 0.0163 0.0128 0.5367 0.1525 ...
+  ..$ developing leaf: 'dist' num [1:12880] 0.304 0.342 0.337 0.326 0.147 ...
+  ..$ seedling       : 'dist' num [1:12880] 0.0389 0.1536 0.0444 0.078 0.1069 ...
+  ..$ flower stage 16: 'dist' num [1:12880] 0.3857 0.8275 0.2403 0.0392 0.2113 ...
+  ..$ flower stage 9 : 'dist' num [1:12880] 0.308 0.316 0.128 0.25 0.11 ...
   ...
 
 --------------------------------------------------------------------------------
@@ -724,6 +1694,18 @@ List of 10111
   ..- attr(*, "Upper")= logi FALSE
   ..- attr(*, "method")= chr "euclidean"
   ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
+  
+  
+  > str(`orthologs.exp.prof.dists`)
+
+List of 10111
+
+ $ ortholog_cluster_1    : 'dist' num 0.137
+ $ ortholog_cluster_2    : 'dist' num 0.155
+ $ ortholog_cluster_3    : 'dist' num 0.776
+ $ ortholog_cluster_4    : 'dist' num 0.21
+ $ ortholog_cluster_5    : 'dist' num 0.172
+...
 
 --------------------------------------------------------------------------------
 
@@ -813,6 +1795,26 @@ $ ortholog_cluster_2    :List of 5
   .. ..- attr(*, "method")= chr "euclidean"
   .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
 
+
+
+> str(`orthologs.exp.prof.dists.tissue`)
+
+List of 10111
+
+ $ ortholog_cluster_1    :List of 5
+  ..$ cotyledon      : 'dist' num 0.119
+  ..$ developing leaf: 'dist' num 0.00555
+  ..$ seedling       : 'dist' num 0.0372
+  ..$ flower stage 16: 'dist' num 0.0236
+  ..$ flower stage 9 : 'dist' num 0.0524
+
+$ ortholog_cluster_2    :List of 5
+  ..$ cotyledon      : 'dist' num 0.00484
+  ..$ developing leaf: 'dist' num 0.12
+  ..$ seedling       : 'dist' num 0.0636
+  ..$ flower stage 16: 'dist' num 0.0194
+  ..$ flower stage 9 : 'dist' num 0.071
+
 ...
 
 --------------------------------------------------------------------------------
@@ -861,9 +1863,20 @@ List of 3266
   ..- attr(*, "method")= chr "euclidean"
   ..- attr(*, "call")= language dist(x = exp.profs[, tissues], method = dist.method)
 
-> str(`tandems.exp.prof.dists.tissue`)
+> str(`tandems.exp.prof.dists`)
+
+List of 3266
+
+ $ tandem_cluster_1   : 'dist' num [1:2016] 0.331 0.3021 0.2136 0.0758 0.2073 ...
+ $ tandem_cluster_2   : 'dist' num [1:1081] 0.802 0.24 NA 0.683 1.108 ...
+ $ tandem_cluster_3   : 'dist' num [1:861] 0.122 0.474 0.84 0.778 0.883 ...
+ $ tandem_cluster_4   : 'dist' num [1:861] 0.36 0.183 0.244 0.8 0.611 ...
+ $ tandem_cluster_5   : 'dist' num [1:666] 0.289 0.361 NA NA 0.493 ...
 
 --------------------------------------------------------------------------------
+
+> str(`tandems.exp.prof.dists.tissue`)
+
 
 List of 3266
 
@@ -949,41 +1962,1010 @@ $ tandem_cluster_2   :List of 5
   .. ..- attr(*, "method")= chr "euclidean"
   .. ..- attr(*, "call")= language dist(x = setNames(exp.profs[, tissue], rownames(exp.profs)), method = dist.method)
 
+
+> str(`tandems.exp.prof.dists.tissue`)
+
+List of 3266
+
+ $ tandem_cluster_1   :List of 5
+  ..$ cotyledon      : 'dist' num [1:2016] 0.2753 0.2249 0.1609 0.0546 0.1753 ...
+  ..$ developing leaf: 'dist' num [1:2016] 0.00124 0.0037 0.01191 0.00502 0.09395 ...
+  ..$ seedling       : 'dist' num [1:2016] 0.1667 0.1881 0.0911 0.0515 0.0194 ...
+  ..$ flower stage 16: 'dist' num [1:2016] 0.06474 0.032311 0.103953 0.000895 0.007356 ...
+  ..$ flower stage 9 : 'dist' num [1:2016] 0.04259 0.06544 0.02215 0.00906 0.05457 ...
+
+
 ...
 ```
-### -------------------------------------------------------------------------------
 
-- `orthologs` & `tandems`
-
-<br>
-
-```md
-> str(`orthologs`)
-
-'data.frame':   10111 obs. of  8 variables:
-
-# $ aly: chr  "311263" "311286" "311290" "311315" ...
-# $ ath: chr  "AT1G01790" "AT1G01510" "AT1G01460" "AT1G01190" ...
-# $ cru: chr  "Carubv10011770m" "Carubv10011468m" "Carubv10009221m" "Carubv10008749m" ...
-# $ chi: chr  "CARHR000530" "CARHR000860" "CARHR000910" "CARHR001280" ...
-# $ aet: chr  "aet_11800" "aet_11763" "aet_11791" "aet_11742" ...
-# $ bra: chr  "Bra032651" "Bra033258" "Bra033262" "Bra033278" ...
-# $ esa: chr  "Thhalv10006595m" "Thhalv10007060m" "Thhalv10009579m" "Thhalv10007320m" ...
-# $ tpa: chr  "Tp1g00490" "Tp1g00800" "Tp1g00850" "Tp1g01100" ...
-
---------------------------------------------------------------------------------
-
-> str(`tandems`)
-
-'data.frame':   38188 obs. of  2 variables:
-
-# $ Family: chr  "tandem_cluster_1" "tandem_cluster_1" "tandem_cluster_1" "tandem_cluster_1" ...
-# $ Gene  : chr  "CARHR230400.1" "CARHR230340.1" "Carubv10004324m" "Bra013677" ...
-```
 
 ## `3. Expression Profile based Function Diversity`
 
+    _C. hirsuta_ and _A. thaliana_
+
+#### Expression Profile based Function Diversity
+
+In order to compute the distances between the expression profiles for _C. hirsuta_ and _A. thaliana_ genes use the following R-script:
+
+`Rscript ./exec/computeExpressionProfileDistances.R path/2/GeneFamilies-source-package`
+
+The single argument needs to point to the local source package directory. After the script has generated the required RData-sets, the package needs to be re-installed.
+
+The following R-script summarizes the different distances per gene group using various statistics, like `mean`, `median`, `max`, and `maxMinusMin`:
+
+`Rscript ./exec/investigateDistributionsOfExpressionProfileDistances.R path/2/GeneFamilies-source-package`
+
+Again, the single argument needs to point to the local source package directory. After the script has generated the required RData-sets, the package needs to be re-installed.
+
+Finally carry out the mentioned t-tests and generate the corresponding plots with:
+
+`Rscript ./exec/plotDistributionsOfExpressionProfileDistances.R path/2/GeneFamilies-source-package`
+
+Again, the single argument needs to point to the local source package directory. After the script has generated the required RData-sets, the package needs to be re-installed.
+
+
+--------------------------------------------------------------------------------------------------
+Step-1: Description - investigateDistributionsOfExpressionProfileDistances.R
+--------------------------------------------------------------------------------------------------
+
+
+
+investigateDistributionsOfExpressionProfileDistances.R <-- tandems.exp.prof.dists, families.exp.prof.dists, `orthologs.exp.prof.dists`
+
+--> Inputs sind alles Listen 
+
+
+- Objects/Variables generated:
+
+- tandems.exp.prof.dists.orth.dist, 
+- tandems.exp.prof.dists.orth.dist.df, 
+- families.exp.prof.dists.orth.dist, 
+- families.exp.prof.dists.orth.dist.df, 
+- orthologs.exp.prof.dists.stats
+- orthologs.exp.prof.dists.stats.df
+
+investigateDistributionsOfExpressionProfileDistances.R --> ExpressionProfileDistanceDistributions.RData (contains the above Objects/variables)
+
+--------------------------------------
+
+The following R-script summarizes the different distances per gene group using various statistics, 
+like `mean`, `median`, `max`, and `maxMinusMin`:
+
+
+
+- load(`ExpressionProfileDistances.RData`) -> and get the Objects 
+- the Objects are tandems.exp.prof.dists, orthologs.exp.prof.dists, families.exp.prof.dists
+--> this Lists will be used as Input for the investigateDistributionsOfExpressionProfileDistances.R
+
+--> we have 3 Lists, for orthologs, tandems and families (Gene-Groups)
+-> each List has Clusters as Objects (indexing), these Cluster contain also list of Genes 
+wich are accounted to the specific Cluster/Gene Family 
+-> tandems list has the tandems Gene Families as Clusters
+-> orthologs list has orthologs Gene Families as Clusters
+
+- in each Cluster and in each list the euclidean distances were calculated 
+-> so all genes in that Cluster were paired against each in that Cluster (All vs All) 
+-> not the genes itself but theri Gene Expression (wich represents the Activity of the Gene (ON/OFF/repressed etc.))
+-> so and we got euclidean dist numbers --> representing the changes between the paired gene Expressions
+-> so the dist Values represent changes in Gene Activity
+
+
+> str(`tandems.exp.prof.dists`)
+
+List of 3266
+
+ $ tandem_cluster_1   : 'dist' num [1:2016] 0.331 0.3021 0.2136 0.0758 0.2073 ...
+ $ tandem_cluster_2   : 'dist' num [1:1081] 0.802 0.24 NA 0.683 1.108 ...
+ $ tandem_cluster_3   : 'dist' num [1:861] 0.122 0.474 0.84 0.778 0.883 ...
+ $ tandem_cluster_4   : 'dist' num [1:861] 0.36 0.183 0.244 0.8 0.611 ...
+ $ tandem_cluster_5   : 'dist' num [1:666] 0.289 0.361 NA NA 0.493 ...
+
+
+> str(`orthologs.exp.prof.dists`)
+
+List of 10111
+
+ $ ortholog_cluster_1    : 'dist' num 0.137
+ $ ortholog_cluster_2    : 'dist' num 0.155
+ $ ortholog_cluster_3    : 'dist' num 0.776
+ $ ortholog_cluster_4    : 'dist' num 0.21
+ $ ortholog_cluster_5    : 'dist' num 0.172
+
+
+> str(`families.exp.prof.dists`)
+
+List of 16910 (Key: Value pairs)
+
+# $ cluster_1    : 'dist' num [1:12880] 0.61 0.962 0.436 0.681 0.336 ...
+# $ cluster_2    : 'dist' num [1:16110] 0.936 NA NA NA NA ...
+# $ cluster_3    : 'dist' num [1:8646] 0.396 0.342 0.648 0.706 0.635 ...
+# $ cluster_4    : 'dist' num [1:4278] 0.993 0.906 0.992 0.993 0.973 ...
+
+
+- using the 3 Gene Group Lists together with the euclidean Values
+we generated the following Files 
+
+
+
+
+- tandems.exp.prof.dists.orth.dist  (List)
+- families.exp.prof.dists.orth.dist  (List)
+- 
+- orthologs.exp.prof.dists.stats.df
+- tandems.exp.prof.dists.orth.dist.df
+- families.exp.prof.dists.orth.dist.df
+
+
+------------------------------------------------------------------------------------------
+
+- tandems.exp.prof.dists.orth.dist List of 3266
+
+r$> str(tandems.exp.prof.dists.orth.dist) List of 3266
+
+ $ tandem_cluster_1   :List of 3
+  ..$ Orthologs    : 'dist' num 0.697
+  ..$ Non-Orthologs: 'dist' num [1:2016] 0.331 0.3021 0.2136 0.0758 0.2073 ...
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+  
+
+r$> str(families.exp.prof.dists.orth.dist) List of 16910
+  
+ $ cluster_1    :List of 3
+  ..$ Orthologs    : 'dist' num [1:1653] 0.5 0.342 0.835 0.4 0.674 ...
+  ..$ Non-Orthologs: 'dist' num [1:12880] 0.61 0.962 0.436 0.681 0.336 ...
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+
+
+- The R script you provided processes a list of expression profile distances (tandems.exp.prof.dists) associated with different gene clusters. These distances are used to compute statistics related to gene classes (Orthologs and Non-Orthologs) for each tandem cluster. Here's a breakdown of what the script does:
+
+1. Preparation and Input Data
+Input Data: The input is a list tandems.exp.prof.dists containing 3,266 elements, each corresponding to a tandem cluster. Each element is a vector of expression profile distances (numeric values) for that cluster.
+Gene Classes: The script defines two gene classes, Orthologs and Non-Orthologs, based on specific gene groups (orthologs.genes and all.cds). These gene classes are used to categorize the expression profile distances.
+2. Processing Tandem Clusters
+Expression Profile Distance Calculation:
+
+For each tandem cluster, the script calculates class-specific expression profile distances by calling the classSpecificExpressionProfileDists function.
+This function takes in the expression profile distances for each tandem cluster and separates them into Orthologs and Non-Orthologs based on the predefined gene classes.
+The result for each tandem cluster is a list with three elements:
+Orthologs: Expression profile distances for Orthologs.
+Non-Orthologs: Expression profile distances for Non-Orthologs.
+Stats: A data frame containing summary statistics (e.g., max, median, mean) for both Orthologs and Non-Orthologs.
+Combining Results:
+
+The results from the classSpecificExpressionProfileDists function are stored in a list tandems.exp.prof.dists.orth.dist, where each element corresponds to a tandem cluster.
+The statistics (stats element) for each cluster are then combined into a single data frame tandems.exp.prof.dists.orth.dist.df using the Reduce(rbind, ...) function.
+3. Processing Families and Orthologs
+Families: Similar processing is applied to gene families (families.exp.prof.dists), where class-specific expression profile distances are computed, and the resulting statistics are combined into families.exp.prof.dists.orth.dist.df.
+Orthologs: The script also processes orthologous gene clusters (orthologs.exp.prof.dists) to calculate and store statistics, which are then combined into orthologs.exp.prof.dists.stats.df.
+4. Saving the Results
+The script saves the processed data and statistics into an RData file (ExpressionProfileDistanceDistributions.RData).
+5. Output Explanation
+tandems.exp.prof.dists.orth.dist: A list containing 3,266 elements (one for each tandem cluster). Each element is a list with expression profile distances for Orthologs, Non-Orthologs, and a summary statistics data frame.
+tandems.exp.prof.dists.orth.dist.df: A data frame combining the statistics for all tandem clusters, with columns for Family, Statistic, Gene Class, and Value. It has 26,128 rows because statistics are computed for both Orthologs and Non-Orthologs across multiple tandem clusters.
+Summary Statistics: The summary of tandems.exp.prof.dists.orth.dist.df provides a distribution of the computed statistics, such as the range of values (min, max) and the distribution percentiles.
+
+
+  ------------------------------------------------------------------------------------------
+  
+  
+  - die folgenden Dataframes sind quasi statistische Auswertungen der Cluster(GeneFamilies
+  - man hat für jeden Cluster in den Listen orthologs.exp.prof.dists, families.exp.prof.dists, tandems.exp.prof.dists
+  statistische Auswertungen durchgeführt, also den max, madian, mean und maxMinusMin Wert der euclidischen distanzen ermittelt 
+  -> somit hat man ein Dataframe das jeden Cluster 4 mal in einer Zeile aufführt und jeweils diese Werte 
+  
+  
+  
+  
+  ------------------------------------------------------------------------------------------
+  
+  r$> head(orthologs.exp.prof.dists.stats.df) 
+  
+              Family   Statistic Gene.Class     Value
+1 ortholog_cluster_1         max  Orthologs 0.1371548
+2 ortholog_cluster_1      median  Orthologs 0.1371548
+3 ortholog_cluster_1        mean  Orthologs 0.1371548
+4 ortholog_cluster_1 maxMinusMin  Orthologs 0.0000000
+5 ortholog_cluster_2         max  Orthologs 0.1546537
+6 ortholog_cluster_2      median  Orthologs 0.1546537
+
+
+r$> summary(orthologs.exp.prof.dists.stats.df)
+    Family           Statistic          Gene.Class            Value
+ Length:40444       Length:40444       Length:40444       Min.   :0.0000
+ Class :character   Class :character   Class :character   1st Qu.:0.0000
+ Mode  :character   Mode  :character   Mode  :character   Median :0.1214
+                                                          Mean   :0.1501
+                                                          3rd Qu.:0.2020
+                                                          Max.   :1.4142
+                                                          NA's   :292
+
+  ------------------------------------------------------------------------------------------
+
+- dieses Dataframe hat 8 Werte in jedem Cluster ermittelt 
+- 4 Werte (min, max , mean,  maxminusmin) für orthologs und 4 für non orthologs
+- quasi innerhalt des Clusters und für jeden Cluster in der Liste wiederhohlt
+- was sind orthologs und non orthologs in der tandems Gene Group ????
+
+
+
+r$> head(tandems.exp.prof.dists.orth.dist.df)
+            Family Statistic    Gene.Class     Value
+1 tandem_cluster_1       max     Orthologs 0.6966031
+2 tandem_cluster_1       max Non-Orthologs 1.3947641
+3 tandem_cluster_1    median     Orthologs 0.6966031
+4 tandem_cluster_1    median Non-Orthologs 0.5302329
+5 tandem_cluster_1      mean     Orthologs 0.6966031
+6 tandem_cluster_1      mean Non-Orthologs 0.5409181
+
+
+ r$> summary(tandems.exp.prof.dists.orth.dist.df)
+    Family           Statistic          Gene.Class            Value
+ Length:26128       Length:26128       Length:26128       Min.   :0.000
+ Class :character   Class :character   Class :character   1st Qu.:0.134
+ Mode  :character   Mode  :character   Mode  :character   Median :0.340
+                                                          Mean   :0.433
+                                                          3rd Qu.:0.661
+                                                          Max.   :1.414
+                                                          NA's   :14432
+
+
+  ------------------------------------------------------------------------------------------
+
+
+r$> head(families.exp.prof.dists.orth.dist.df)
+     Family Statistic    Gene.Class     Value
+1 cluster_1       max     Orthologs 1.4142136
+2 cluster_1       max Non-Orthologs 1.4142136
+3 cluster_1    median     Orthologs 0.6261746
+4 cluster_1    median Non-Orthologs 0.6697711
+5 cluster_1      mean     Orthologs 0.6292570
+6 cluster_1      mean Non-Orthologs 0.6769101
+
+r$> summary(families.exp.prof.dists.orth.dist.df)
+    Family           Statistic          Gene.Class            Value
+ Length:135280      Length:135280      Length:135280      Min.   :0.00
+ Class :character   Class :character   Class :character   1st Qu.:0.08
+ Mode  :character   Mode  :character   Mode  :character   Median :0.18
+                                                          Mean   :0.27
+                                                          3rd Qu.:0.35
+                                                          Max.   :1.41
+                                                          NA's   :50184
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  ------------------------------------------------------------------------------------------
+
+r$> str(families.exp.prof.dists.orth.dist) List of 16910
+
+ $ cluster_1    :List of 3
+  ..$ Orthologs    : 'dist' num [1:1653] 0.5 0.342 0.835 0.4 0.674 ...
+  .. ..- attr(*, "Labels")= chr [1:58] "AT1G08810" "AT1G16490" "AT1G22640" "AT1G34670" ...
+  .. ..- attr(*, "Size")= int 58
+  .. ..- attr(*, "call")= language as.dist.default(m = epd.m[rownames(epd.m) %in% x, colnames(epd.m) %in% x])
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  ..$ Non-Orthologs: 'dist' num [1:12880] 0.61 0.962 0.436 0.681 0.336 ...
+  .. ..- attr(*, "Labels")= chr [1:161] "AT1G06180" "AT1G08810" "AT1G09540" "AT1G16490" ...
+  .. ..- attr(*, "Size")= int 161
+  .. ..- attr(*, "call")= language as.dist.default(m = epd.m[rownames(epd.m) %in% x, colnames(epd.m) %in% x])
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+  .. ..$ Family    : chr [1:8] "cluster_1" "cluster_1" "cluster_1" "cluster_1" ...
+  .. ..$ Statistic : chr [1:8] "max" "max" "median" "median" ...
+  .. ..$ Gene.Class: chr [1:8] "Orthologs" "Non-Orthologs" "Orthologs" "Non-Orthologs" ...
+  .. ..$ Value     : num [1:8] 1.414 1.414 0.626 0.67 0.629 ...
+ $ cluster_2    :List of 3
+  ..$ Orthologs    : 'dist' num(0)
+  .. ..- attr(*, "Size")= int 0
+  .. ..- attr(*, "call")= language as.dist.default(m = epd.m[rownames(epd.m) %in% x, colnames(epd.m) %in% x])
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  ..$ Non-Orthologs: 'dist' num [1:16110] 0.936 NA NA NA NA ...
+  .. ..- attr(*, "Labels")= chr [1:180] "AT1G10890" "AT1G11810" "AT1G24800" "AT1G24881" ...
+  .. ..- attr(*, "Size")= int 180
+  .. ..- attr(*, "call")= language as.dist.default(m = epd.m[rownames(epd.m) %in% x, colnames(epd.m) %in% x])
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+  .. ..$ Family    : chr [1:8] "cluster_2" "cluster_2" "cluster_2" "cluster_2" ...
+  .. ..$ Statistic : chr [1:8] "max" "max" "median" "median" ...
+  .. ..$ Gene.Class: chr [1:8] "Orthologs" "Non-Orthologs" "Orthologs" "Non-Orthologs" ...
+  .. ..$ Value     : num [1:8] NA 1.414 NA 0.833 NA ...  
+  
+ - zusammengefasst 
+  
+ r$> str(families.exp.prof.dists.orth.dist) List of 16910
+  
+ $ cluster_1    :List of 3
+  ..$ Orthologs    : 'dist' num [1:1653] 0.5 0.342 0.835 0.4 0.674 ...
+  ..$ Non-Orthologs: 'dist' num [1:12880] 0.61 0.962 0.436 0.681 0.336 ...
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+$ cluster_2    :List of 3
+  ..$ Orthologs    : 'dist' num(0)
+  ..$ Non-Orthologs: 'dist' num [1:16110] 0.936 NA NA NA NA ...
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+  
+  
+  ------------------------------------------------------------------------------------------
+  
+  
+  
+  r$> str(tandems.exp.prof.dists.orth.dist) List of 3266
+
+ $ tandem_cluster_1   :List of 3
+  ..$ Orthologs    : 'dist' num 0.697
+  .. ..- attr(*, "Labels")= chr [1:2] "AT4G23180" "CARHR230290"
+  .. ..- attr(*, "Size")= int 2
+  .. ..- attr(*, "call")= language as.dist.default(m = epd.m[rownames(epd.m) %in% x, colnames(epd.m) %in% x])
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  ..$ Non-Orthologs: 'dist' num [1:2016] 0.331 0.3021 0.2136 0.0758 0.2073 ...
+  .. ..- attr(*, "Labels")= chr [1:64] "AT4G23130" "AT4G23140" "AT4G23150" "AT4G23160" ...
+  .. ..- attr(*, "Size")= int 64
+  .. ..- attr(*, "call")= language as.dist.default(m = epd.m[rownames(epd.m) %in% x, colnames(epd.m) %in% x])
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+  .. ..$ Family    : chr [1:8] "tandem_cluster_1" "tandem_cluster_1" "tandem_cluster_1" "tandem_cluster_1" ...
+  .. ..$ Statistic : chr [1:8] "max" "max" "median" "median" ...
+  .. ..$ Gene.Class: chr [1:8] "Orthologs" "Non-Orthologs" "Orthologs" "Non-Orthologs" ...
+  .. ..$ Value     : num [1:8] 0.697 1.395 0.697 0.53 0.697 ...
+ $ tandem_cluster_2   :List of 3
+  ..$ Orthologs    : 'dist' num(0) 
+  .. ..- attr(*, "Size")= int 0
+  .. ..- attr(*, "call")= language as.dist.default(m = epd.m[rownames(epd.m) %in% x, colnames(epd.m) %in% x])
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  ..$ Non-Orthologs: 'dist' num [1:1081] 0.802 0.24 NA 0.683 1.108 ...
+  .. ..- attr(*, "Labels")= chr [1:47] "AT3G58200" "AT3G58210" "AT3G58220" "AT3G58230" ...
+  .. ..- attr(*, "Size")= int 47
+  .. ..- attr(*, "call")= language as.dist.default(m = epd.m[rownames(epd.m) %in% x, colnames(epd.m) %in% x])
+  .. ..- attr(*, "Diag")= logi FALSE
+  .. ..- attr(*, "Upper")= logi FALSE
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+  .. ..$ Family    : chr [1:8] "tandem_cluster_2" "tandem_cluster_2" "tandem_cluster_2" "tandem_cluster_2" ...
+  .. ..$ Statistic : chr [1:8] "max" "max" "median" "median" ...
+  .. ..$ Gene.Class: chr [1:8] "Orthologs" "Non-Orthologs" "Orthologs" "Non-Orthologs" ...
+  .. ..$ Value     : num [1:8] NA 1.41 NA 0.82 NA ...
+  
+  
+  - zusammengefasst
+  
+    r$> str(tandems.exp.prof.dists.orth.dist) List of 3266
+
+ $ tandem_cluster_1   :List of 3
+  ..$ Orthologs    : 'dist' num 0.697
+  ..$ Non-Orthologs: 'dist' num [1:2016] 0.331 0.3021 0.2136 0.0758 0.2073 ...
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+ $ tandem_cluster_2   :List of 3
+  ..$ Orthologs    : 'dist' num(0) 
+  ..$ Non-Orthologs: 'dist' num [1:1081] 0.802 0.24 NA 0.683 1.108 ...
+  ..$ stats        :'data.frame':       8 obs. of  4 variables:
+  
+  
+  
+    ------------------------------------------------------------------------------------------
+  
+ 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
+Step-2: Description - plotDistributionsOfExpressionProfileDistances.R
+--------------------------------------------------------------------------------------------------
+
+In order to investigate which classes of gene groups mostly contribute to developmental diversity, measure and subsequently compare the distributions of expression profile distances within the different tissues. In this also compare Non-Orthologs with Orthologs.
+
+Again, the single argument needs to point to the local source package directory. After the script has generated the required RData-sets, the package needs to be re-installed.
+
+Finally carry out the mentioned t-tests and generate the corresponding plots with:
+
+
+
+
+plotDistributionsOfExpressionProfileDistances.R <-- tandems.exp.prof.dists.orth.dist.df, families.exp.prof.dists.orth.dist.df, orthologs.exp.prof.dists.stats.df
+
+
+
+
+#' Plot distributions
+#' Compare Group.Class:
+
+# - Input: 
+# - families.exp (define geneSets)/ cafe.result.df  --> aus families.exp.RData --> define.GeneSets.R
+# - fams.pos.sel --> aus BUSTED_Results.RData --> load.BustedResults.R
+==> ganzer Abschnitt (Sidestep) zu DefineGeneSets dedikieren 
+
+ibutionsOfExpressionProfileDistances.R generiert
+# - orthologs.exp.prof.dists.stats.df
+# - tandems.exp.prof.dists.orth.dist.df
+# - families.exp.prof.dists.orth.dist.df
+# --> generiert von Rscript computeExpressionProfileDistances.R
+# --> in ExpressionProfileDistanceDistributions.RData vorhanden
+# --> mit investigateDistr
+
+
+- used to create the Plots
+orthologs.exp.prof.dists.stats.df
+tandems.exp.prof.dists.orth.dist.df
+families.exp.prof.dists.orth.dist.df
+fams.pos.sel
+families.exp
+
+
+
+
+# library(RColorBrewer)
+# library(berryFunctions)
+# library(ggplot2)
+
+
+
+
+
+
+plotDistributionsOfExpressionProfileDistances.R -->
+
+
+26128 tand, Length:135280 fam, Length:40444 orth
+
+r$> head(families.exp.prof.dists.orth.dist.df) Length:135280
+
+     Family Statistic    Gene.Class     Value
+1 cluster_1       max     Orthologs 1.4142136
+2 cluster_1       max Non-Orthologs 1.4142136
+3 cluster_1    median     Orthologs 0.6261746
+4 cluster_1    median Non-Orthologs 0.6697711
+5 cluster_1      mean     Orthologs 0.6292570
+6 cluster_1      mean Non-Orthologs 0.6769101
+
+
+
+r$> head(tandems.exp.prof.dists.orth.dist.df)
+
+            Family Statistic    Gene.Class     Value
+1 tandem_cluster_1       max     Orthologs 0.6966031
+2 tandem_cluster_1       max Non-Orthologs 1.3947641
+3 tandem_cluster_1    median     Orthologs 0.6966031
+4 tandem_cluster_1    median Non-Orthologs 0.5302329
+5 tandem_cluster_1      mean     Orthologs 0.6966031
+6 tandem_cluster_1      mean Non-Orthologs 0.5409181
+
+
+
+
+  r$> head(orthologs.exp.prof.dists.stats.df) 
+  
+              Family   Statistic Gene.Class     Value
+1 ortholog_cluster_1         max  Orthologs 0.1371548
+2 ortholog_cluster_1      median  Orthologs 0.1371548
+3 ortholog_cluster_1        mean  Orthologs 0.1371548
+4 ortholog_cluster_1 maxMinusMin  Orthologs 0.0000000
+5 ortholog_cluster_2         max  Orthologs 0.1546537
+6 ortholog_cluster_2      median  Orthologs 0.1546537
+
+--------------------------------------
+
+
+r$> head(families.exp)
+[1] "cluster_1" "cluster_2" "cluster_3" "cluster_4" "cluster_5" "cluster_6"
+
+-> enthällt nur die Gene Family Names
+
+-----------------------------------------
+
+
+r$> head(fams.pos.sel)
+[1] "cluster_10"    "cluster_1000"  "cluster_10006" "cluster_10009" "cluster_10021" "cluster_10024"
+
+enthällt eigentlich auch nur Gene Family names 
+
+------------------------------------------
+
+The variables fams.pos.sel and families.exp in the R script are generated based on certain criteria using other data structures and inputs within the script. Let's break down how each of these variables is generated and the inputs they require.
+
+1. fams.pos.sel
+Purpose: This variable contains the set of gene families that show signs of positive selection, based on evidence from FUBAR and BUSTED analyses.
+
+Steps to Generate fams.pos.sel:
+
+FUBAR Evidence:
+
+fubar.fams.decisive.evidence: This is a list of families with decisive evidence of positive selection from a FUBAR analysis.
+The list of gene families from fubar.fams.decisive.evidence is included in fams.pos.sel.
+BUSTED Evidence:
+
+busted.df: A dataframe that contains results from a BUSTED analysis, where each row corresponds to a gene family and includes a p.value for the test.
+busted.fams: This is a subset of families from busted.df where p.value is less than or equal to 0.05, indicating significant evidence of positive selection.
+The list of gene families from busted.fams is also included in fams.pos.sel.
+Union of Evidence:
+
+The union function is used to combine the gene families identified by both FUBAR (fubar.fams.decisive.evidence) and BUSTED (busted.fams) into a single list of gene families under positive selection, stored in fams.pos.sel.
+Inputs Required:
+
+families.lst: A list containing gene families, indexed by family names.
+fubar.fams.decisive.evidence: This input is a vector or list of families identified by FUBAR.
+busted.df: A dataframe containing BUSTED analysis results, specifically needing the family and p.value columns.
+Code:
+
+r
+Code kopieren
+fams.pos.sel <- union(fubar.fams.decisive.evidence, busted.fams)
+2. families.exp
+Purpose: This variable stores the set of gene families that show signs of significant expansion (increase in gene count) in at least one species, as determined by the CAFE analysis.
+
+Steps to Generate families.exp:
+
+CAFE Result Dataframe:
+
+cafe.result.df: This dataframe contains the results from the CAFE analysis for gene family expansions or contractions, where each row corresponds to a gene family, and columns represent p-values for different species.
+Mapping Columns:
+
+col.maps: A named vector where the names are the original column names from cafe.result.df (with "CAFE." prefix) and the values are the corresponding species names.
+Logical Filtering:
+
+For each gene family (x), the script checks if any p-values (y) are less than or equal to 0.05, indicating a significant expansion or contraction.
+If such a p-value is found, it checks whether the gene count in the corresponding species is above the median gene count for that family across all species.
+If both conditions are satisfied, the family is included in families.exp.
+Inputs Required:
+
+cafe.result.df: A dataframe with p-values for gene family expansions/contractions across different species.
+families.df: A dataframe containing gene family information, particularly the number of genes in each family per species.
+families.spec.cols: A vector of column names in families.df representing different species.
+
+
+
+
+
+
+
+
+
+
+
+
+plotDistributionsOfExpressionProfileDistances.R nutzt die generierten Dataframes um Plots zu erzeugen 
+--> Plot Process
+orthologs.exp.prof.dists.stats.df
+tandems.exp.prof.dists.orth.dist.df
+families.exp.prof.dists.orth.dist.df
+fams.pos.sel
+families.exp
+- werden zum plotten verwendet
+
+---------------------------------------------------------------------
+
+erstellte Plots
+
+-
+- "medianExpressionProfileDistancesPerGeneGroupClassesBoxplot.pdf"
+- "medianExpressionProfileDistancesPerGeneGroupClassesBoxplot_NoPosSel.pdf"
+
+- "inst", 
+    "medianExpressionProfileDistancesPerGeneGroupClassesBoxplot_h-tests.txt"
+- "medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot.pdf"
+-  "medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot_NoPosSel.pdf"
+
+- "inst", "medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot_h-tests.txt"
+- "./inst/medianExpressionDistsTandemNonOrthsAndExpandedNonOrthsHist.pdf"
+
+
+- medianExpressionProfileDistancesPerGeneGroupClassesBoxplot.pdf
+- medianExpressionProfileDistancesPerGeneGroupClassesBoxplot_NoPosSel.pdf
+- medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot.pdf
+- medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot_NoPosSel.pdf
+- medianExpressionDistsTandemNonOrthsAndExpandedNonOrthsHist.pdf
+
+
+
+
+
+
+
+
 ## `4. Expression vector space analysis`
+
+
+
+- Expression vector space analysis
+- Basically, here the angles between mean expression vectors of two
+sub-groups within the same super-group of genes are explored. 
+
+
+For example, for each gene family the angle of rotation around the diagonal between the mean
+orthologs and mean paralogs expression. 
+
+Using gene expression levels in the form of RPKM normalized values for
+different tissues we reconstruct an expression vector space as follows. Each
+axis represents a tissue and the RPKM values are used as coordinates on these
+axis. Hence for each tandem cluster (TC) and expanded family (EF) with
+orthologs we can perform vector analyses. For both the orthologs and the
+expanded (tandem or duplicated) genes in those groups identify the mean
+expression vector using the mean of each coordinate. Also identify the standard
+deviation around these mean vectors and infer, whether these two deviation
+regions overlap. If not, interpret that on the expression level there has been
+a significant change in function after the duplication. Within those groups
+with well separated expression domains of orthologs and duplicated genes
+investigate the manner of function change that took place. For this infer the
+angle between the diagonal and the mean vectors as a measure of tissue
+versatility - the higher the angle the more tissue specific a gene is
+expressed. Furthermore, infer change in tissue specificity, as the angle
+between the vectors orthogonal on the diagonal and pointing to the mean
+expression vectors. The higher this angle is the greater the change in tissue
+specificity.
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
+Step-1: Description - generateRpkmExpressionProfiles.R 
+--------------------------------------------------------------------------------------------------
+
+- inputs
+- rpkm.rna.seq.counts: 
+- all.cds (`aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa` --> (DNA-Fasta-Files)
+
+- generated:
+- genes: A sorted list of unique gene IDs extracted from the rpkm.rna.seq.counts data frame.
+- tissues: A sorted list of unique tissue types from the rpkm.rna.seq.counts data frame.
+- rpkm.expr.profiles.df
+
+--------------------------------------
+
+> head(`RPKM_counts_table.tsv`)
+
+  # id                 tissue               expression
+
+  # 1 AT1G01010        cotyledon            0.20638414
+  # 2 AT1G01010        developing leaf      0.08695488
+  # 3 AT1G01010        seedling             0.27762869
+  # 4 AT1G01010        flower stage 16      0.07009093
+  # 5 AT1G01010        flower stage 9       0.35894135
+  # 6 AT1G01020        cotyledon            0.16516131
+  ```
+--------------------------------------
+
+r$> head(rpkm.expr.profiles.df)
+   cotyledon developing leaf   seedling flower stage 16 flower stage 9      gene gene.exp.var  
+1  5.2991365        2.232661   7.128418        1.799660       9.216208 AT1G01010  AT1G01010.1  
+2  7.3591446        4.655357  10.103875        3.939452      18.499485 AT1G01020  AT1G01020.1  
+3  4.1666257        7.423303   7.251267        3.421478      26.078908 AT1G01030  AT1G01030.1  
+4  9.5954542        2.734606   5.307610        2.450945       8.918822 AT1G01040  AT1G01040.2
+5 42.3350580       59.601647  92.628566      184.035037     154.102474 AT1G01050  AT1G01050.1
+6  0.7416428       18.013438 109.796862       58.471983      27.687947 AT1G01060  AT1G01060.1
+
+r$> summary(rpkm.expr.profiles.df)
+   cotyledon        developing leaf        seedling        flower stage 16    flower stage 9          gene           gene.exp.var      
+ Min.   :    0.00   Min.   :    0.000   Min.   :    0.00   Min.   :    0.00   Min.   :    0.000   Length:56874       Length:56874      
+ 1st Qu.:    0.02   1st Qu.:    0.011   1st Qu.:    0.36   1st Qu.:    0.23   1st Qu.:    0.136   Class :character   Class :character  
+ Median :    3.69   Median :    3.903   Median :    5.80   Median :    4.88   Median :    6.643   Mode  :character   Mode  :character  
+ Mean   :   41.15   Mean   :   43.411   Mean   :   42.01   Mean   :   45.11   Mean   :   43.153
+ 3rd Qu.:   16.68   3rd Qu.:   19.827   3rd Qu.:   20.27   3rd Qu.:   20.52   3rd Qu.:   26.242
+ Max.   :80200.36   Max.   :28852.570   Max.   :35059.37   Max.   :43231.18   Max.   :29805.277
+
+
+
+--------------------------------------------------------------------------------------------------
+Step-11: Description - defineGeneSets.R
+--------------------------------------------------------------------------------------------------
+
+- Gene Sets:
+- tands.expr: 
+- orths.expr: 
+- dupl.expr:
+- psel.expr:
+
+--------------------------------------------------------------------------------------------------
+Step-2: Description - expressionAngles.R
+--------------------------------------------------------------------------------------------------
+
+
+Inputs 
+- rpkm.expr.profiles.df  
+
+- Gene Sets:
+- tands.expr: 
+- orths.expr: 
+- dupl.expr:
+- psel.expr:
+
+- expr.cols: A vector of column names representing tissues in the rpkm.expr.profiles.df
+- expr.cols <- c("cotyledon", "seedling", "developing leaf", "flower stage 9", "flower stage 16")
+
+- Gene Groups 
+- tands.w.orths 
+- dupl.w.orths
+
+- expression_funks.R
+Function cosDiag:
+Function exprVecSpaceEvolutionAfterDupl:
+
+
+Outputs Produced/generated by the Script
+
+tands.w.orths.angles.df: 
+tands.psel.w.orths.angles.df: 
+dupl.w.orths.angles.df: 
+dupl.psel.w.orths.angles.df: 
+
+
+  - Plots
+
+require Inputs
+tands.w.orths.angles.df:
+dupl.w.orths.angles.df:
+
+fruit.ath.intra, fruit.chi.intra, light.ath.intra, light.chi.intra: (fehlen)
+
+-----------------------------
+
+expressionAngleToDiagonalBoxplot.pdf:
+relativeExpressionVersatilityBoxplot.pdf: 
+
+meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf
+meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf
+
+afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf
+afterDuplicationAngleBetweenOrth2DiagVecsHistograms.pdf
+
+meanChangeInAngleBetweenOrthOnDiagsBoxplot.pdf
+absLog2FoldChangeIntraSpeciesBoxplots.pdf
+
+
+1. expressionAngleToDiagonalBoxplot.pdf:
+Inputs Required:
+tands.expr.angle.diag.df: Data frame containing tandem gene expression angles.
+orths.expr.angle.diag.df: Data frame containing ortholog gene expression angles.
+dupl.expr.angle.diag.df: Data frame containing duplicated gene expression angles.
+psel.expr.angle.diag.df: Data frame containing pos.selected gene expression angles.
+Additional Details:
+The script calculates the angle.diag for each gene type, then combines these into a single data frame (p.df) which is used to generate the boxplot.
+The expr.cols are used to define the expression vector space.
+
+2. relativeExpressionVersatilityBoxplot.pdf:
+Inputs Required:
+Same as expressionAngleToDiagonalBoxplot.pdf, but the script calculates the relative expression versatility (rel.vers) as 1 - plot.df$angle.diag.
+Additional Details:
+The data is then plotted with the calculated rel.vers for each gene type.
+
+3. meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf:
+Inputs Required:
+tands.w.orths.angles.df: Data frame containing angles for tandem genes with orthologs.
+dupl.w.orths.angles.df: Data frame containing angles for duplicated genes with orthologs.
+Additional Details:
+The script calculates the difference in tissue versatility after duplication for both tandem and duplicated genes. These differences are then plotted in a boxplot.
+
+4. meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf:
+Inputs Required:
+Same as meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf.
+Additional Details:
+The data is used to create histograms for the differences in tissue versatility after duplication.
+
+5. afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf:
+Inputs Required:
+Same as meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf.
+Additional Details:
+The script calculates the angles between orthogonals on the expression space diagonal after duplication, then plots these in a boxplot.
+6. afterDuplicationAngleBetweenOrth2DiagVecsHistograms.pdf:
+Inputs Required:
+Same as afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf.
+Additional Details:
+The data is used to create histograms for the angles between orthogonals on the expression space diagonal.
+
+7. meanChangeInAngleBetweenOrthOnDiagsBoxplot.pdf:
+Inputs Required:
+dupl.w.orths.angles.df: Data frame containing angles for duplicated genes with orthologs.
+tands.w.orths.angles.df: Data frame containing angles for tandem genes with orthologs.
+Additional Details:
+The script calculates the change in the angle between orthogonals on the expression space diagonal and plots this in a boxplot.
+
+8. absLog2FoldChangeIntraSpeciesBoxplots.pdf:
+Inputs Required:
+fruit.ath.intra, fruit.chi.intra, light.ath.intra, light.chi.intra: These data sets are lists of genes with log2 fold change values from intra-species comparisons.
+orths.expr, tands.expr, dupl.expr: Lists of ortholog, tandem, and duplicated genes.
+Additional Details:
+The script filters these data sets based on the log2 fold change values and the gene types, then plots the absolute log2 fold change for each gene type in a boxplot.
+
+
+---------------------------------------------------------------------------
+
+r$> str(tands.w.orths) List of 807
+
+ $ tandem_cluster_1   : chr [1:152] "CARHR230400" "CARHR230340" "Carubv10004324m" "Bra013677" ...
+ $ tandem_cluster_5   : chr [1:126] "Thhalv10015283m" "Thhalv10015331m" "Thhalv10015353m" "Thhalv10015652m" ...
+ $ tandem_cluster_6   : chr [1:101] "aet_11297" "aet_11303" "CARHR050860" "475168" ...
+ $ tandem_cluster_7   : chr [1:106] "Tp2g15440" "Tp2g15450" "Tp2g15460" "Tp2g15470" ...
+ $ tandem_cluster_8   : chr [1:85] "CARHR097920" "AT3G22040" "Carubv10015485m" "AT3G21960" ...
+ $ tandem_cluster_14  : chr [1:61] "494325" "CARHR175080" "AT5G46500" "CARHR175110" ...
+
+r$> str(dupl.w.orths) List of 331
+
+ $ cluster_1    : chr [1:682] "Bra033048" "Tp2g18110" "aet_21504" "Carubv10026871m" ...
+ $ cluster_3    : chr [1:394] "946051" "AT1G61610" "AT4G21390" "Tp2g02970" ...
+ $ cluster_4    : chr [1:346] "Bra011019" "Bra013092" "Bra014807" "Bra037543" ...
+ $ cluster_6    : chr [1:278] "AT1G54330" "AT1G56010" "AT3G04060" "Bra009246" ...
+ $ cluster_7    : chr [1:268] "aet_18014" "aet_18322" "aet_18363" "941887" ...
+ $ cluster_8    : chr [1:263] "Thhalv10017032m" "Thhalv10029492m" "Tp4g11340" "aet_5768" ...
+
+---------------------------------------------------------------------------
+
+
+tands.w.orths.angles.df:
+
+r$> head(tands.w.orths.angles.df)
+             Family mean.base.tiss.vers tandem.tiss.vers tandem.tiss.change tandem.dist.vec.clouds
+1  tandem_cluster_1           0.4111418        0.3937893           28.07365             -26.236713
+2  tandem_cluster_5           0.4016464        0.3633344           17.80120              10.520637
+3  tandem_cluster_6           0.6607958        0.3700730           76.18322               3.727376
+4  tandem_cluster_7           0.4487105        0.3860824           32.63659             -25.848917
+5  tandem_cluster_8           0.6101152        0.6369634          108.07885              34.127129
+6 tandem_cluster_22           0.3827031        0.3722631           40.71015             -32.755314
+
+r$> summary(tands.w.orths.angles.df)
+    Family          mean.base.tiss.vers tandem.tiss.vers tandem.tiss.change tandem.dist.vec.clouds
+ Length:509         Min.   :0.2949      Min.   :0.2976   Min.   :  0.00     Min.   :-717.4110
+ Class :character   1st Qu.:0.3337      1st Qu.:0.3812   1st Qu.: 39.73     1st Qu.:   0.2739
+ Mode  :character   Median :0.3783      Median :0.4615   Median : 71.32     Median :  12.4556
+                    Mean   :0.4115      Mean   :0.4767   Mean   : 70.42     Mean   :  56.0103
+                    3rd Qu.:0.4517      3rd Qu.:0.5629   3rd Qu.: 99.67     3rd Qu.:  44.9586
+                    Max.   :0.6838      Max.   :0.6838   Max.   :165.23     Max.   :2626.3713
+                    NA's   :4           NA's   :38       NA's   :41
+                    
+  ---------------------------------------------------------------------------                  
+
+
+dupl.w.orths.angles.df
+
+r$> head(dupl.w.orths.angles.df)
+     Family mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds
+1 cluster_1           0.3036426            0.3191480               9.914841                  -47.81767
+2 cluster_3           0.2983750            0.3840122              58.560570                  -24.70047
+3 cluster_4           0.3249082            0.4481303              76.574244                 -526.53245
+4 cluster_6           0.3268811            0.3429840              13.029638                  -36.92772
+5 cluster_7           0.3040171            0.3043756              52.568609                  -78.61891
+6 cluster_8           0.3638630            0.3314485              16.937293                  -58.20209
+
+r$> summary(dupl.w.orths.angles.df)
+    Family          mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds
+ Length:246         Min.   :0.2941      Min.   :0.2980       Min.   :  0.7317       Min.   :-1476.532
+ Class :character   1st Qu.:0.3242      1st Qu.:0.3308       1st Qu.: 32.7194       1st Qu.:  -47.099
+ Mode  :character   Median :0.3595      Median :0.3785       Median : 56.8543       Median :   -2.869
+                    Mean   :0.3814      Mean   :0.4088       Mean   : 62.5569       Mean   :  -36.979
+                    3rd Qu.:0.4107      3rd Qu.:0.4579       3rd Qu.: 88.7439       3rd Qu.:   27.117
+                    Max.   :0.6838      Max.   :0.6838       Max.   :151.1289       Max.   : 1936.969
+                                        NA's   :5            NA's   :5
+                                        
+  ---------------------------------------------------------------------------
+
+
+tands.psel.w.orths.angles.df
+
+
+r$> str(tands.psel.w.orths.angles.df)
+'data.frame':   509 obs. of  8 variables:
+ $ Family                      : chr  "tandem_cluster_1" "tandem_cluster_5" "tandem_cluster_6" "tandem_cluster_7" ...
+ $ mean.base.tiss.vers         : num  0.411 0.402 0.661 0.449 0.61 ...
+ $ tandem.tiss.vers            : num  NA 0.384 0.551 NA 0.684 ...
+ $ tandem.tiss.change          : num  NA 12 12 NA 105 ...
+ $ tandem.dist.vec.clouds      : num  NA 11.98 1.64 NA 34.14 ...
+ $ pos.selected.tiss.vers      : num  0.394 0.365 0.37 0.386 0.635 ...
+ $ pos.selected.tiss.change    : num  28.1 31.7 78.5 32.6 108.2 ...
+ $ pos.selected.dist.vec.clouds: num  -26.24 9.46 3.76 -25.85 34.13 ...
+
+
+r$> head(tands.psel.w.orths.angles.df)
+
+             Family mean.base.tiss.vers tandem.tiss.vers tandem.tiss.change tandem.dist.vec.clouds pos.selected.tiss.vers pos.selected.tiss.change
+1  tandem_cluster_1           0.4111418               NA                 NA                     NA              0.3937893                 28.07365
+2  tandem_cluster_5           0.4016464        0.3844579           12.01231              11.981032              0.3649683                 31.74401
+3  tandem_cluster_6           0.6607958        0.5505022           12.04358               1.636226              0.3702395                 78.50907
+4  tandem_cluster_7           0.4487105               NA                 NA                     NA              0.3860824                 32.63659
+5  tandem_cluster_8           0.6101152        0.6837722          105.14224              34.136104              0.6348247                108.22314
+6 tandem_cluster_22           0.3827031        0.3539408           85.83147              -5.164400              0.3940291                 43.28949
+  pos.selected.dist.vec.clouds
+1                   -26.236713
+2                     9.462251
+3                     3.759345
+4                   -25.848917
+5                    34.126895
+6                   -37.279472
+
+r$> summary(tands.psel.w.orths.angles.df)
+
+    Family          mean.base.tiss.vers tandem.tiss.vers tandem.tiss.change tandem.dist.vec.clouds pos.selected.tiss.vers pos.selected.tiss.change
+ Length:509         Min.   :0.2949      Min.   :0.2981   Min.   :  0.2905   Min.   :-717.411       Min.   :0.2976         Min.   :  0.00
+ Class :character   1st Qu.:0.3337      1st Qu.:0.3828   1st Qu.: 38.7279   1st Qu.:   1.189       1st Qu.:0.3743         1st Qu.: 45.12
+ Mode  :character   Median :0.3783      Median :0.4636   Median : 71.8828   Median :  15.167       Median :0.4595         Median : 73.97
+                    Mean   :0.4115      Mean   :0.4816   Mean   : 70.4105   Mean   :  67.659       Mean   :0.4713         Mean   : 71.68
+                    3rd Qu.:0.4517      3rd Qu.:0.5732   3rd Qu.: 99.6527   3rd Qu.:  51.672       3rd Qu.:0.5494         3rd Qu.:101.16
+                    Max.   :0.6838      Max.   :0.6838   Max.   :165.2303   Max.   :2626.371       Max.   :0.6838         Max.   :143.96
+                    NA's   :4           NA's   :154      NA's   :155        NA's   :121            NA's   :365            NA's   :368
+ pos.selected.dist.vec.clouds
+ Min.   :-70.6834
+ 1st Qu.: -0.9064
+ Median :  6.3456
+ Mean   : 19.9429
+ 3rd Qu.: 30.3172
+ Max.   :307.6643
+ NA's   :356
+
+  ---------------------------------------------------------------------------
+  
+  dupl.psel.w.orths.angles.df
+  
+  r$> str(dupl.psel.w.orths.angles.df)
+
+'data.frame':   246 obs. of  8 variables:
+ $ Family                      : chr  "cluster_1" "cluster_3" "cluster_4" "cluster_6" ...
+ $ mean.base.tiss.vers         : num  0.304 0.298 0.325 0.327 0.304 ...
+ $ duplicated.tiss.vers        : num  0.319 NA NA NA NA ...
+ $ duplicated.tiss.change      : num  9.91 NA NA NA NA ...
+ $ duplicated.dist.vec.clouds  : num  -47.8 NA NA NA NA ...
+ $ pos.selected.tiss.vers      : num  NA 0.384 0.448 0.343 0.304 ...
+ $ pos.selected.tiss.change    : num  NA 58.6 76.6 13 52.6 ...
+ $ pos.selected.dist.vec.clouds: num  NA -24.7 -526.5 -36.9 -78.6 ...
+
+  
+  
+  r$> head(dupl.psel.w.orths.angles.df)
+  
+     Family mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds pos.selected.tiss.vers pos.selected.tiss.change
+1 cluster_1           0.3036426            0.3191480               9.914841                  -47.81767                     NA                       NA
+2 cluster_3           0.2983750                   NA                     NA                         NA              0.3840122                 58.56057
+3 cluster_4           0.3249082                   NA                     NA                         NA              0.4481303                 76.57424
+4 cluster_6           0.3268811                   NA                     NA                         NA              0.3429840                 13.02964
+5 cluster_7           0.3040171                   NA                     NA                         NA              0.3043756                 52.56861
+6 cluster_8           0.3638630            0.3314485              16.937293                  -58.20209                     NA                       NA
+  pos.selected.dist.vec.clouds
+1                           NA
+2                    -24.70047
+3                   -526.53245
+4                    -36.92772
+5                    -78.61891
+6                           NA
+
+
+ 
+ r$> summary(dupl.psel.w.orths.angles.df)
+    Family          mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds pos.selected.tiss.vers pos.selected.tiss.change    
+ Length:246         Min.   :0.2941      Min.   :0.2980       Min.   :  0.7317       Min.   :-1476.532          Min.   :0.3013         Min.   :  5.415
+ Class :character   1st Qu.:0.3242      1st Qu.:0.3304       1st Qu.: 31.5348       1st Qu.:  -48.831          1st Qu.:0.3372         1st Qu.: 36.895
+ Mode  :character   Median :0.3595      Median :0.3854       Median : 52.9793       Median :   -1.179          Median :0.3718         Median : 62.206
+                    Mean   :0.3814      Mean   :0.4148       Mean   : 60.7418       Mean   :  -36.454          Mean   :0.4044         Mean   : 67.782
+                    3rd Qu.:0.4107      3rd Qu.:0.4662       3rd Qu.: 87.1766       3rd Qu.:   28.838          3rd Qu.:0.4381         3rd Qu.: 97.814
+                    Max.   :0.6838      Max.   :0.6838       Max.   :148.3246       Max.   : 1936.969          Max.   :0.6838         Max.   :151.129
+                                        NA's   :60           NA's   :60             NA's   :57                 NA's   :182            NA's   :182
+ pos.selected.dist.vec.clouds
+ Min.   :-610.515
+ 1st Qu.: -39.966
+ Median :  -5.166
+ Mean   : -21.142
+ 3rd Qu.:  31.055
+ Max.   : 952.312
+ NA's   :177
 
 
 
