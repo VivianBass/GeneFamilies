@@ -340,57 +340,79 @@ The steps and data required to carry out the original analysis are devided into 
 - Differences in expression --> Gene expression profiles
 - they are are correlated with function diversification. --> meassure euclidean distances
 
+-----------------------------------------------------------------------------------------
+- reproduction of the `expression vector space analyses` 
+-----------------------------------------------------------------------------------------
+
+- 4 Gene-Groups (investigated):
+
+- 1. Orthologs (Orth) Gene-Group:	
+--> Orthologs are genes in different species that evolved from a common ancestral gene through speciation. 
+They typically retain the same function across species.
+
+			
+- 2. Tandem Duplicates, tandems (Tand) Gene-Group: 
+--> Tandem duplicates are genes that have duplicated within the same genome, often appearing next to each other on the chromosome.
+
+- 3. Expanded Gene Families (Exp) Gene-Group:
+--> Expanded gene families (Clusters) are groups of genes that have undergone significant expansion in a particular lineage, 
+often through duplication events. (expanded Gene-Family (Cluster) --> contain a larger number of similar genes from one or more species)
+
+- 4. and Gene Families showing signs of positive selection (PSel), Gene-Group: 
+--> Positive selection refers to evolutionary pressure that favors advantageous mutations. 
+These clusters may include orthologs that have diverged significantly due to selective pressures.
+
+
+-----------------------------------------------------------------------------------------
+
+- Clusters (Gene-Families)
+
+- a cluster refers to a group of genes that are related by sequence similarity and are assumed to have evolved from a common ancestor.
+- each Gene-Group contains a List of Clusters, with Genes like Orthologs, Tandems, etc. beeing assigned to the respective Clusters. 
+
+->  These clusters are identified by analyzing the sequences of genes across multiple species, 
+finding similarities, and grouping them based on these similarities.
+
+
+- Clustering, Groupping Process -> Genes assigned to the Clusters
+- using (Blast, Markov) 
+- 8 Brassicacean Genoms
+- On all coding sequences available for the eight genomes ran an all-vs-all BLAT (Blast)
+- using reciprocal best hits in an all-vs-all Sequence-Similarity-Search
+- Using this the results were fed into Markov Clustering based on Pairwise Sequence Similarities in percent.
+- The MCL algorithm is implemented in the popular `mcl` program (`mcl 14-137, van Dongen`)
+> It's output has been read in by the following script.
+> Furthermore, the results were parsed and provided as a table in which each family was assigned a name (e.g. 'cluster\_1')
+> and for each of the eight species the number of gene members is provided.
+> The Perl-Script `mcl2orthoformat.pl` can be used to convert the MCL output into the table.
+
+
+-----------------------------------------------------------------------------------------
+
+- Gene Expression-Profiles:
+
+- Gene Expressions of the Genes 
+
+
+
+
+
+-----------------------------------------------------------------------------------------
+
+- `expression vector space analyses` 
+
 - meassure euclidean distances, between expression profiles of genes, within gene groups.
--> Gene Groups (orthologs, tandems, etc. , ) -> 4 Gene Groups
--> Expression profiles of Genes within these Groups (innerhalb)
--> euclidean distances -> between Expresion profiles of these Genes
 
-- Distances are computed between whole expression profiles as well as on each euclidean dimension (tissue).
-
-
-This is the first result of our expression vector space analysis. See attached
-presentation `./inst/GeneFunctionEvolution.pdf`, slide fourteen (14).
-
-- man benötigt Genes for each Gene-Group --> Daten Informationen zu Orthologs, Tandems etc. 
-- man muss sie ersteinmal Identifizieren
+--> we meassure Differences in gene expressions bzw. Gene expression profiles
+--> Distances are computed between whole Gene expression profiles as well as on each euclidean dimension (tissue).
+--> gene expression changes are measured in distances between mean expression vectors
 
 
-> Cluster of Orthologs were inferred using reciprocal best hits in an all-vs-all Sequence-Similarity-Search 
-  with validation of 1 gene per other species matching to the TAIR10 (A. thaliana) reference.
-> Tandems were inferred in a similar manner, where the sequence similarity searches were carried out 
-  within each species' genome separately, and the validation was a maximum neighborhood of 9 genes in the genome
-??
+- Differences in gene expression are correlated with function diversification.
+- expression vector space / gene expression changes due to influeces like
+- belonging to a certain gene group / gene family / orthologs / paralogs / or tandem duplicates
+- gene expression changes are measured in distances between mean expression vectors
 
-
--------------------------------------------
-
-- Gene Groups (beeing investigated): 
-- Orthologs (Orth) / Tandem Duplicates, tandems (Tand) 
-- Expanded Gene Families (Exp) / and Gene Families showing signs of positive selection (PSel) 
-
--------------------------------------------
-
-- Assesment of Function Diversity (per Gene Group) -> do for each Gene Group (4 in total)
-
-> 1. For all 8 Brassicaceaen Proteomes !!! -> using domain architecture diversity within given gene groups,
-
-	--> repeat 4 times (4 Gene Groups)
-
-> 2. For _A. thaliana_ and _C. hirsuta_  
-- expression profiles of their Proteomes !!! (DNA -> RNA -> Protein)
-- median distance between the 2 Proteom expression profiles (A. thaliana and C. hirsuta)
-
-	--> repeat 4 times (4 Gene Groups)
-
--------------------------------------------
-
-==> you get 2 function diversity measures ((1.) 8 Brassicaceaen Proteomes / (2.) _A. thaliana_ and _C. hirsuta_)
-
-- Plotting Process: (function diversity distributions)
-- Plot Distributions of the 2 function diversity measures
---> do that for each class of Gene Group 
-
--------------------------------------------
 
 - within each class (Gene Group) compare function diversity distributions between Orthologs and Non-Orthologs. 
 - Finally t-tests are carried out to detect significant differences between these distributions.
@@ -398,9 +420,43 @@ presentation `./inst/GeneFunctionEvolution.pdf`, slide fourteen (14).
 
 
 
+-----------------------------------------------------------------------------------------
+- 1. Assesment of Function Diversity - For all 8 Brassicaceaen Proteomes
+-----------------------------------------------------------------------------------------
+
+- Assesment of Function Diversity (per Gene Group) -> do for each Gene Group (4 in total)
+
+> 1. For all 8 Brassicaceaen Proteomes !!! -> using domain architecture diversity within given gene groups,
+
+	--> repeat 4 times (4 Gene Groups)
+
+==> function diversity measures for (1.) 8 Brassicaceaen Proteomes 
 
 
+-----------------------------------------------------------------------------------------
+- 2. Assesment of Function Diversity - For _A. thaliana_ and _C. hirsuta_
+-----------------------------------------------------------------------------------------
 
+> 2. For _A. thaliana_ and _C. hirsuta_  
+- expression profiles of their Proteomes !!! (DNA -> RNA -> Protein)
+- median distance between the 2 Proteom expression profiles (A. thaliana and C. hirsuta)
+
+	--> repeat 4 times (4 Gene Groups)
+
+==> function diversity measures for (2.) _A. thaliana_ and _C. hirsuta_)
+
+--> Plot Distributions of the 2 function diversity measures (for each Gene Group class) 
+
+-----------------------------------------------------------------------------------------
+
+
+Tests: for each gene family --> orthologs (gene expression) vs. (vergleich) paralogs (gene Expression)
+---> comparing the vector clouds of orthologs and paralogs 
+--> Results: plots and tables of t-Test outcomes --> `./inst/ExpressedGeneGroupsVenn.pdf`.
+
+--> compute the distances between the expression profiles for _C. hirsuta_ and _A. thaliana_ genes
+--> summarizes the different distances per gene group using various statistics, like `mean`, `median`, `max`, and `maxMinusMin
+--> carry out the mentioned t-tests and generate the corresponding plots
 
 
 
@@ -735,9 +791,28 @@ r$> ls()
 
 # `1. Load tissue specific expression data`
 
---------------------------------------------------------------------------------
-Step-1: Description - rpkm.rna.seq.counts.R
---------------------------------------------------------------------------------
+# RScripts and Files Overview -------------------------------------------------------------------
+
+- Rscripts 
+- rpkm.rna.seq.counts.R
+- loadRpkmRnaSeqCounts.R
+
+
+- Files
+- RPKM_counts_table.tsv (requirred, main Input)
+- `RNA_Seq_RPKM_and_profiles.tsv (generated)
+- `aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa` --> (DNA-Fasta-Files, for 8 Brassicaceaen genomes)
+- all.cds
+
+
+- RData-Files
+- `RNA_Seq_RPKM_and_profiles.RData` (Output) (contains: `rna.seq.exp.profils` + `rpkm.rna.seq.counts`)
+- `codingSequences.RData` (Output) (`aet.cds, aly.cds, ath.cds, bra.cds, chi.cds, cru.cds, esa.cds, tpa.cds, all.cds`)
+
+
+
+
+Step-1: Description --------------------------------------------------------------------------------
 
 Description:
 
@@ -787,9 +862,9 @@ Description:
   # 5 0.079472192      0.11188537       0.1738841      0.34547414       0.2892842       AT1G01050
   # 6 0.003454131      0.08389586       0.5113684      0.27232766       0.1289540       AT1G01060
   ```
---------------------------------------------------------------------------------
-Step-1: Inputs/Outputs Overview 
---------------------------------------------------------------------------------
+
+Step-1: Inputs/Outputs Overview -------------------------------------------------------------------
+
 
 `loadRpkmRnaSeqCounts.R`  (path: exec/loadRpkmRnaSeqCounts.R)
 
@@ -836,9 +911,9 @@ Step-1: Inputs/Outputs Overview
 
 - Save: `rna.seq.exp.profils` as `RNA_Seq_RPKM_and_profiles.tsv`
 
---------------------------------------------------------------------------------
-Step-2: Description - loadRpkmRnaSeqCounts.R
---------------------------------------------------------------------------------
+
+Step-2: Description  ------------------------------------------------------------------------------
+
 - Loading DNA Fasta Files:
 - We need to load the DNA Fasta files for each of the 8 Brassicaceae family members.
 - These files represent the genomic sequences of each species in Fasta format.
@@ -846,10 +921,8 @@ Step-2: Description - loadRpkmRnaSeqCounts.R
 which includes the combined genomes of the 8 Brassicaceae family members.
 - The script exec/loadCodingSequences.R is used to load these DNA Fasta files.
 
+Step-2:  Inputs/Outputs -------------------------------------------------------------------------------- 
 
---------------------------------------------------------------------------------
-Step-2:  Inputs/Outputs  
---------------------------------------------------------------------------------
 `loadCodingSequences.R`
 
 - R-Script-description: 
@@ -873,7 +946,85 @@ Step-2:  Inputs/Outputs
 
 
 
+
+
+
+
+
+
+
 ## `2. Compute pairwise gene expression profile distances within gene groups`
+
+--------------------------------------------------------------------------------------------------
+# RScripts and Files Overview 
+--------------------------------------------------------------------------------------------------
+
+
+- required exec:
+ 
+- 1 `LoadOrthologsAndTandems.R`			(Step-1)
+- 2 `defineGeneSets.R`				(Step-2)
+- 3 `loadGeneFamilies.R`				(Step-3)
+- 4 `computeExpressionProfileDistances.R` 	(Step-4)
+
+
+- Files (used & generated) ------------------------------------
+
+- `eight_brassicaceae_tandems.txt`, `eight_brassicaceae_orthologs.txt`  	(as input -> 1) (fehlen)
+- `orthologs` & `tandems` 										(1 -> generated / as input -> 2)
+- `orthologs.lst` & `tandems.lst` 								(2 -> generated / as input -> 4)
+
+- `mcl_output.txt` , `mcl_table.tsv` (from markov clustering tool mcl) 	(as input -> 3) (fehlen)
+- `families.lst` & (families.genes.df, families.df) 					(3 -> generated / as input -> 4)
+
+- `families.exp.prof.dists` & `families.exp.prof.dists.tissue`			(4 -> generated)
+- `orthologs.exp.prof.dists` & `orthologs.exp.prof.dists.tissue`			(4 -> generated)
+- `tandems.exp.prof.dists` & `tandems.exp.prof.dists.tissue`				(4 -> generated)
+
+
+- R-functions -------------------------------------------------
+
+- `expression_funks.R` --> function: `expressionProfilesDists`			(as input -> 4)
+
+
+- RData -------------------------------------------------------
+
+- (1) `orthologsTandems.RData` --> [1] "orthologs" "tandems"			
+
+- (2) `GeneGroups.RData` 				 
+
+ [1] 		                                                                            "busted.fams"
+ [4] "busted.genes"                           "busted.genes.nev"                       "dupl.classifier"
+ [7] "dupl.expr"                              "dupl.expr.nev"                          "dupl.psel.classifier"
+[10] "dupl.w.orths"                           "families.conserved"                     "families.conserved.genes"
+[13] "families.conserved.genes.nev"           "families.exp"                           "families.exp.cnt"
+[16] "families.exp.cnt.genes"                 "families.exp.cnt.genes.nev"             "families.exp.cnt.unq"
+[19] "families.exp.cnt.unq.genes"             "families.exp.cnt.unq.genes.nev"         "families.exp.genes"
+[22] "families.exp.genes.nev"                 "families.spec.cols"                     "families.unq"
+[25] "families.unq.genes"                     "families.unq.genes.nev"                 "fams.pos.sel"
+[28] "fubar.fams.decisive.evidence.genes"     "fubar.fams.decisive.evidence.genes.nev" "genes.pos.sel"
+[31] "genes.pos.sel.nev"                      		                                "orthologs.genes"
+[34] "orthologs.lst"                          "orths.expr"                             "psel.classifier"
+[37] "psel.expr"                              "psel.expr.nev"                          "psel.w.orths"
+[40] "tand.classifier"                        "tand.psel.classifier"                   
+[43] "tandems.genes"                          "tandems.genes.nev"                      "tandems.lst"
+[46] "tands.expr"                             "tands.expr.nev"                         "tands.w.orths"
+
+
+- (3) `families.RData` --> [1] "families.df"  "families.genes.df" "families.lst"
+
+- (4) `ExpressionProfileDistances.RData` 	
+
+[1] "families.exp.prof.dists"         "families.exp.prof.dists.tissue"  	"orthologs.exp.prof.dists"        
+[5] "tandems.exp.prof.dists"          "tandems.exp.prof.dists.tissue"		"orthologs.exp.prof.dists.tissue"
+
+
+
+
+
+
+
+### Compute pairwise gene expression profile distances within gene groups
 
 Differences in expression are correlated with function diversification. 
 In order to detect such diversification of function we measure euclidean distances between expression 
@@ -885,6 +1036,10 @@ The following R-script generates the data-set `ExpressionProfileDistances.RData`
 
 The single argument _must_ point to this R-package's local source directory. 
 It will generate the above data file and thus it is required that you re-install the package after successfull completion of the script.
+
+
+
+
 
 
 
@@ -2587,24 +2742,102 @@ erstellte Plots
 
 ## `4. Expression vector space analysis`
 
+--------------------------------------------------------------------------------------------------
+# RScripts and Files Overview 
+--------------------------------------------------------------------------------------------------
+ 
+- R-Scripts:
+
+- (1) generateRpkmExpressionProfiles.R 		(Step-1)
+
+- (11) defineGeneSets.R					(Sidestep)
+
+- (2) expressionAngles.R					(Step-2)
+
+--------------------------------------------------------------------------------------------------
+
+- rpkm.rna.seq.counts (`RPKM_counts_table.tsv`) 	(from Section-1 Data) (as input -> (1))
+- all.cds (list, DNA Fasta Files)			(from Section-1 Data)	(as input -> (1))	
+- rpkm.expr.profiles.df 					((1) generated) 
+
+- tands.expr, orths.expr, dupl.expr, psel.expr 	((11) generated, Sidestep)	
+- tands.w.orths 							((11) generated, Sidestep)
+- dupl.w.orths							((11) generated, Sidestep)
+
+- tands.w.orths.angles.df					((2) generated)
+- tands.psel.w.orths.angles.df				((2) generated)
+- dupl.w.orths.angles.df 					((2) generated)
+- dupl.psel.w.orths.angles.df				((2) generated)
+ 
+ 
+- R-Functions:
+--------------------------------------------------------------------------------------------------
+- exprVecSpaceEvolutionAfterDupl() 			(from expression_funks.R)
+- cosDiag()							(from expression_funks.R script)  
+ 
+ 
+- Plots:
+--------------------------------------------------------------------------------------------------
+- meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf		((2) generated)
+- meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf		((2) generated)
+- afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf			((2) generated)
+- afterDuplicationAngleBetweenOrth2DiagVecsHistograms.pdf		((2) generated)
+- meanChangeInAngleBetweenOrthOnDiagsBoxplot.pdf				((2) generated)
+- absLog2FoldChangeIntraSpeciesBoxplots.pdf					((2) generated)
+- expressionAngleToDiagonalBoxplot.pdf					((2) generated)
+- relativeExpressionVersatilityBoxplot.pdf					((2) generated)
+- absLog2FoldChangeIntraSpeciesBoxplots.pdf					(is missing)
 
 
-- Expression vector space analysis
-- Basically, here the angles between mean expression vectors of two
-sub-groups within the same super-group of genes are explored. 
+- RData:
+--------------------------------------------------------------------------------------------------
+- rpkmExpressionProfiles.RData -> [1] "rpkm.expr.profiles.df"
+- GeneGroups.RData
 
+r$> ls()
+ [1] "busted.fams"			"busted.genes"                           "busted.genes.nev"
+ [4] "dupl.classifier"           "dupl.expr"                              "dupl.expr.nev"
+ [7] "dupl.psel.classifier"      "dupl.w.orths"                           "families.conserved"
+[10] "families.conserved.genes"  "families.conserved.genes.nev"           "families.exp"   (X)
+[13] "families.exp.cnt"          "families.exp.cnt.genes"                 "families.exp.cnt.genes.nev"
+[16] "families.exp.cnt.unq"      "families.exp.cnt.unq.genes"             "families.exp.cnt.unq.genes.nev"
+[19] "families.exp.genes"        "families.exp.genes.nev"                 "families.spec.cols"
+[22] "families.unq"              "families.unq.genes"                     "families.unq.genes.nev"
+[25] "fams.pos.sel"  (X)         "fubar.fams.decisive.evidence.genes"     "fubar.fams.decisive.evidence.genes.nev"
+[28] "genes.pos.sel"             "genes.pos.sel.nev"                      "orthologs.genes"
+[31] "orthologs.lst"             "orths.expr"                             "psel.classifier"
+[34] "psel.expr"                 "psel.expr.nev"                          "psel.w.orths"
+[37] "tand.classifier"           "tand.psel.classifier"                   "tandems.genes"
+[40] "tandems.genes.nev"         "tandems.lst"                            "tands.expr"
+[43] "tands.expr.nev"            "tands.w.orths"
 
-For example, for each gene family the angle of rotation around the diagonal between the mean
-orthologs and mean paralogs expression. 
+ 
+# load("RData-Files/families.RData")
+# load("RData-Files/families.exp.RData")
+# load("RData-Files/codingSequences.RData")
+ 
 
-Using gene expression levels in the form of RPKM normalized values for
-different tissues we reconstruct an expression vector space as follows. Each
-axis represents a tissue and the RPKM values are used as coordinates on these
-axis. Hence for each tandem cluster (TC) and expanded family (EF) with
-orthologs we can perform vector analyses. For both the orthologs and the
-expanded (tandem or duplicated) genes in those groups identify the mean
-expression vector using the mean of each coordinate. Also identify the standard
-deviation around these mean vectors and infer, whether these two deviation
+--------------------------------------------------------------------------------------------------
+# Section-4 Description
+--------------------------------------------------------------------------------------------------
+
+- Basically, here the angles between mean expression vectors are explored
+- of two sub-groups (Gene-Familie Clusters) within the same super-group (Gene-Group) of genes. 
+
+- for each gene family (Cluster), 
+- the angle of rotation around the diagonal, 
+- between the mean orthologs and mean paralogs expression. 
+
+- the gene expressions are in the form of RPKM normalized values for different tissues
+- we reconstruct an expression vector space as follows. 
+
+- Each axis represents a tissue and the RPKM values are used as coordinates on these axis. 
+- Hence for each tandem cluster (TC) and expanded family (EF) with orthologs we can perform vector analyses. 
+
+For both the orthologs and the expanded (tandem or duplicated) genes in those groups 
+identify the mean expression vector using the mean of each coordinate. 
+
+Also identify the standard deviation around these mean vectors and infer, whether these two deviation
 regions overlap. If not, interpret that on the expression level there has been
 a significant change in function after the duplication. Within those groups
 with well separated expression domains of orthologs and duplicated genes
@@ -2617,23 +2850,15 @@ expression vectors. The higher this angle is the greater the change in tissue
 specificity.
 
 
-
-
+ 
 
 --------------------------------------------------------------------------------------------------
 Step-1: Description - generateRpkmExpressionProfiles.R 
 --------------------------------------------------------------------------------------------------
 
-- inputs
-- rpkm.rna.seq.counts: 
-- all.cds (`aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa` --> (DNA-Fasta-Files)
-
-- generated:
-- genes: A sorted list of unique gene IDs extracted from the rpkm.rna.seq.counts data frame.
-- tissues: A sorted list of unique tissue types from the rpkm.rna.seq.counts data frame.
-- rpkm.expr.profiles.df
-
---------------------------------------
+- inputs: 
+- rpkm.rna.seq.counts 
+- all.cds (`aet.fa aly.fa ath.fa bra.fa chi.fa cru.fa esa.fa tpa.fa`) --> (DNA-Fasta-Files)
 
 > head(`RPKM_counts_table.tsv`)
 
@@ -2646,9 +2871,13 @@ Step-1: Description - generateRpkmExpressionProfiles.R
   # 5 AT1G01010        flower stage 9       0.35894135
   # 6 AT1G01020        cotyledon            0.16516131
   ```
---------------------------------------
+
+--------------------------------------------------------------------------------------------------
+- generated:
+- rpkm.expr.profiles.df
 
 r$> head(rpkm.expr.profiles.df)
+
    cotyledon developing leaf   seedling flower stage 16 flower stage 9      gene gene.exp.var  
 1  5.2991365        2.232661   7.128418        1.799660       9.216208 AT1G01010  AT1G01010.1  
 2  7.3591446        4.655357  10.103875        3.939452      18.499485 AT1G01020  AT1G01020.1  
@@ -2657,7 +2886,9 @@ r$> head(rpkm.expr.profiles.df)
 5 42.3350580       59.601647  92.628566      184.035037     154.102474 AT1G01050  AT1G01050.1
 6  0.7416428       18.013438 109.796862       58.471983      27.687947 AT1G01060  AT1G01060.1
 
+
 r$> summary(rpkm.expr.profiles.df)
+
    cotyledon        developing leaf        seedling        flower stage 16    flower stage 9          gene           gene.exp.var      
  Min.   :    0.00   Min.   :    0.000   Min.   :    0.00   Min.   :    0.00   Min.   :    0.000   Length:56874       Length:56874      
  1st Qu.:    0.02   1st Qu.:    0.011   1st Qu.:    0.36   1st Qu.:    0.23   1st Qu.:    0.136   Class :character   Class :character  
@@ -2669,128 +2900,90 @@ r$> summary(rpkm.expr.profiles.df)
 
 
 --------------------------------------------------------------------------------------------------
-Step-11: Description - defineGeneSets.R
---------------------------------------------------------------------------------------------------
-
-- Gene Sets:
-- tands.expr: 
-- orths.expr: 
-- dupl.expr:
-- psel.expr:
-
---------------------------------------------------------------------------------------------------
 Step-2: Description - expressionAngles.R
 --------------------------------------------------------------------------------------------------
 
 
-Inputs 
-- rpkm.expr.profiles.df  
+the script processes gene expression data to evaluate how gene function and 
+expression profiles evolve due to duplication or positive selection. 
+It measures metrics like tissue versatility and changes in expression vector distances, 
+and generates plots to visualize these changes.
 
-- Gene Sets:
-- tands.expr: 
-- orths.expr: 
-- dupl.expr:
-- psel.expr:
+- Tissue Versatility is an indicator of a gene's expression profile across multiple tissues. A gene with high tissue versatility is expressed in many different tissues, while a gene with low tissue versatility is expressed in only a few.
 
-- expr.cols: A vector of column names representing tissues in the rpkm.expr.profiles.df
+- Functional Insight: Genes with high versatility might be involved in fundamental cellular processes or have general roles that are needed across different tissue
+
+- Expression Profile:
+
+The expression profile of a gene is measured across various tissue types. This profile is typically represented as expression levels (e.g., RPKM, TPM) in each tissue.
+Versatility Metric:
+
+Mean Tissue Versatility: Often calculated as the average expression level of a gene across different tissues. For instance, if a gene is expressed in five tissues with expression levels of 10, 15, 20, 5, and 30 units respectively, its mean tissue versatility would be the average of these values.
+
+High Versatility: If the gene shows high expression levels in several tissues, its tissue versatility is high, indicating it plays a role in multiple tissue types.
+Low Versatility: If the gene is highly expressed in only one or two tissues, its versatility is low, suggesting it has a more specialized function.
+
+
+Concept of Angles in Gene Expression
+Expression Vector Space:
+
+In the context of gene expression analysis and the provided R script, "angles" are used to describe the relationships between expression profiles in a multi-dimensional space.
+
+In gene expression analysis, each gene's expression profile across different tissues or conditions can be represented as a vector in a multi-dimensional space. For example, if there are five tissues, each gene’s expression profile is a vector with five components (one for each tissue).
+
+Diagonal in Expression Space:
+
+The diagonal often refers to a specific direction in this multi-dimensional space. In the context of the script, the diagonal is a line from the origin of the coordinate system to the point where all dimensions (tissues) are equally weighted.
+Angle to the Diagonal:
+
+Definition: The angle between a gene’s expression vector and the diagonal of the expression vector space quantifies how much the gene's expression profile deviates from this specific direction.
+
+Small Angle: A small angle between a gene’s vector and the diagonal indicates that the gene’s expression profile is relatively aligned with the diagonal. This suggests that the gene has a balanced expression across tissues.
+
+Large Angle: A larger angle indicates that the gene’s expression profile deviates significantly from the diagonal, suggesting that the gene’s expression is more variable or concentrated in specific tissues.
+
+
+
+
+Main Function: exprVecSpaceEvolutionAfterDupl
+This function calculates angles between expression vectors and diagonal vectors for different gene classes
+
+Summary of Angle Calculation Process
+Define Expression Vector Space: Establish the axes (tissue types) for expression vectors.
+Calculate Base Class Vector: Compute a representative vector for the base class.
+Calculate Cosine of Angle:
+Use cosDiag to find the cosine of the angle between the base class vector and a diagonal vector.
+Compare with Other Classes:
+For each gene class, compute the angle between their representative vectors and the base class vectors, including measuring the change in angle and distance between vector clouds.
+
+
+
+- Inputs expressionAngles.R:
+ 
+- rpkm.expr.profiles.df
+- tands.expr , orths.expr , dupl.expr , psel.expr (GeneSets)
 - expr.cols <- c("cotyledon", "seedling", "developing leaf", "flower stage 9", "flower stage 16")
+- tands.w.orths (from GeneSets)
+- dupl.w.orths  (from GeneSets)
+- expression_funks.R: exprVecSpaceEvolutionAfterDupl() +  cosDiag()
 
-- Gene Groups 
+--------------------------------------------------------------------------------------------------
+
+r$> head(rpkm.expr.profiles.df)
+
+   cotyledon developing leaf   seedling flower stage 16 flower stage 9      gene gene.exp.var  
+1  5.2991365        2.232661   7.128418        1.799660       9.216208 AT1G01010  AT1G01010.1  
+2  7.3591446        4.655357  10.103875        3.939452      18.499485 AT1G01020  AT1G01020.1  
+3  4.1666257        7.423303   7.251267        3.421478      26.078908 AT1G01030  AT1G01030.1  
+4  9.5954542        2.734606   5.307610        2.450945       8.918822 AT1G01040  AT1G01040.2
+5 42.3350580       59.601647  92.628566      184.035037     154.102474 AT1G01050  AT1G01050.1
+6  0.7416428       18.013438 109.796862       58.471983      27.687947 AT1G01060  AT1G01060.1
+
+
+--------------------------------------------------------------------------------------------------
+
 - tands.w.orths 
 - dupl.w.orths
-
-- expression_funks.R
-Function cosDiag:
-Function exprVecSpaceEvolutionAfterDupl:
-
-
-Outputs Produced/generated by the Script
-
-tands.w.orths.angles.df: 
-tands.psel.w.orths.angles.df: 
-dupl.w.orths.angles.df: 
-dupl.psel.w.orths.angles.df: 
-
-
-  - Plots
-
-require Inputs
-tands.w.orths.angles.df:
-dupl.w.orths.angles.df:
-
-fruit.ath.intra, fruit.chi.intra, light.ath.intra, light.chi.intra: (fehlen)
-
------------------------------
-
-expressionAngleToDiagonalBoxplot.pdf:
-relativeExpressionVersatilityBoxplot.pdf: 
-
-meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf
-meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf
-
-afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf
-afterDuplicationAngleBetweenOrth2DiagVecsHistograms.pdf
-
-meanChangeInAngleBetweenOrthOnDiagsBoxplot.pdf
-absLog2FoldChangeIntraSpeciesBoxplots.pdf
-
-
-1. expressionAngleToDiagonalBoxplot.pdf:
-Inputs Required:
-tands.expr.angle.diag.df: Data frame containing tandem gene expression angles.
-orths.expr.angle.diag.df: Data frame containing ortholog gene expression angles.
-dupl.expr.angle.diag.df: Data frame containing duplicated gene expression angles.
-psel.expr.angle.diag.df: Data frame containing pos.selected gene expression angles.
-Additional Details:
-The script calculates the angle.diag for each gene type, then combines these into a single data frame (p.df) which is used to generate the boxplot.
-The expr.cols are used to define the expression vector space.
-
-2. relativeExpressionVersatilityBoxplot.pdf:
-Inputs Required:
-Same as expressionAngleToDiagonalBoxplot.pdf, but the script calculates the relative expression versatility (rel.vers) as 1 - plot.df$angle.diag.
-Additional Details:
-The data is then plotted with the calculated rel.vers for each gene type.
-
-3. meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf:
-Inputs Required:
-tands.w.orths.angles.df: Data frame containing angles for tandem genes with orthologs.
-dupl.w.orths.angles.df: Data frame containing angles for duplicated genes with orthologs.
-Additional Details:
-The script calculates the difference in tissue versatility after duplication for both tandem and duplicated genes. These differences are then plotted in a boxplot.
-
-4. meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf:
-Inputs Required:
-Same as meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf.
-Additional Details:
-The data is used to create histograms for the differences in tissue versatility after duplication.
-
-5. afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf:
-Inputs Required:
-Same as meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf.
-Additional Details:
-The script calculates the angles between orthogonals on the expression space diagonal after duplication, then plots these in a boxplot.
-6. afterDuplicationAngleBetweenOrth2DiagVecsHistograms.pdf:
-Inputs Required:
-Same as afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf.
-Additional Details:
-The data is used to create histograms for the angles between orthogonals on the expression space diagonal.
-
-7. meanChangeInAngleBetweenOrthOnDiagsBoxplot.pdf:
-Inputs Required:
-dupl.w.orths.angles.df: Data frame containing angles for duplicated genes with orthologs.
-tands.w.orths.angles.df: Data frame containing angles for tandem genes with orthologs.
-Additional Details:
-The script calculates the change in the angle between orthogonals on the expression space diagonal and plots this in a boxplot.
-
-8. absLog2FoldChangeIntraSpeciesBoxplots.pdf:
-Inputs Required:
-fruit.ath.intra, fruit.chi.intra, light.ath.intra, light.chi.intra: These data sets are lists of genes with log2 fold change values from intra-species comparisons.
-orths.expr, tands.expr, dupl.expr: Lists of ortholog, tandem, and duplicated genes.
-Additional Details:
-The script filters these data sets based on the log2 fold change values and the gene types, then plots the absolute log2 fold change for each gene type in a boxplot.
-
-
----------------------------------------------------------------------------
 
 r$> str(tands.w.orths) List of 807
 
@@ -2810,12 +3003,27 @@ r$> str(dupl.w.orths) List of 331
  $ cluster_7    : chr [1:268] "aet_18014" "aet_18322" "aet_18363" "941887" ...
  $ cluster_8    : chr [1:263] "Thhalv10017032m" "Thhalv10029492m" "Tp4g11340" "aet_5768" ...
 
----------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------------
 
+The script uses functions to compute angles between expression profiles and diagonals in the vector space (cosDiag), which helps quantify how specific gene expression is to different tissues.
+It then creates data frames (tands.expr.angle.diag.df, orths.expr.angle.diag.df, etc.) with these angles to evaluate tissue specificity and versatility.
+
+
+
+
+- expressionAngles.R generated:
+
+- tands.w.orths.angles.df 
+- tands.psel.w.orths.angles.df 
+- dupl.w.orths.angles.df
+- dupl.psel.w.orths.angles.df 
+
+--------------------------------------------------------------------------------------------------
 
 tands.w.orths.angles.df:
 
 r$> head(tands.w.orths.angles.df)
+
              Family mean.base.tiss.vers tandem.tiss.vers tandem.tiss.change tandem.dist.vec.clouds
 1  tandem_cluster_1           0.4111418        0.3937893           28.07365             -26.236713
 2  tandem_cluster_5           0.4016464        0.3633344           17.80120              10.520637
@@ -2825,6 +3033,7 @@ r$> head(tands.w.orths.angles.df)
 6 tandem_cluster_22           0.3827031        0.3722631           40.71015             -32.755314
 
 r$> summary(tands.w.orths.angles.df)
+
     Family          mean.base.tiss.vers tandem.tiss.vers tandem.tiss.change tandem.dist.vec.clouds
  Length:509         Min.   :0.2949      Min.   :0.2976   Min.   :  0.00     Min.   :-717.4110
  Class :character   1st Qu.:0.3337      1st Qu.:0.3812   1st Qu.: 39.73     1st Qu.:   0.2739
@@ -2833,13 +3042,13 @@ r$> summary(tands.w.orths.angles.df)
                     3rd Qu.:0.4517      3rd Qu.:0.5629   3rd Qu.: 99.67     3rd Qu.:  44.9586
                     Max.   :0.6838      Max.   :0.6838   Max.   :165.23     Max.   :2626.3713
                     NA's   :4           NA's   :38       NA's   :41
-                    
-  ---------------------------------------------------------------------------                  
 
+--------------------------------------------------------------------------------------------------
 
 dupl.w.orths.angles.df
 
 r$> head(dupl.w.orths.angles.df)
+
      Family mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds
 1 cluster_1           0.3036426            0.3191480               9.914841                  -47.81767
 2 cluster_3           0.2983750            0.3840122              58.560570                  -24.70047
@@ -2849,6 +3058,7 @@ r$> head(dupl.w.orths.angles.df)
 6 cluster_8           0.3638630            0.3314485              16.937293                  -58.20209
 
 r$> summary(dupl.w.orths.angles.df)
+
     Family          mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds
  Length:246         Min.   :0.2941      Min.   :0.2980       Min.   :  0.7317       Min.   :-1476.532
  Class :character   1st Qu.:0.3242      1st Qu.:0.3308       1st Qu.: 32.7194       1st Qu.:  -47.099
@@ -2858,13 +3068,12 @@ r$> summary(dupl.w.orths.angles.df)
                     Max.   :0.6838      Max.   :0.6838       Max.   :151.1289       Max.   : 1936.969
                                         NA's   :5            NA's   :5
                                         
-  ---------------------------------------------------------------------------
-
+--------------------------------------------------------------------------------------------------
 
 tands.psel.w.orths.angles.df
 
-
 r$> str(tands.psel.w.orths.angles.df)
+
 'data.frame':   509 obs. of  8 variables:
  $ Family                      : chr  "tandem_cluster_1" "tandem_cluster_5" "tandem_cluster_6" "tandem_cluster_7" ...
  $ mean.base.tiss.vers         : num  0.411 0.402 0.661 0.449 0.61 ...
@@ -2874,24 +3083,6 @@ r$> str(tands.psel.w.orths.angles.df)
  $ pos.selected.tiss.vers      : num  0.394 0.365 0.37 0.386 0.635 ...
  $ pos.selected.tiss.change    : num  28.1 31.7 78.5 32.6 108.2 ...
  $ pos.selected.dist.vec.clouds: num  -26.24 9.46 3.76 -25.85 34.13 ...
-
-
-r$> head(tands.psel.w.orths.angles.df)
-
-             Family mean.base.tiss.vers tandem.tiss.vers tandem.tiss.change tandem.dist.vec.clouds pos.selected.tiss.vers pos.selected.tiss.change
-1  tandem_cluster_1           0.4111418               NA                 NA                     NA              0.3937893                 28.07365
-2  tandem_cluster_5           0.4016464        0.3844579           12.01231              11.981032              0.3649683                 31.74401
-3  tandem_cluster_6           0.6607958        0.5505022           12.04358               1.636226              0.3702395                 78.50907
-4  tandem_cluster_7           0.4487105               NA                 NA                     NA              0.3860824                 32.63659
-5  tandem_cluster_8           0.6101152        0.6837722          105.14224              34.136104              0.6348247                108.22314
-6 tandem_cluster_22           0.3827031        0.3539408           85.83147              -5.164400              0.3940291                 43.28949
-  pos.selected.dist.vec.clouds
-1                   -26.236713
-2                     9.462251
-3                     3.759345
-4                   -25.848917
-5                    34.126895
-6                   -37.279472
 
 r$> summary(tands.psel.w.orths.angles.df)
 
@@ -2903,6 +3094,7 @@ r$> summary(tands.psel.w.orths.angles.df)
                     3rd Qu.:0.4517      3rd Qu.:0.5732   3rd Qu.: 99.6527   3rd Qu.:  51.672       3rd Qu.:0.5494         3rd Qu.:101.16
                     Max.   :0.6838      Max.   :0.6838   Max.   :165.2303   Max.   :2626.371       Max.   :0.6838         Max.   :143.96
                     NA's   :4           NA's   :154      NA's   :155        NA's   :121            NA's   :365            NA's   :368
+                    
  pos.selected.dist.vec.clouds
  Min.   :-70.6834
  1st Qu.: -0.9064
@@ -2911,8 +3103,8 @@ r$> summary(tands.psel.w.orths.angles.df)
  3rd Qu.: 30.3172
  Max.   :307.6643
  NA's   :356
-
-  ---------------------------------------------------------------------------
+ 
+--------------------------------------------------------------------------------------------------
   
   dupl.psel.w.orths.angles.df
   
@@ -2928,36 +3120,18 @@ r$> summary(tands.psel.w.orths.angles.df)
  $ pos.selected.tiss.change    : num  NA 58.6 76.6 13 52.6 ...
  $ pos.selected.dist.vec.clouds: num  NA -24.7 -526.5 -36.9 -78.6 ...
 
-  
-  
-  r$> head(dupl.psel.w.orths.angles.df)
-  
-     Family mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds pos.selected.tiss.vers pos.selected.tiss.change
-1 cluster_1           0.3036426            0.3191480               9.914841                  -47.81767                     NA                       NA
-2 cluster_3           0.2983750                   NA                     NA                         NA              0.3840122                 58.56057
-3 cluster_4           0.3249082                   NA                     NA                         NA              0.4481303                 76.57424
-4 cluster_6           0.3268811                   NA                     NA                         NA              0.3429840                 13.02964
-5 cluster_7           0.3040171                   NA                     NA                         NA              0.3043756                 52.56861
-6 cluster_8           0.3638630            0.3314485              16.937293                  -58.20209                     NA                       NA
-  pos.selected.dist.vec.clouds
-1                           NA
-2                    -24.70047
-3                   -526.53245
-4                    -36.92772
-5                    -78.61891
-6                           NA
-
-
  
- r$> summary(dupl.psel.w.orths.angles.df)
-    Family          mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds pos.selected.tiss.vers pos.selected.tiss.change    
- Length:246         Min.   :0.2941      Min.   :0.2980       Min.   :  0.7317       Min.   :-1476.532          Min.   :0.3013         Min.   :  5.415
- Class :character   1st Qu.:0.3242      1st Qu.:0.3304       1st Qu.: 31.5348       1st Qu.:  -48.831          1st Qu.:0.3372         1st Qu.: 36.895
- Mode  :character   Median :0.3595      Median :0.3854       Median : 52.9793       Median :   -1.179          Median :0.3718         Median : 62.206
-                    Mean   :0.3814      Mean   :0.4148       Mean   : 60.7418       Mean   :  -36.454          Mean   :0.4044         Mean   : 67.782
-                    3rd Qu.:0.4107      3rd Qu.:0.4662       3rd Qu.: 87.1766       3rd Qu.:   28.838          3rd Qu.:0.4381         3rd Qu.: 97.814
-                    Max.   :0.6838      Max.   :0.6838       Max.   :148.3246       Max.   : 1936.969          Max.   :0.6838         Max.   :151.129
-                                        NA's   :60           NA's   :60             NA's   :57                 NA's   :182            NA's   :182
+ r$> summary(dupl.psel.w.orths.angles.df) -> Family Length: 246, Class :character
+ 
+   mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds pos.selected.tiss.vers pos.selected.tiss.change    
+   Min.   :0.2941      Min.   :0.2980       Min.   :  0.7317       Min.   :-1476.532          Min.   :0.3013         Min.   :  5.415
+   1st Qu.:0.3242      1st Qu.:0.3304       1st Qu.: 31.5348       1st Qu.:  -48.831          1st Qu.:0.3372         1st Qu.: 36.895
+   Median :0.3595      Median :0.3854       Median : 52.9793       Median :   -1.179          Median :0.3718         Median : 62.206
+   Mean   :0.3814      Mean   :0.4148       Mean   : 60.7418       Mean   :  -36.454          Mean   :0.4044         Mean   : 67.782
+   3rd Qu.:0.4107      3rd Qu.:0.4662       3rd Qu.: 87.1766       3rd Qu.:   28.838          3rd Qu.:0.4381         3rd Qu.: 97.814
+   Max.   :0.6838      Max.   :0.6838       Max.   :148.3246       Max.   : 1936.969          Max.   :0.6838         Max.   :151.129
+   NA's   :60           NA's   :60             NA's   :57                 NA's   :182            NA's   :182
+   
  pos.selected.dist.vec.clouds
  Min.   :-610.515
  1st Qu.: -39.966
@@ -2967,6 +3141,512 @@ r$> summary(tands.psel.w.orths.angles.df)
  Max.   : 952.312
  NA's   :177
 
+--------------------------------------------------------------------------------------------------
+
+- inputs for Plots:
+
+- tands.w.orths.angles.df 
+- tands.psel.w.orths.angles.df 
+- dupl.w.orths.angles.df
+- dupl.psel.w.orths.angles.df
+- require: fruit.ath.intra, fruit.chi.intra, light.ath.intra, light.chi.intra: (fehlen)
+
+--------------------------------------------------------------------------------------------------
+
+- Plots generated:
+
+- expressionAngleToDiagonalBoxplot.pdf:
+
+- relativeExpressionVersatilityBoxplot.pdf: 
+
+- meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf
+
+- meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf
+
+- afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf
+
+- afterDuplicationAngleBetweenOrth2DiagVecsHistograms.pdf
+
+- meanChangeInAngleBetweenOrthOnDiagsBoxplot.pdf
+
+- absLog2FoldChangeIntraSpeciesBoxplots.pdf				(is missing)
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
+Plot Descriptions - for Section-3
+--------------------------------------------------------------------------------------------------
+
+
+r$> head(families.exp)
+[1] "cluster_1" "cluster_2" "cluster_3" "cluster_4" "cluster_5" "cluster_6"
+
+r$> head(fams.pos.sel)
+[1] "cluster_10"    "cluster_1000"  "cluster_10006" "cluster_10009" "cluster_10021" "cluster_10024"
+
+--------------------------------------------------------------------------------------------------
+
+r$> head(families.exp.prof.dists.orth.dist.df) Length:135280
+
+     Family Statistic    Gene.Class     Value
+1 cluster_1       max     Orthologs 1.4142136
+2 cluster_1       max Non-Orthologs 1.4142136
+3 cluster_1    median     Orthologs 0.6261746
+4 cluster_1    median Non-Orthologs 0.6697711
+5 cluster_1      mean     Orthologs 0.6292570
+6 cluster_1      mean Non-Orthologs 0.6769101
+
+r$> head(tandems.exp.prof.dists.orth.dist.df) Length: 26128 
+
+            Family Statistic    Gene.Class     Value
+1 tandem_cluster_1       max     Orthologs 0.6966031
+2 tandem_cluster_1       max Non-Orthologs 1.3947641
+3 tandem_cluster_1    median     Orthologs 0.6966031
+4 tandem_cluster_1    median Non-Orthologs 0.5302329
+5 tandem_cluster_1      mean     Orthologs 0.6966031
+6 tandem_cluster_1      mean Non-Orthologs 0.5409181
+
+r$> head(orthologs.exp.prof.dists.stats.df) Length:40444 
+  
+              Family   Statistic Gene.Class     Value
+1 ortholog_cluster_1         max  Orthologs 0.1371548
+2 ortholog_cluster_1      median  Orthologs 0.1371548
+3 ortholog_cluster_1        mean  Orthologs 0.1371548
+4 ortholog_cluster_1 maxMinusMin  Orthologs 0.0000000
+5 ortholog_cluster_2         max  Orthologs 0.1546537
+6 ortholog_cluster_2      median  Orthologs 0.1546537
+
+--------------------------------------------------------------------------------------------------
+
+--> x-Achsis basically representing the Gene-Group (Class)
+--> y-Achsis basically plots the euclidean Distances of Gene Expression Profiles
+
+Mean: The average of a set of data points, calculated by dividing the sum of all points by the number of points.
+
+Median: The middle value of a data set when ordered, not necessarily the average.
+
+Euclidean Distance: Measures the "straight-line" distance between two expression profiles in multi-dimensional space.
+
+Median Euclidean Distance: The middle value of all pairwise distances within a cluster, showing typical expression profile differences.
+
+Median Euclidean Distance: For each cluster, this value represents the typical change in gene expression between pairs of genes. It was used as a data point in the analysis.
+Data Points: Each data point corresponds to the number of clusters within each gene group.
+
+
+Gene Groups Used for the Plots:
+
+Orthologs: Genes in different species with a shared ancestral origin, typically retaining similar functions.
+Tandems: Genes located close to each other on the same chromosome, often sharing regulatory mechanisms.
+Exp: (Details not provided)
+PSel: (Details not provided)
+
+
+- Orthologs & Non Orthologs
+
+Orthologs: Genes from different species with a shared ancestor, generally having similar functions and lower median Euclidean distances (more similar expression profiles).
+Non-Orthologs: Genes without a shared ancestor, including paralogs (within species) and analogous genes (different evolutionary paths). They show higher median Euclidean distances (more varied expression profiles).
+
+
+The box plots shown compare the median Euclidean distances between expression profiles 
+across different gene classes ("Orthologs" and "Non-Orthologs") and gene groups ("Tand," "Exp," and "PSel").
+
+
+--------------------------------------------------------------------------------------------------
+
+- 1. medianExpressionProfileDistancesPerGeneGroupClassesBoxplot.pdf
+- 1-1. medianExpressionProfileDistancesPerGeneGroupClassesBoxplot_NoPosSel.pdf
+
+--> are without the comparison between Orthologs and Non Orthologs
+
+--------------------------------------------------------------------------------------------------
+
+- 1. medianExpressionProfileDistancesPerGeneGroupClassesBoxplot.pdf
+
+- Variante 1. mit PSel
+- nicht binär 
+
+--> x-Achsis: 				(Orth, Tand, Exp, PSel)
+--> y-Achsis Skala [0 - 1,4]: 	median, euclidean Distances, between expression Profiles
+
+--------------------------------------------------------------------------------------------------
+
+- 1-1. medianExpressionProfileDistancesPerGeneGroupClassesBoxplot_NoPosSel.pdf
+
+- Varinate 1-1. ohne PSel
+- nicht binär
+
+--> x-Achsis:				(Orth, Tand, Exp,     )
+--> y-Achsis Skala [0 - 1,4]:	median, euclidean Distances, between expression Profiles
+
+--------------------------------------------------------------------------------------------------
+
+- 2. medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot.pdf
+- 2-2. medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot_NoPosSel.pdf
+
+--> also include the comparison between Orthologs and Non Orthologs
+
+--------------------------------------------------------------------------------------------------
+
+- 2. medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot.pdf
+
+- This plot includes an additional group, "PSel," besides Tand and Exp. 
+- comparing all three Gene-Groups for "Orthologs" and "Non-Orthologs."
+
+
+--> x-Achsis:				(     , Tand, Exp, PSel)
+						(binäry, Orthologs & Non-Orthologs)
+--> y-Achsis Skala [0 - 1,4]:	median, euclidean Distances, between expression Profiles
+
+
+- Results/Indications: 
+- Non-Orthologs show higher median distances compared to Orthologs across all three gene groups.
+- The "PSel" group has a lower median distance compared to "Tand" and "Exp,
+-> indicating that even though positive selection often leads to divergence, the overall expression profiles may still retain some degree of similarity.
+
+
+--------------------------------------------------------------------------------------------------
+
+- 2-2. medianExpressionProfileDistancesPerGeneGroupClassesAndOrthologDistinctionBoxplot_NoPosSel.pdf
+
+- This plot compares two groups ("Tand" and "Exp") for "Orthologs" and "Non-Orthologs."
+
+
+--> x-Achsis:				(     , Tand, Exp,     )
+						(binäry, Orthologs & Non-Orthologs)
+--> y-Achsis Skala [0 - 1,4]:	median, euclidean Distances, between expression Profiles
+
+In the plot comparing "Tand" and "Exp" groups for "Orthologs" and "Non-Orthologs":
+
+Non-Orthologs have higher median expression distances, showing more variability in expression profiles within both gene groups.
+
+Orthologs exhibit lower median distances, indicating more similar expression profiles.
+
+The "Exp" group shows slightly less variability in expression profiles compared to the "Tand" group.
+
+
+--------------------------------------------------------------------------------------------------
+
+
+
+The two box plots shown compare the median Euclidean distances between expression profiles 
+across different gene classes ("Orthologs" and "Non-Orthologs") and gene groups ("Tand," "Exp," and "PSel").
+
+Summary:
+
+- Non-Orthologs generally exhibit greater variability and higher median distances in expression profiles across all gene groups ("Tand," "Exp," and "PSel"), indicating more diversity in how these genes are expressed.
+
+- Orthologs maintain lower and more consistent distances, reflecting their evolutionary conservation.
+
+- PSel group shows that despite being under positive selection (which typically increases divergence), the median expression distances are still relatively low, particularly among Orthologs, suggesting that while these genes may have evolved under selective pressure, their expression profiles are still somewhat conserved.
+These observations align with the biological roles of these gene classes and groups. Orthologs tend to be more conserved due to their essential roles across species, whereas Non-Orthologs, particularly tandem duplicates, may exhibit more diverse expression patterns due to their relatively recent duplication events within a genome.
+
+
+--------------------------------------------------------------------------------------------------
+
+- 3. medianExpressionDistsTandemNonOrthsAndExpandedNonOrthsHist.pdf
+
+--> für Gene-Groups (Classes): 	(     , Tand (rot), Exp (grün),     )
+--> x-Achsis Skala [0 - 1,4]: 	median, euclidean Distances, between expression Profiles
+--> y-Achsis: 				Density			
+
+
+
+Y-Axis (Density): In the context of this histogram, density represents the relative frequency of observations for a given range of median.exp.prof.dist values, normalized so that the area under the curve sums to 1. Unlike a simple count, density allows for comparison across different groups, even if they have different total numbers of observations.
+
+Higher Density at Lower Distances: Both "Tand" and "Exp" groups show a higher density at lower median.exp.prof.dist values (closer to 0). This suggests that in both groups, a large proportion of the gene expression profiles are relatively similar to one another.
+
+Density Peaks and Distribution:
+
+The "Tand" group (red) shows a very sharp peak near 0, which might indicate a significant number of gene expression profiles are extremely similar or identical in this group.
+The "Exp" group (cyan) has a broader peak, indicating more variability in expression profile distances within this group.
+
+Tails of the Distribution:
+
+There are longer tails on both the right side of the plot for both groups, meaning that some gene expression profiles have higher dissimilarity.
+The presence of tails in both groups suggests there are subsets of genes with more diverse expression patterns.
+
+Comparison Between Groups:
+
+The "Tand" group appears to have a more pronounced peak at very low distances, implying tighter clustering or more homogeneity in this group's gene expression profiles.
+The "Exp" group shows a more evenly spread distribution across a range of distances, suggesting a broader diversity in expression profiles.
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
+Plot Descriptions - for Section-4
+--------------------------------------------------------------------------------------------------
+
+
+
+
+
+--> Data-Frames used to create the Plots
+
+- tands.w.orths.angles.df 
+- tands.psel.w.orths.angles.df 
+- dupl.w.orths.angles.df
+- dupl.psel.w.orths.angles.df
+
+
+tands.w.orths.angles.df:
+Compares tissue versatility changes in tandem duplicates and orthologs.
+
+tands.psel.w.orths.angles.df:
+Compares tissue versatility changes in tandem duplicates, positive selected genes, and orthologs.
+
+dupl.w.orths.angles.df:
+Compares tissue versatility changes in duplicated genes and orthologs.
+
+dupl.psel.w.orths.angles.df:
+Compares tissue versatility changes in duplicated genes, positive selected genes, and orthologs.
+
+--------------------------------------------------------------------------------------------------
+
+  dupl.psel.w.orths.angles.df
+  
+  r$> str(dupl.psel.w.orths.angles.df)
+
+'data.frame':   246 obs. of  8 variables:
+ $ Family                      : chr  "cluster_1" "cluster_3" "cluster_4" "cluster_6" ...
+ $ mean.base.tiss.vers         : num  0.304 0.298 0.325 0.327 0.304 ...
+ $ duplicated.tiss.vers        : num  0.319 NA NA NA NA ...
+ $ duplicated.tiss.change      : num  9.91 NA NA NA NA ...
+ $ duplicated.dist.vec.clouds  : num  -47.8 NA NA NA NA ...
+ $ pos.selected.tiss.vers      : num  NA 0.384 0.448 0.343 0.304 ...
+ $ pos.selected.tiss.change    : num  NA 58.6 76.6 13 52.6 ...
+ $ pos.selected.dist.vec.clouds: num  NA -24.7 -526.5 -36.9 -78.6 ...
+
+tands.psel.w.orths.angles.df
+
+r$> str(tands.psel.w.orths.angles.df)
+
+'data.frame':   509 obs. of  8 variables:
+ $ Family                      : chr  "tandem_cluster_1" "tandem_cluster_5" "tandem_cluster_6" "tandem_cluster_7" ...
+ $ mean.base.tiss.vers         : num  0.411 0.402 0.661 0.449 0.61 ...
+ $ tandem.tiss.vers            : num  NA 0.384 0.551 NA 0.684 ...
+ $ tandem.tiss.change          : num  NA 12 12 NA 105 ...
+ $ tandem.dist.vec.clouds      : num  NA 11.98 1.64 NA 34.14 ...
+ $ pos.selected.tiss.vers      : num  0.394 0.365 0.37 0.386 0.635 ...
+ $ pos.selected.tiss.change    : num  28.1 31.7 78.5 32.6 108.2 ...
+ $ pos.selected.dist.vec.clouds: num  -26.24 9.46 3.76 -25.85 34.13 ...
+
+dupl.w.orths.angles.df
+
+r$> head(dupl.w.orths.angles.df)
+
+     Family mean.base.tiss.vers duplicated.tiss.vers duplicated.tiss.change duplicated.dist.vec.clouds
+1 cluster_1           0.3036426            0.3191480               9.914841                  -47.81767
+2 cluster_3           0.2983750            0.3840122              58.560570                  -24.70047
+3 cluster_4           0.3249082            0.4481303              76.574244                 -526.53245
+4 cluster_6           0.3268811            0.3429840              13.029638                  -36.92772
+5 cluster_7           0.3040171            0.3043756              52.568609                  -78.61891
+6 cluster_8           0.3638630            0.3314485              16.937293                  -58.20209
+
+tands.w.orths.angles.df:
+
+r$> head(tands.w.orths.angles.df)
+
+             Family mean.base.tiss.vers tandem.tiss.vers tandem.tiss.change tandem.dist.vec.clouds
+1  tandem_cluster_1           0.4111418        0.3937893           28.07365             -26.236713
+2  tandem_cluster_5           0.4016464        0.3633344           17.80120              10.520637
+3  tandem_cluster_6           0.6607958        0.3700730           76.18322               3.727376
+4  tandem_cluster_7           0.4487105        0.3860824           32.63659             -25.848917
+5  tandem_cluster_8           0.6101152        0.6369634          108.07885              34.127129
+6 tandem_cluster_22           0.3827031        0.3722631           40.71015             -32.755314
+
+
+- These data frames contain various metrics related to gene expression profiles and their changes due to duplication or positive selectio
+
+- Family: Identifier for gene clusters or families.
+
+- mean.base.tiss.vers: Mean tissue versatility of the gene family before any duplication or positive selection.
+
+- duplicated.tiss.vers: Tissue versatility of duplicated genes.
+
+- duplicated.tiss.change: Change in tissue versatility of duplicated genes compared to the base.
+
+- duplicated.dist.vec.clouds: Distances in expression vector space for duplicated genes.
+
+- pos.selected.tiss.vers: Tissue versatility of genes under positive selection.
+
+- pos.selected.tiss.change: Change in tissue versatility for positively selected genes.
+
+- pos.selected.dist.vec.clouds: Distances in expression vector space for positively selected genes.
+
+
+Distance Metrics:
+
+duplicated.dist.vec.clouds and pos.selected.dist.vec.clouds: 
+Measures of how expression profiles are distributed in the vector space, providing insights into how expression patterns change after duplication or under positive selection.
+
+
+
+Tissue Versatility:
+
+Definition: Measures how broadly a gene’s expression is distributed across different tissue types.
+
+Tissue Versatility is an indicator of a gene's expression profile across multiple tissues. A gene with high tissue versatility is expressed in many different tissues, while a gene with low tissue versatility is expressed in only a few.
+
+Tissue versatility measures the breadth of a gene's expression across different tissues. It helps in understanding the functional breadth of a gene and how it might change due to genetic events like duplication or positive selection. 
+
+High Versatility: If the gene shows high expression levels in several tissues, its tissue versatility is high, indicating it plays a role in multiple tissue types.
+Low Versatility: If the gene is highly expressed in only one or two tissues, its versatility is low, suggesting it has a more specialized function.
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------
+
+Four Investigated Gene Groups:
+
+Orthologs (Orth): Genes in different species from a common ancestor, retaining similar functions.
+
+Tandem Duplicates (Tand): Genes duplicated within the same genome, often located next to each other on the chromosome.
+
+Expanded Gene Families (Exp): Groups of genes significantly expanded through duplication, containing many similar genes from one or more species.
+
+Positive Selection (PSel): Gene families under evolutionary pressure favoring advantageous mutations, including diverged orthologs.
+
+Clusters: Groups of related genes with sequence similarities, assigned to these gene groups based on their evolutionary relationships.
+
+
+--------------------------------------------------------------------------------------------------
+
+- meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf
+- meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf
+
+
+- mean difference, tissue versatility after duplication
+
+--> Mean: The average of a set of data points, calculated by dividing the sum of all points by the number of points.
+--> 
+
+
+--------------------------------------------------------------------------------------------------
+
+- meanTissueVersatilityDiffsAfterDuplicationBoxplot.pdf
+
+--> x-Achsis (Gene-Group): 			(duplicated, tandem)
+--> y-Achsis Skala [-0.2:0.4]:		mean difference, tissue versatility after duplication
+
+
+Boxplot for Duplicated Genes (Left):
+The median (middle line in the box) is close to zero, suggesting that, on average, duplicated genes show little to no change in tissue versatility after duplication.
+The spread of the data (interquartile range or IQR) is moderate, indicating a moderate variability in how these genes behave after duplication.
+The whiskers (lines extending from the box) show the range of most of the data, while the dots outside the whiskers represent outliers, indicating some genes with larger changes in tissue versatility.
+Boxplot for Tandem Genes (Right):
+The median is slightly above zero, indicating a small positive change in tissue versatility after tandem duplication.
+The IQR for tandem genes is broader than for duplicated genes, suggesting higher variability in changes of tissue versatility after tandem duplication.
+There are also more outliers, implying a wider range of changes, with some genes showing significantly larger differences in tissue versatility.
+
+
+
+
+- meanTissueVersatilityDiffsAfterDuplicationHistograms.pdf	
+
+--> x-Achsis:				mean difference, tissue versatility after duplication		
+--> y-Achsis:				Frequency
+
+--> x-Achsis: 				mean difference, tissue versatility after duplication
+--> y-Achsis:				Frequency
+
+
+
+Top Plot (Duplicated Genes):
+
+This histogram shows the distribution of mean differences in tissue versatility after duplication for duplicated genes.
+The distribution is roughly symmetrical and centered around zero, indicating that most duplicated genes do not show a significant change in tissue versatility, with some exceptions in both directions (positive and negative).
+Bottom Plot (Tandem Genes):
+
+This histogram shows the distribution of mean differences in tissue versatility for tandem genes.
+The distribution is more spread out compared to the duplicated genes and slightly skewed to the right, indicating that while many tandem genes do not change much in tissue versatility, there are a larger number that do show an increase, and the increase can be more substantial.
+
+
+This suggests that tandem duplicates are more likely to show significant changes in tissue versatility, with a tendency towards increased versatility.
+
+
+Gene Families: The plots are likely comparing how different types of gene duplications (standard duplication vs. tandem duplication) affect the functionality of genes, specifically their versatility in expressing across various tissues.
+Tissue Versatility: This might refer to the ability of genes to be expressed in different tissue types. Changes in this versatility after gene duplication could indicate how the gene's function has evolved or specialized.
+Duplicated vs. Tandem: Tandem duplicates may have undergone more extensive functional changes due to their proximity and potential interaction on the chromosome, leading to greater variability in their functional outcomes.
+
+
+--------------------------------------------------------------------------------------------------
+	
+- afterDuplicationAngleBetweenOrth2DiagVecsBoxplot.pdf	
+
+--> x-Achsis (Gene-Group): 		(duplicated, tandem)
+--> y-Achsis:				Angle between orthogonals on expression space diagonal
+
+		
+- afterDuplicationAngleBetweenOrth2DiagVecsHistograms.pdf	
+
+--> x-Achsis:				Angle between orthogonals on expression space diagonal		
+--> y-Achsis:				Frequency
+
+--> x-Achsis: 				Angle between orthogonals on expression space diagonal
+--> y-Achsis:				Frequency
+
+Duplicated Genes (Left):
+
+Median: The median angle is around 75 degrees, indicating that, on average, the angle between orthogonals in the expression space is moderate for duplicated genes.
+IQR (Interquartile Range): The range between the 25th and 75th percentiles is also moderate, showing a relatively consistent spread of angles.
+Whiskers: The whiskers extend from about 0 degrees to around 150 degrees, indicating that most of the data falls within this range. There are no extreme outliers beyond these whiskers.
+Distribution: The points within the boxplot are fairly spread out, suggesting that the angles between orthogonals can vary significantly among different duplicated genes.
+Tandem Genes (Right):
+
+Median: The median angle is slightly higher, closer to 100 degrees, which suggests that tandem duplicates tend to have larger angles between orthogonals compared to other duplicated genes.
+IQR: The interquartile range is similar to that of duplicated genes, showing a comparable spread, though the distribution appears to be more dispersed towards the upper end (greater angles).
+Whiskers: The whiskers for tandem genes extend from 0 degrees to a bit over 150 degrees, indicating that while the spread is slightly larger, it remains within a similar range as duplicated genes.
+Distribution: The data points for tandem genes are also spread across the range, with a slight tendency towards higher angles, meaning more variation and potentially greater divergence in expression.
+Contextual Meaning Based on Your Data:
+Angle Between Orthogonals: In this context, the angle between orthogonals in the expression space likely represents the degree of divergence or difference in gene expression patterns between the duplicated or tandem genes. Larger angles may indicate greater functional divergence, while smaller angles could suggest more similar or conserved functions.
+
+Duplicated Genes: The relatively moderate angles suggest that while duplicated genes do show some divergence in expression patterns, this divergence is not extreme. This might imply that duplicated genes often retain some degree of functional similarity.
+
+Tandem Genes: The slightly higher median and broader spread in angles for tandem genes indicate that these gene duplicates are more likely to show significant divergence in their expression patterns. This could reflect a greater potential for functional diversification among tandem duplicates, possibly due to the influence of their proximity on the chromosome, leading to different regulatory environments.
+
+Conclusion:
+This boxplot suggests that tandem duplicates might be subject to higher evolutionary pressures that lead to greater divergence in gene expression patterns compared to other duplicated genes. This could be significant for understanding how tandem duplicates contribute to functional innovation and diversity in the genome.
+
+
+--------------------------------------------------------------------------------------------------
+	
+- meanChangeInAngleBetweenOrthOnDiagsBoxplot.pdf				
+
+--> x-Achsis (Type of Gene):	(duplicated, tandem)
+--> y-Achsis:				angle between diagonal orthologs
+
+
+
+--------------------------------------------------------------------------------------------------
+
+- expressionAngleToDiagonalBoxplot.pdf:
+
+
+- relativeExpressionVersatilityBoxplot.pdf:
 
 
 
