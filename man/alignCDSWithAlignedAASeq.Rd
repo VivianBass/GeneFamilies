@@ -5,8 +5,7 @@
 \title{Uses an amino acid multiple sequence alignment to guide the alignment of
 codon sequence 'cds'.}
 \usage{
-alignCDSWithAlignedAASeq(cds, aligned.aa.seq, aa.gap = "-",
-  codon.gap = "---")
+alignCDSWithAlignedAASeq(cds, aligned.aa.seq, aa.gap = "-", codon.gap = "---")
 }
 \arguments{
 \item{'cds'}{a String representing the codon sequence to align.}

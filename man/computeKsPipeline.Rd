@@ -7,9 +7,13 @@ sequences held in 'cds'. Temporary files are stored in 't.d'. Disclaimer:
 This function will only work on *nix Operating Systems with 'codeml' and
 'tail' installed.}
 \usage{
-computeKsPipeline(gene.a, gene.b, cds = all.cds,
+computeKsPipeline(
+  gene.a,
+  gene.b,
+  cds = all.cds,
   t.d = file.path(tempdir(), paste(gene.a, gene.b, sep = "_")),
-  codeml.call = getOption("GeneFamilies.codeml.call", "codeml"))
+  codeml.call = getOption("GeneFamilies.codeml.call", "codeml")
+)
 }
 \arguments{
 \item{gene.a}{A string holding the gene identifier as present in argument

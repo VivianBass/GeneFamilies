@@ -6,11 +6,17 @@
 separate for each species. Note it is highly recommended to set
 \code{options(mc.cores=detectCores())}}
 \usage{
-computeSpeciesSpecificAnnotationDiversityPerGroup(groups.df,
-  group.col = "Tandem.Cluster", species.col = "Species",
-  gene.col = "Gene", group.ids = unique(groups.df[, group.col]),
-  species = unique(groups.df[, species.col]), gene.annos = all.ipr,
-  annos.gene.col = 1, annos.anno.col = 2)
+computeSpeciesSpecificAnnotationDiversityPerGroup(
+  groups.df,
+  group.col = "Tandem.Cluster",
+  species.col = "Species",
+  gene.col = "Gene",
+  group.ids = unique(groups.df[, group.col]),
+  species = unique(groups.df[, species.col]),
+  gene.annos = all.ipr,
+  annos.gene.col = 1,
+  annos.anno.col = 2
+)
 }
 \arguments{
 \item{groups.df}{An instance of base::data.frame with at least three

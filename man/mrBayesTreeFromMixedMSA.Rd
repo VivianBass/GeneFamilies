@@ -6,8 +6,13 @@
 phylogeny from a mixed multiple sequence alignment, e.g. CDS AND an alignment of
 additional e.g. morphological data.}
 \usage{
-mrBayesTreeFromMixedMSA(msa.lst, msa.types, mr.bayes.dir, gene.group.name,
-  mr.bayes.n.chains = getOption("mc.cores", 4))
+mrBayesTreeFromMixedMSA(
+  msa.lst,
+  msa.types,
+  mr.bayes.dir,
+  gene.group.name,
+  mr.bayes.n.chains = getOption("mc.cores", 4)
+)
 }
 \arguments{
 \item{msa.lst}{A list of multiple sequence alignments, a mix of DNA and

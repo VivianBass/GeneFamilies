@@ -7,9 +7,14 @@ those gene groups (e.g. families) that are indicated by \code{group.ids}.
 Non conservation is inferred by
 \code{nonConservedCompositeAnnotations(...)}.}
 \usage{
-collectNonConservedAnnotations(genes.df, group.col = "Tandem.Cluster",
-  group.ids = unique(genes.df[, group.col]), gene.annos = all.ipr,
-  annos.gene.col = 1, annos.anno.col = 2)
+collectNonConservedAnnotations(
+  genes.df,
+  group.col = "Tandem.Cluster",
+  group.ids = unique(genes.df[, group.col]),
+  gene.annos = all.ipr,
+  annos.gene.col = 1,
+  annos.anno.col = 2
+)
 }
 \arguments{
 \item{genes.df}{A data.frame with three columns, two of which need to be

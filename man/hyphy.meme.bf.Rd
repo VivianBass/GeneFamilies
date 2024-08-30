@@ -4,7 +4,9 @@
 \name{hyphy.meme.bf}
 \alias{hyphy.meme.bf}
 \title{Brew template to generate a family's MEME input file}
-\format{An object of class \code{character} of length 1.}
+\format{
+An object of class \code{character} of length 1.
+}
 \usage{
 hyphy.meme.bf
 }

@@ -9,11 +9,18 @@ expression levels are extracted for more than a single tissue the
 some expression in any tissue, never expressed genes are discarded from the
 analysis.}
 \usage{
-correlationRpkmCopyNo(rpkm.df = rpkm.rna.seq.counts, r.gene.col = "id",
-  r.rpkm.col = "expression", r.tissue.col = "tissue",
-  copy.no.df = gene.copy.number.df, c.gene.col = "Gene.no.expr.var",
-  c.copy.no.col = "copy.no", tissues = unique(rpkm.df[, r.tissue.col]),
-  stat.funk = mean, lapply.funk = lapply)
+correlationRpkmCopyNo(
+  rpkm.df = rpkm.rna.seq.counts,
+  r.gene.col = "id",
+  r.rpkm.col = "expression",
+  r.tissue.col = "tissue",
+  copy.no.df = gene.copy.number.df,
+  c.gene.col = "Gene.no.expr.var",
+  c.copy.no.col = "copy.no",
+  tissues = unique(rpkm.df[, r.tissue.col]),
+  stat.funk = mean,
+  lapply.funk = lapply
+)
 }
 \arguments{
 \item{rpkm.df}{An instance of data frame holding the genes expression counts

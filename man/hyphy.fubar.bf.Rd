@@ -4,7 +4,9 @@
 \name{hyphy.fubar.bf}
 \alias{hyphy.fubar.bf}
 \title{Brew template to generate a family's FUBAR input file}
-\format{An object of class \code{character} of length 1.}
+\format{
+An object of class \code{character} of length 1.
+}
 \usage{
 hyphy.fubar.bf
 }

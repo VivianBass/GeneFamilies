@@ -5,8 +5,12 @@
 \title{Replaces sanitized protein identifiers in XStringSet 'xstring.set' with the
 original ones held in 'name.maps' table.}
 \usage{
-replaceSanitizedWithOriginalIDs(xstring.set, name.maps,
-  san.col = "sanitized", orig.col = "original")
+replaceSanitizedWithOriginalIDs(
+  xstring.set,
+  name.maps,
+  san.col = "sanitized",
+  orig.col = "original"
+)
 }
 \arguments{
 \item{xstring.set}{A vector or list of strings}

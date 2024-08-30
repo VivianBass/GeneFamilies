@@ -5,8 +5,12 @@
 \title{Identifies those pairs of orthologous genes where one member appears in all
 pairwise species comparisons.}
 \usage{
-conservedOrthologs(pairwise.orths, intersect.col = "V1",
-  ortholog.col = "V2", anchor.species = "chi")
+conservedOrthologs(
+  pairwise.orths,
+  intersect.col = "V1",
+  ortholog.col = "V2",
+  anchor.species = "chi"
+)
 }
 \arguments{
 \item{pairwise.orths}{a list of two column data frames holding orthologous

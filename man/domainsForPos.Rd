@@ -5,8 +5,15 @@
 \title{Looks up the conserved protein domains (InterPro) that have been annotated
 to gene and overlap with amino acid position 'aa.pos'.}
 \usage{
-domainsForPos(gene, aa.pos, iprscan.tbl, gene.col = "V1",
-  start.col = "V7", end.col = "V8", ipr.col = "V12")
+domainsForPos(
+  gene,
+  aa.pos,
+  iprscan.tbl,
+  gene.col = "V1",
+  start.col = "V7",
+  end.col = "V8",
+  ipr.col = "V12"
+)
 }
 \arguments{
 \item{gene}{The gene accession or ID as used in iprscan.tbl}

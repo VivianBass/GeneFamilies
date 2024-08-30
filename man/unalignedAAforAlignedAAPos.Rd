@@ -5,10 +5,13 @@
 \title{Computes the position in the unaligned sequence of a character indicated by
 \code{sel.aa}.}
 \usage{
-unalignedAAforAlignedAAPos(gene, sel.aa, msa.fasta,
+unalignedAAforAlignedAAPos(
+  gene,
+  sel.aa,
+  msa.fasta,
   gap.char = getOption("GeneFamilies.gap.char", "-"),
-  gap.char.matching.fixed = getOption("GeneFamilies.gap.char.matching.fixed",
-  TRUE))
+  gap.char.matching.fixed = getOption("GeneFamilies.gap.char.matching.fixed", TRUE)
+)
 }
 \arguments{
 \item{gene}{The gene accession / ID as used in 'msa.fasta'}

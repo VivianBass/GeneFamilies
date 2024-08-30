@@ -4,7 +4,9 @@
 \name{mr.bayes.prot.tree}
 \alias{mr.bayes.prot.tree}
 \title{Brew template to generate a protein group's Mr Bayes input file}
-\format{An object of class \code{character} of length 1.}
+\format{
+An object of class \code{character} of length 1.
+}
 \usage{
 mr.bayes.prot.tree
 }

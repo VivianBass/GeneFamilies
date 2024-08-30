@@ -7,8 +7,12 @@ frequent ones found for the argument genes and based upon argument gene
 (function) annotations. For more details about composite annotations see
 function 'compositeAnnotations(...)'}
 \usage{
-nonConservedCompositeAnnotations(gene.accs, gene.annos = all.ipr,
-  gene.col = 1, anno.col = 2)
+nonConservedCompositeAnnotations(
+  gene.accs,
+  gene.annos = all.ipr,
+  gene.col = 1,
+  anno.col = 2
+)
 }
 \arguments{
 \item{gene.accs}{The identifiers or accessions of the genes to compute the

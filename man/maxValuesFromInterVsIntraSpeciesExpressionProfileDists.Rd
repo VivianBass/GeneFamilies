@@ -6,9 +6,10 @@
 distance measurements and columns the maximum distances found for intra-,
 inter-species, and all pairwise distances.}
 \usage{
-
-  maxValuesFromInterVsIntraSpeciesExpressionProfileDists(fams.inter.intra.exp.prof.dists,
-  family.names = names(fams.inter.intra.exp.prof.dists))
+maxValuesFromInterVsIntraSpeciesExpressionProfileDists(
+  fams.inter.intra.exp.prof.dists,
+  family.names = names(fams.inter.intra.exp.prof.dists)
+)
 }
 \arguments{
 \item{fams.inter.intra.exp.prof.dists}{The result of invoking function

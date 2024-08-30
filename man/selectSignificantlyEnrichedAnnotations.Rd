@@ -6,8 +6,12 @@
 are significant and adds informative information to the annotations
 extracted from the \code{anno.db}.}
 \usage{
-selectSignificantlyEnrichedAnnotations(enriched.annotations,
-  p.val.cutoff = 0.01, anno.db = ipr.db, anno.name = "NAME")
+selectSignificantlyEnrichedAnnotations(
+  enriched.annotations,
+  p.val.cutoff = 0.01,
+  anno.db = ipr.db,
+  anno.name = "NAME"
+)
 }
 \arguments{
 \item{enriched.annotations}{A numeric vector with values the P-Values and

@@ -5,7 +5,9 @@
 \alias{mr.bayes.cds.tree}
 \title{Brew template to generate an Mr Bayes input file for a multiple alignment of
 Coding Sequences (CDS MSA).}
-\format{An object of class \code{character} of length 1.}
+\format{
+An object of class \code{character} of length 1.
+}
 \usage{
 mr.bayes.cds.tree
 }

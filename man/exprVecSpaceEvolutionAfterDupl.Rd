@@ -5,10 +5,16 @@
 \title{Based on an expression vector space infers the evolution of gene function
 after duplication by comparing base genes and groups of evolved genes.}
 \usage{
-exprVecSpaceEvolutionAfterDupl(genes, family.name, classifier.lst,
-  base.class = "ortholog", expr.vecs = rpkm.expr.profiles.df,
-  gene.col = "gene", vec.space.axes = c("cotyledon", "seedling",
-  "developing leaf", "flower stage 9", "flower stage 16"))
+exprVecSpaceEvolutionAfterDupl(
+  genes,
+  family.name,
+  classifier.lst,
+  base.class = "ortholog",
+  expr.vecs = rpkm.expr.profiles.df,
+  gene.col = "gene",
+  vec.space.axes = c("cotyledon", "seedling", "developing leaf", "flower stage 9",
+    "flower stage 16")
+)
 }
 \arguments{
 \item{genes}{character vector of gene identifiers}

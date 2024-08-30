@@ -9,8 +9,10 @@ natural and normalization is done by division by the maximum entropy
 \href{https://en.wikipedia.org/wiki/Entropy_(information_theory)#Efficiency)}{Normalized
 Entropy}.}
 \usage{
-shannonEntropy(counts.table,
-  log.base = getOption("GeneFamilies.entropy.log.base", base::exp(1)))
+shannonEntropy(
+  counts.table,
+  log.base = getOption("GeneFamilies.entropy.log.base", base::exp(1))
+)
 }
 \arguments{
 \item{counts.table}{result of invoking \code{base::table(count.vector)}}

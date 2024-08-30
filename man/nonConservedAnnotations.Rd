@@ -6,8 +6,13 @@
 gene-group. Non conserved is inferred as those annotations that do not
 appear or miss from the most frequent composite annotation.}
 \usage{
-nonConservedAnnotations(gene.accs, gene.annos = all.ipr, gene.col = 1,
-  anno.col = 2, rm.genes.without.annos = TRUE)
+nonConservedAnnotations(
+  gene.accs,
+  gene.annos = all.ipr,
+  gene.col = 1,
+  anno.col = 2,
+  rm.genes.without.annos = TRUE
+)
 }
 \arguments{
 \item{gene.accs}{Character-Vector of gene-IDs.}

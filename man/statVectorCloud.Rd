@@ -7,9 +7,11 @@ the cloud of vectors. Also infers the deviance in terms of
 \code{deviance.funk} (default is \code{base::sd}) of each axis of the vector
 space.}
 \usage{
-statVectorCloud(vecs.df,
+statVectorCloud(
+  vecs.df,
   stat = getOption("GeneFamilies.vector.cloud.stat", mean),
-  deviance.funk = getOption("GeneFamilies.vector.cloud.deviance", sd))
+  deviance.funk = getOption("GeneFamilies.vector.cloud.deviance", sd)
+)
 }
 \arguments{
 \item{vecs.df}{A matrix of data.frame of row vectors of the same vector

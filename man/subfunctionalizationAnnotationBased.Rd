@@ -11,8 +11,14 @@ the intersection of EA is smaller than the union of EA, and 3. The union of
 EA is identical to the BGA, or, if not strict, the union of the EA is a
 subset of the BGA.}
 \usage{
-subfunctionalizationAnnotationBased(base.genes, evolved.genes,
-  annot.df = all.ipr, gene.col = 1, annot.col = 2, strict = TRUE)
+subfunctionalizationAnnotationBased(
+  base.genes,
+  evolved.genes,
+  annot.df = all.ipr,
+  gene.col = 1,
+  annot.col = 2,
+  strict = TRUE
+)
 }
 \arguments{
 \item{base.genes}{Character vector of gene IDs, identifying the base genes.}

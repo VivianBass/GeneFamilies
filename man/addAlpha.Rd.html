@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>R: Adds an alpha value to colors.</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript">
+        const macros = { "\\R": "\\textsf{R}", "\\code": "\\texttt"};
+        function processMathHTML() {
+            var l = document.getElementsByClassName('reqn');
+            for (let e of l) { katex.render(e.textContent, e, { throwOnError: false, macros }); }
+            return;
+        }
+    </script>
+    <script defer src="https://cdn.jsdelivr.net/npm/katex@0.15.3/dist/katex.min.js"
+        onload="processMathHTML();"></script>
+</head>
+<body>
+    <div class="container">
+        <main>
+            <table>
+                <tr>
+                    <td>addAlpha</td>
+                    <td style="text-align: right;">R Documentation</td>
+                </tr>
+            </table>
+
+            <h2>Adds an alpha value to colors.</h2>
+
+            <h3>Description</h3>
+            <p>Adds an alpha value to colors.</p>
+
+            <h3>Usage</h3>
+            <pre><code class='language-R'>addAlpha(col, alpha = 0.1)</code></pre>
+
+            <h3>Arguments</h3>
+            <table>
+                <tr>
+                    <td><code id="A">A</code></td>
+                    <td><p>Character vector of colors.</p></td>
+                </tr>
+                <tr>
+                    <td><code id="numeric">numeric</code></td>
+                    <td><p>Alpha value between 0 and 1. Default is <code>.1</code></p></td>
+                </tr>
+            </table>
+
+            <h3>Value</h3>
+            <p>A vector of colors adjusted with the argument alpha value.</p>
+        </main>
+    </div>
+</body>
+</html>

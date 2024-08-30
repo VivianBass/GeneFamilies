@@ -6,12 +6,16 @@
 Ka and Ks values among other measures. The pairs that are selected are
 individuated by \code{GeneFamilies::axtForSelectedDistances}.}
 \usage{
-KaKsStatistics(cds.msa, gene.group.name, background.genes = NULL,
+KaKsStatistics(
+  cds.msa,
+  gene.group.name,
+  background.genes = NULL,
   w.dir = tempdir(),
   ka.ks.calculator.path = getOption("GeneFamilies.ka.ks.calculator.path",
-  file.path(path.package("GeneFamilies"), "KaKs_Calculator")),
-  ka.ks.calculator.model = getOption("GeneFamilies.ka.ks.calculator.model",
-  "GY"), ...)
+    file.path(path.package("GeneFamilies"), "KaKs_Calculator")),
+  ka.ks.calculator.model = getOption("GeneFamilies.ka.ks.calculator.model", "GY"),
+  ...
+)
 }
 \arguments{
 \item{cds.msa}{The result of invoking \code{seqinr::read.alignment}

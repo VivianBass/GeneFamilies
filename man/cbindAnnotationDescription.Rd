@@ -6,8 +6,11 @@
 the annotations found o be enriched. This function has been written
 primarily for use with InterPro annotations.}
 \usage{
-cbindAnnotationDescription(enrichment.tbl, annotation.db = ipr.db,
-  ano.desc.field = "NAME")
+cbindAnnotationDescription(
+  enrichment.tbl,
+  annotation.db = ipr.db,
+  ano.desc.field = "NAME"
+)
 }
 \arguments{
 \item{enrichment.tbl}{a data.frame result of function 'enrichmentTests' or

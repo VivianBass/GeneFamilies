@@ -5,9 +5,14 @@
 \title{Boxplots the distributions of species specific annotation (function)
 diversity, measured for each single gene group found in 'entropy.df'.}
 \usage{
-plotSpeciesSpecificAnnotationDiversityDists(plot.pdf, entropy.df, species,
-  gene.groups.type, star.species = c(),
-  colors = brewer.pal(length(species), "Dark2"))
+plotSpeciesSpecificAnnotationDiversityDists(
+  plot.pdf,
+  entropy.df,
+  species,
+  gene.groups.type,
+  star.species = c(),
+  colors = brewer.pal(length(species), "Dark2")
+)
 }
 \arguments{
 \item{plot.pdf}{The PDF File into which to save the distributions}

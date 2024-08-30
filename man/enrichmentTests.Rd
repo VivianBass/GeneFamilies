@@ -8,8 +8,12 @@ multiple hypothesis testing, before being returned. Note, if applied on
 large data sets, run in parallel on multiple cores and set
 options('mc.cores'=...) accordingly.}
 \usage{
-enrichmentTests(case.anno.tbl, universe.anno.tbl, test.dir = "greater",
-  p.adjust.method = "BY")
+enrichmentTests(
+  case.anno.tbl,
+  universe.anno.tbl,
+  test.dir = "greater",
+  p.adjust.method = "BY"
+)
 }
 \arguments{
 \item{case.anno.tbl}{the annotations for which the alternative hypothesis is

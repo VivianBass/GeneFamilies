@@ -5,8 +5,14 @@
 \title{Measures annotations gained, lost, and shared between base genes and evolved
 genes.}
 \usage{
-annotationEvolution(genes, gene.sets, base.gene.set = "ortholog",
-  annot.df = all.ipr, gene.col = 1, annot.col = 2)
+annotationEvolution(
+  genes,
+  gene.sets,
+  base.gene.set = "ortholog",
+  annot.df = all.ipr,
+  gene.col = 1,
+  annot.col = 2
+)
 }
 \arguments{
 \item{genes}{A group of genes in the form of a character vector of gene IDs}

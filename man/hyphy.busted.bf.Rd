@@ -4,7 +4,9 @@
 \name{hyphy.busted.bf}
 \alias{hyphy.busted.bf}
 \title{Brew template to generate a family's BUSTED input file}
-\format{An object of class \code{character} of length 1.}
+\format{
+An object of class \code{character} of length 1.
+}
 \usage{
 hyphy.busted.bf
 }

@@ -5,8 +5,12 @@
 \title{Computes the within \code{stats} of expression profile distances for classes
 of gene groups separating the argument genes into sub-groups.}
 \usage{
-classSpecificExpressionProfileDists(e.p.d, gene.classes, fam.name = NA,
-  stats = c("max", "median", "mean", "maxMinusMin"))
+classSpecificExpressionProfileDists(
+  e.p.d,
+  gene.classes,
+  fam.name = NA,
+  stats = c("max", "median", "mean", "maxMinusMin")
+)
 }
 \arguments{
 \item{e.p.d}{An instance of \code{stats::dist} holding the pairwise

@@ -6,8 +6,12 @@
 on the argument gene (function) annotation data.frame. Composite annotations
 are sorted alphabetically and then concatonated with ',' as separator.}
 \usage{
-compositeAnnotations(gene.accs, gene.annos = all.ipr, gene.col = 1,
-  anno.col = 2)
+compositeAnnotations(
+  gene.accs,
+  gene.annos = all.ipr,
+  gene.col = 1,
+  anno.col = 2
+)
 }
 \arguments{
 \item{gene.accs}{The identifiers or accessions of the genes to compute the

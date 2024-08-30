@@ -5,7 +5,9 @@
 \alias{codeml.tmpl}
 \title{Template for brew to generate the control file used as input for PAML's
 codeml.}
-\format{An object of class \code{character} of length 1.}
+\format{
+An object of class \code{character} of length 1.
+}
 \usage{
 codeml.tmpl
 }

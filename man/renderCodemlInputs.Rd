@@ -5,12 +5,13 @@
 \title{Generates the tree and control file to run PAML's codeml in order to compute
 the Ks of 'gene.pair'}
 \usage{
-renderCodemlInputs(gene.pair, cds.msa.path,
-  ks.out.path = sub("_CDS_MSA.fasta", "_codeml_out.txt", cds.msa.path,
-  fixed = TRUE), cds.codeml.path = sub("_CDS_MSA.fasta",
-  "_codeml_in.cnt", cds.msa.path, fixed = TRUE),
-  tree.path = sub("_CDS_MSA.fasta", "_tree.newick", cds.msa.path, fixed =
-  TRUE))
+renderCodemlInputs(
+  gene.pair,
+  cds.msa.path,
+  ks.out.path = sub("_CDS_MSA.fasta", "_codeml_out.txt", cds.msa.path, fixed = TRUE),
+  cds.codeml.path = sub("_CDS_MSA.fasta", "_codeml_in.cnt", cds.msa.path, fixed = TRUE),
+  tree.path = sub("_CDS_MSA.fasta", "_tree.newick", cds.msa.path, fixed = TRUE)
+)
 }
 \arguments{
 \item{gene.pair}{a character of length 2 holding the identifiers of the

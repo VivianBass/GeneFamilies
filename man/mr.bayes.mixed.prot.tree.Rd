@@ -5,7 +5,9 @@
 \alias{mr.bayes.mixed.prot.tree}
 \title{Brew template to generate a protein group's Mr Bayes input file using
 additional e.g. morphological knowledge}
-\format{An object of class \code{character} of length 1.}
+\format{
+An object of class \code{character} of length 1.
+}
 \usage{
 mr.bayes.mixed.prot.tree
 }

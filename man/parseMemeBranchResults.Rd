@@ -5,8 +5,11 @@
 \title{Parses a HyPhy MEME branch result file to extract significant LEAVES with
 codons showing signs of positive selection.}
 \usage{
-parseMemeBranchResults(meme.file, bayes.factor.sign.cutoff = 100,
-  fam.name.reg.exp = "/(fam\\\\d+)/")
+parseMemeBranchResults(
+  meme.file,
+  bayes.factor.sign.cutoff = 100,
+  fam.name.reg.exp = "/(fam\\\\d+)/"
+)
 }
 \arguments{
 \item{meme.file}{a valid file path to a MEME branch result file, e.g.

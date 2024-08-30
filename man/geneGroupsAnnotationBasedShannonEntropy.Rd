@@ -6,8 +6,13 @@
 Shannon Entropy in parallel. Set \code{options(mc.cores=detectCores())} for
 maximum speed.}
 \usage{
-geneGroupsAnnotationBasedShannonEntropy(groups.ids, groups.2.genes.lst,
-  gene.annos = all.ipr, gene.col = 1, anno.col = 2)
+geneGroupsAnnotationBasedShannonEntropy(
+  groups.ids,
+  groups.2.genes.lst,
+  gene.annos = all.ipr,
+  gene.col = 1,
+  anno.col = 2
+)
 }
 \arguments{
 \item{groups.ids}{The IDs of the gene groups to compute the annotation based

@@ -7,9 +7,12 @@ species with the background of the others. P-Values are obtained from an
 outlier chisquare test; see package outliers::chisq.out.test(...) for
 details.}
 \usage{
-familyExpanded(x, test.species = "chi",
+familyExpanded(
+  x,
+  test.species = "chi",
   background.species = setdiff(names(x), test.species),
-  expansion.test = max)
+  expansion.test = max
+)
 }
 \arguments{
 \item{x}{named integer vector representing the gene family to test. x holds

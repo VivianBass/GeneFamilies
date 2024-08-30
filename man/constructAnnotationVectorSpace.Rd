@@ -8,8 +8,12 @@ distinct annotation will be an axis, each gene will be assigned a vector,
 with coordinates the discrete number of times an annotation has been
 assigned to the respective gene.}
 \usage{
-constructAnnotationVectorSpace(genes, annot.df = all.ipr, gene.col = 1,
-  annot.col = 2)
+constructAnnotationVectorSpace(
+  genes,
+  annot.df = all.ipr,
+  gene.col = 1,
+  annot.col = 2
+)
 }
 \arguments{
 \item{genes}{A character vector of gene IDs}

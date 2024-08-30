@@ -5,8 +5,12 @@
 \title{Generates a valid input file for Mr Bayes, which will generate a Bayesian
 phylogeny from a multiple coding sequence (codons) alignment.}
 \usage{
-mrBayesCdsTree(cds.msa, mr.bayes.dir, gene.group.name,
-  mr.bayes.n.chains = getOption("mc.cores", 4))
+mrBayesCdsTree(
+  cds.msa,
+  mr.bayes.dir,
+  gene.group.name,
+  mr.bayes.n.chains = getOption("mc.cores", 4)
+)
 }
 \arguments{
 \item{cds.msa}{an instance of Biostrings::DNAStringSet representing the MSA

@@ -10,11 +10,15 @@ class early and late developmental tissues with intermediate samples. This
 should show wether early and late stages are more diverse than intermediate
 ones, and thus give the hourglass shape.}
 \usage{
-testHourglassModel(x, tissues = c("seedling", "cotyledon",
-  "developing leaf", "flower stage 9", "flower stage 16"),
+testHourglassModel(
+  x,
+  tissues = c("seedling", "cotyledon", "developing leaf", "flower stage 9",
+    "flower stage 16"),
   gene.classes = c("Orthologs", "Non-Orthologs"),
-  early.late.indx = c(2, 4), intermediate.indx = 3,
-  statistic = "median")
+  early.late.indx = c(2, 4),
+  intermediate.indx = 3,
+  statistic = "median"
+)
 }
 \arguments{
 \item{x}{an instance of \code{base::data.frame} with columns: 'Family',

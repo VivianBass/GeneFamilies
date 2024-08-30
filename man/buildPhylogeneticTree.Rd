@@ -5,9 +5,12 @@
 \title{Uses FastTree[MP] to generate a maximum likelihood tree based on sequence
 profiles.}
 \usage{
-buildPhylogeneticTree(path.2.cds.msa, path.2.ml.tree,
+buildPhylogeneticTree(
+  path.2.cds.msa,
+  path.2.ml.tree,
   fast.tree.call = getOption("fast.tree.call", paste("OMP_NUM_THREADS=",
-  getOption("mc.cores", 1), " FastTreeMP -nt -gtr -gamma", sep = "")))
+    getOption("mc.cores", 1), " FastTreeMP -nt -gtr -gamma", sep = ""))
+)
 }
 \arguments{
 \item{'path.2.cds.msa'}{a valid file path to the codon multiple sequence

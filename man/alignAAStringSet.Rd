@@ -6,9 +6,12 @@
 their respective amino acid residues. Does so using MAFFT. NOTE: mafft is
 expected to be installed.}
 \usage{
-alignAAStringSet(path.2.aa.seqs, path.2.aa.msa,
-  mafft.call = getOption("mafft.call", paste("mafft --thread",
-  getOption("mc.cores", 1), "--auto")))
+alignAAStringSet(
+  path.2.aa.seqs,
+  path.2.aa.msa,
+  mafft.call = getOption("mafft.call", paste("mafft --thread", getOption("mc.cores", 1),
+    "--auto"))
+)
 }
 \arguments{
 \item{'path.2.aa.seqs'}{the valid file path to the amino acid sequences

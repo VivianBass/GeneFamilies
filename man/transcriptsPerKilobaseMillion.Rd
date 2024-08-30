@@ -11,10 +11,12 @@ Lg: length of transcript g (bases)
 Note, that because we use gene length in bases and not in kilobases the
 scaling factor is 10^9 and not 10^6.}
 \usage{
-transcriptsPerKilobaseMillion(raw.count.tbl, gene.col = "gene",
+transcriptsPerKilobaseMillion(
+  raw.count.tbl,
+  gene.col = "gene",
   gene.length.col = "gene.length",
-  replicate.cols = setdiff(colnames(raw.count.tbl), c(gene.col,
-  gene.length.col)))
+  replicate.cols = setdiff(colnames(raw.count.tbl), c(gene.col, gene.length.col))
+)
 }
 \arguments{
 \item{raw.count.tbl}{A data.frame with at least three columns: One must

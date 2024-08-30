@@ -8,7 +8,9 @@ Define constants: #
 ####################
 'spec.regex.gene.ids' - Regular expressions to identify the species a gene
 belongs to. They are supposed to be used with the perl=TRUE flag.}
-\format{An object of class \code{list} of length 8.}
+\format{
+An object of class \code{list} of length 8.
+}
 \usage{
 spec.regex.gene.ids
 }

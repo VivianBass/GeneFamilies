@@ -6,9 +6,13 @@
 gene is the closest homolog of the argument \code{gene.id}. Self-Matches are
 excluded and as measure of sequence similarity the Bit-Score is used.}
 \usage{
-closestHomolog(gene.id, seq.sim.tbl = if (exists("all.vs.all.sim"))
-  all.vs.all.sim, gene.col.a = "V1", gene.col.b = "V2",
-  bit.score.col = "V12")
+closestHomolog(
+  gene.id,
+  seq.sim.tbl = if (exists("all.vs.all.sim")) all.vs.all.sim,
+  gene.col.a = "V1",
+  gene.col.b = "V2",
+  bit.score.col = "V12"
+)
 }
 \arguments{
 \item{gene.id}{The accession of the gene for which to find it's closest

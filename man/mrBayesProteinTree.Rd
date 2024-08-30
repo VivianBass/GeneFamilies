@@ -5,8 +5,12 @@
 \title{Generates a valid input file for Mr Bayes, which will generate a Bayesian
 phylogeny from a multiple amino acid sequence alignment.}
 \usage{
-mrBayesProteinTree(aa.msa, mr.bayes.dir, gene.group.name,
-  mr.bayes.n.chains = getOption("mc.cores", 4))
+mrBayesProteinTree(
+  aa.msa,
+  mr.bayes.dir,
+  gene.group.name,
+  mr.bayes.n.chains = getOption("mc.cores", 4)
+)
 }
 \arguments{
 \item{aa.msa}{an instance of Biostrings::AAStringSet representing the MSA}

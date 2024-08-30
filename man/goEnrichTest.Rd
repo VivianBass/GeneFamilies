@@ -5,9 +5,16 @@
 \title{Computes a Gene Ontology (GO) enrichment test using the functions from #'
 package GOstats and GSEABase.}
 \usage{
-goEnrichTest(gsc, gene.ids, univ.gene.ids, ontologies = c("BP", "CC",
-  "MF"), pvalue.cutoff = 0.01, cond = FALSE, test.dir = "over",
-  p.adjust.method = "fdr")
+goEnrichTest(
+  gsc,
+  gene.ids,
+  univ.gene.ids,
+  ontologies = c("BP", "CC", "MF"),
+  pvalue.cutoff = 0.01,
+  cond = FALSE,
+  test.dir = "over",
+  p.adjust.method = "fdr"
+)
 }
 \arguments{
 \item{gsc}{An instance of gene set collection [package GEABase]}

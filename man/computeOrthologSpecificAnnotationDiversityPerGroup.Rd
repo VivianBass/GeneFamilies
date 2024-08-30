@@ -7,9 +7,12 @@
 affiliation the distinction here is wether genes are Orthologs or
 Non-Orthologs.}
 \usage{
-computeOrthologSpecificAnnotationDiversityPerGroup(gene.groups.df,
-  orthologs = orthologs.genes, group.col = "Family",
-  gene.col = "Gene")
+computeOrthologSpecificAnnotationDiversityPerGroup(
+  gene.groups.df,
+  orthologs = orthologs.genes,
+  group.col = "Family",
+  gene.col = "Gene"
+)
 }
 \arguments{
 \item{gene.groups.df}{An instance of base::data.frame with at least two

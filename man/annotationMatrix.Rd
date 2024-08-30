@@ -7,9 +7,14 @@ or underrepresentation of 'anno' in the case 'anno.tbl' when compared with
 the whole universe 'universe.tbl'. Please note, that 'anno.tbl' is expected
 to be a true subset of 'universe.tbl.'}
 \usage{
-annotationMatrix(anno, anno.tbl, universe.tbl, anno.tbl.anno.col = 1,
-  universe.tbl.anno.col = 1, dim.names = list(c("annotated",
-  "not.annotated"), c("case", "universe")))
+annotationMatrix(
+  anno,
+  anno.tbl,
+  universe.tbl,
+  anno.tbl.anno.col = 1,
+  universe.tbl.anno.col = 1,
+  dim.names = list(c("annotated", "not.annotated"), c("case", "universe"))
+)
 }
 \arguments{
 \item{anno}{string representing the annotation, e.g. InterPro entry}

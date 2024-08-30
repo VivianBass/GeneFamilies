@@ -9,9 +9,12 @@ argument statistics, e.g. 'min', 'mean', 'median', and 'max' are used to
 generate the axt file for subsequent analysis with KaKs_Calculator
 (https://sourceforge.net/projects/kakscalculator2/).}
 \usage{
-axtForSelectedDistances(cds.msa, background.genes = NULL,
-  dist.stats = getOption("GeneFamilies.cds.msa.dist.stats", c("min",
-  "median", "mean", "max")))
+axtForSelectedDistances(
+  cds.msa,
+  background.genes = NULL,
+  dist.stats = getOption("GeneFamilies.cds.msa.dist.stats", c("min", "median", "mean",
+    "max"))
+)
 }
 \arguments{
 \item{cds.msa}{The result of invoking \code{seqinr::read.alignment}

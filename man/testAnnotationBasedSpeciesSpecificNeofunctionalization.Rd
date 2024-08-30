@@ -10,8 +10,11 @@ compared using a Kolmogoroff Smirnoff test. Correction for multiple
 hypotheses testing is carried out using the 'BY' method (see base::p.adjust
 for more details).}
 \usage{
-testAnnotationBasedSpeciesSpecificNeofunctionalization(entropy.df,
-  spec.2.compare, other.specs)
+testAnnotationBasedSpeciesSpecificNeofunctionalization(
+  entropy.df,
+  spec.2.compare,
+  other.specs
+)
 }
 \arguments{
 \item{entropy.df}{The result of calling function

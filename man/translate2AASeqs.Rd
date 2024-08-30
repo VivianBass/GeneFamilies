@@ -5,9 +5,12 @@
 \title{Uses the program MACSE to translate the coding sequences to amino acid
 sequences.}
 \usage{
-translate2AASeqs(path.2.cds.fasta, macse.call = getOption("macse.call",
-  paste("java -Xmx600m -jar ", file.path(path.package("GeneFamilies"),
-  "macse_v1.01b.jar"), " -prog translateNT2AA", sep = "")))
+translate2AASeqs(
+  path.2.cds.fasta,
+  macse.call = getOption("macse.call", paste("java -Xmx600m -jar ",
+    file.path(path.package("GeneFamilies"), "macse_v1.01b.jar"), " -prog translateNT2AA",
+    sep = ""))
+)
 }
 \arguments{
 \item{path.2.cds.fasta}{gives the valid file path to the FASTA file holding

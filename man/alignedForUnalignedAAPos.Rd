@@ -5,8 +5,12 @@
 \title{Computes the position of the unaligned character at argument position
 'char.pos' in the aligned sequence of argument 'gene'.}
 \usage{
-alignedForUnalignedAAPos(gene, char.pos, msa.fasta,
-  gap.char = getOption("GeneFamilies.gap.char", "-"))
+alignedForUnalignedAAPos(
+  gene,
+  char.pos,
+  msa.fasta,
+  gap.char = getOption("GeneFamilies.gap.char", "-")
+)
 }
 \arguments{
 \item{gene}{The gene accession / ID as used in 'msa.fasta'}
