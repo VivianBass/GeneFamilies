@@ -30,3 +30,5 @@ families.df$size <- apply(families.df[, 2:12], 1, sum)
 #' Save parsed data:
 save(families.genes.df, families.lst, families.df, file = file.path(input.args[[1]], 
     "families.RData"))
+
+message("DONE")

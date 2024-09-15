@@ -8,7 +8,9 @@ hyphy.meme.bf <- "inputRedirect = {};\ninputRedirect[\"01\"]=\"Universal\";\ninp
 
 #' Brew template to generate a family's FUBAR input file
 #' @export
-hyphy.fubar.bf <- "inputRedirect = {};\ninputRedirect[\"01\"]=\"Universal\";\ninputRedirect[\"02\"]=\"1\";\ninputRedirect[\"03\"]=\"<%= fam.cds.msa.path %>\";\ninputRedirect[\"04\"]=\"<%= fam.tree.no.node.lables.path %>\";\ninputRedirect[\"05\"]=\"20\";\ninputRedirect[\"06\"]=\"5\";\ninputRedirect[\"07\"]=\"2000000\";\ninputRedirect[\"08\"]=\"1000000\";\ninputRedirect[\"09\"]=\"100\";\ninputRedirect[\"10\"]=\"0.5\";\ninputRedirect[\"11\"]=\"<%= fam.hyphy.fubar.output.path %>\";\n\nExecuteAFile (\"<%= hyphy.batch.files.dir %>/FUBAR.bf\", inputRedirect);"
+# hyphy.fubar.bf <- "inputRedirect = {};\ninputRedirect[\"01\"]=\"Universal\";\ninputRedirect[\"02\"]=\"1\";\ninputRedirect[\"03\"]=\"<%= fam.cds.msa.path %>\";\ninputRedirect[\"04\"]=\"<%= fam.tree.no.node.lables.path %>\";\ninputRedirect[\"05\"]=\"20\";\ninputRedirect[\"06\"]=\"5\";\ninputRedirect[\"07\"]=\"2000000\";\ninputRedirect[\"08\"]=\"1000000\";\ninputRedirect[\"09\"]=\"100\";\ninputRedirect[\"10\"]=\"0.5\";\ninputRedirect[\"11\"]=\"<%= fam.hyphy.fubar.output.path %>\";\n\nExecuteAFile (\"<%= hyphy.batch.files.dir %>/FUBAR.bf\", inputRedirect);"
+hyphy.fubar.bf <- "inputRedirect = {};\n\ninputRedirect[\"alignment\"]=\"<%= fam.cds.msa.path %>\";\ninputRedirect[\"tree\"]=\"<%= fam.tree.no.node.lables.path %>\";\nExecuteAFile (\"<%= hyphy.batch.files.dir %>/FUBAR.bf\", inputRedirect);"
+
 
 #' Brew template to generate a family's BUSTED input file
 #' @export

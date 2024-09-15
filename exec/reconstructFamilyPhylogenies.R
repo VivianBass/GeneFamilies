@@ -3,12 +3,14 @@ require(GeneFamilies)
 message("USAGE: Rscript path/2/GeneFamilies/exec/reconstructFamilyPhylogenies.R working_dir n_cores [Batch-Start Batch-Stop]")
 message("NOTE: If you want to reconstruct the Gene families.lst' Phylogenies in parallel, you can provide both Batch-Start and Batch-Stop as indices of the non-singleton families.lst for which to run the Phylogenetic Pipeline.")
 
+load("data/codingSequences.RData")
+load("data/families.RData")
 #' Working folder:
 input.args <- commandArgs(trailingOnly = TRUE)
-o.dir <- input.args[[1]]
+o.dir <- "data/phylogeny/"
 if (!file.exists(o.dir)) dir.create(o.dir, recursive = TRUE)
 #' Cores to use:
-n.threads <- if (length(input.args) > 1) as.integer(input.args[[2]]) else detectCores()
+n.threads <- if (length(input.args) > 1) as.integer(2) else detectCores()
 options(mc.cores = n.threads)
 #' Batch size:
 families.non.singleton.inds <- families.df[ which( families.df$size > 1 ), "id" ]

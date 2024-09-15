@@ -9,20 +9,20 @@ message("- eight_brassicaceae_tandems.txt is a TAb separated table with header '
 input.args <- commandArgs(trailingOnly = TRUE)
 
 #' Load data:
-# all.vs.all.sim <- fread(input.args[[2]], data.table = FALSE, header = FALSE, stringsAsFactors = FALSE, 
-#     sep = "\t", na.strings = "", colClasses = c(rep("character", 2), rep("numeric", 
-#         10)))
-orthologs <- read.table(input.args[[2]], header = TRUE, sep = "\t", comment.char = "", 
+all.vs.all.sim <- fread(input.args[[2]], data.table = FALSE, header = FALSE, stringsAsFactors = FALSE, 
+    sep = "\t", na.strings = "", colClasses = c(rep("character", 2), rep("numeric", 
+        10)))
+orthologs <- read.table(input.args[[3]], header = TRUE, sep = "\t", comment.char = "", 
     quote = "", na.strings = "", colClasses = rep("character", 12))
 
 orths.nms <- paste("ortholog_cluster_", 1:nrow(orthologs), sep = "")
 orthologs.lst <- setNames(mclapply(1:nrow(orthologs), function(x) unlist(orthologs[x, 
     ])), orths.nms)
-# orthologs.genes <- unlist(orthologs.lst)
+orthologs.genes <- unlist(orthologs.lst)
 
 # tandems <- read.table(input.args[[4]], header = TRUE, sep = "\t", comment.char = "", 
 #     quote = "", na.strings = "", colClasses = rep("character", 2))
-paralogs <- read.table(input.args[[3]], header = TRUE, sep = "\t", comment.char = "", 
+paralogs <- read.table(input.args[[4]], header = TRUE, sep = "\t", comment.char = "", 
     quote = "", na.strings = "", colClasses = rep("character", 2))
 paralogs.nms <- unique(paralogs$Family)
 paralogs.lst <- setNames(mclapply(paralogs.nms, function(x) paralogs[which(paralogs$Family == 
@@ -30,7 +30,7 @@ paralogs.lst <- setNames(mclapply(paralogs.nms, function(x) paralogs[which(paral
 paralogs.genes <- unlist(paralogs.lst)
 paralogs.genes.nev <- removeExpressionVariant(paralogs.genes)
 #' Save loaded data:
-save(orthologs, orthologs.lst,paralogs, paralogs.lst, file = file.path(input.args[[1]], "orthologsTandems.RData"))
-# save(all.vs.all.sim, file = file.path(input.args[[1]], "pairwiseSequenceSimilarities.RData"))
+save(orthologs, orthologs.lst,orthologs.genes,paralogs, paralogs.lst, paralogs.genes, paralogs.genes.nev, file = file.path(input.args[[1]], "orthologsTandems.RData"))
+save(all.vs.all.sim, file = file.path(input.args[[1]], "pairwiseSequenceSimilarities.RData"))
 
 message("DONE")
