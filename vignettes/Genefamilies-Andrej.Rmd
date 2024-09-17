@@ -122,24 +122,24 @@
 ## Rscripts: 
 -----------------------------------------------------------------------------------------
 
-- 1.  `loadRpkmRnaSeqCounts.R`			                                      (Section-1)
-- 2.  `loadcodingSequences.R`			                                        (Section-1)
+- 1.  `loadRpkmRnaSeqCounts.R`			                              (Section-1)
+- 2.  `loadcodingSequences.R`			                              (Section-1)
 
-- 1.  `LoadOrthologsAndTandems.R`			                                    (Section-2)
-- 2.  `defineGeneSets.R`				                                          (Section-2)
-- 3.  `loadGeneFamilies.R`				                                        (Section-2)
-- 4.  `computeExpressionProfileDistances.R` 	                            (Section-2)
+- 1.  `LoadOrthologsAndTandems.R`			                      (Section-2)
+- 2.  `defineGeneSets.R`				                      (Section-2)
+- 3.  `loadGeneFamilies.R`				                      (Section-2)
+- 4.  `computeExpressionProfileDistances.R` 	                              (Section-2)
 
-- 1.  `investigateDistributionsOfExpressionProfileDistances.R`		        (Section-3)                          
-- 2.  `plotDistributionsOfExpressionProfileDistances.R`				            (Section-3)
+- 1.  `investigateDistributionsOfExpressionProfileDistances.R`		      (Section-3)                          
+- 2.  `plotDistributionsOfExpressionProfileDistances.R`			      (Section-3)
 
-      `expressionProfilesDists()`         (expression_funks.R)	          (Section-3) 
+      `expressionProfilesDists()`         (expression_funks.R)	              (Section-3) 
 
-- 1.  `generateRpkmExpressionProfiles.R` 		                              (Section-4) 
+- 1.  `generateRpkmExpressionProfiles.R` 		                      (Section-4) 
 - 2.  `expressionAngles.R`	                                              (Section-4) 
 
-      `exprVecSpaceEvolutionAfterDupl()` 	(expression_funks.R)            (Section-4) 
-      `cosDiag()`						  	          (expression_funks.R)            (Section-4) 
+      `exprVecSpaceEvolutionAfterDupl()` 	(expression_funks.R)          (Section-4) 
+      `cosDiag()`				(expression_funks.R)          (Section-4) 
 
 -----------------------------------------------------------------------------------------
 ## Files:
@@ -494,7 +494,7 @@ and consider resources like `FlyBase` and `Ensembl` for extracting necessary CDS
 - 2. Phylogenetic tree file
 
 
-- exec/`loadFubarResults.R`             ===> `fubar.fams.decisive.evidence` (List, Vector of Clusters)
+- exec/`loadFubarResults.R` ===> `fubar.fams.decisive.evidence` (List, Vector of Clusters)
 
 - to process and analyze FUBAR results for gene families.
 - Its main purpose is to load FUBAR result files, combine them into a single table, 
@@ -557,7 +557,7 @@ which is considered decisive evidence in Bayesian statistics.
 -----------------------------------------------------------------------------------------
 
 
-- 1. 	exec/`computePairwiseKaKsRatios.R`	(requirres: programm `codeml`)
+- 1.  exec/`computePairwiseKaKsRatios.R`	(requirres: programm `codeml`)
 	
 - Detect pairwise Ka/Ks ratios within closest homologs --> program `codeml`
 - Based on this alignment the program `codeml` is used to compute 
@@ -566,7 +566,7 @@ which is considered decisive evidence in Bayesian statistics.
 
 - 2.  exec/`computeOrthologsKaKsRatios.R`
 
-- 3. 	exec/`generateBustedBatchFiles.R`  (requirred: HyPhy's BUSTED)
+- 3.  exec/`generateBustedBatchFiles.R`  (requirred: HyPhy's BUSTED)
 
 
 --------------------------------------------------------------------------------------
