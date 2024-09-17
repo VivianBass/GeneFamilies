@@ -120,24 +120,24 @@ The steps and data required to carry out the original analysis are devided into 
 ## Rscripts: 
 -----------------------------------------------------------------------------------------
 
-- 1.  `loadRpkmRnaSeqCounts.R`			                                      (Section-1)
-- 2.  `loadcodingSequences.R`			                                        (Section-1)
+- 1.  `loadRpkmRnaSeqCounts.R`			                              (Section-1)
+- 2.  `loadcodingSequences.R`			                              (Section-1)
 
-- 1.  `LoadOrthologsAndTandems.R`			                                    (Section-2)
-- 2.  `defineGeneSets.R`				                                          (Section-2)
-- 3.  `loadGeneFamilies.R`				                                        (Section-2)
-- 4.  `computeExpressionProfileDistances.R` 	                            (Section-2)
+- 1.  `LoadOrthologsAndTandems.R`			                      (Section-2)
+- 2.  `defineGeneSets.R`				                      (Section-2)
+- 3.  `loadGeneFamilies.R`				                      (Section-2)
+- 4.  `computeExpressionProfileDistances.R` 	                              (Section-2)
 
-- 1.  `investigateDistributionsOfExpressionProfileDistances.R`		        (Section-3)                          
-- 2.  `plotDistributionsOfExpressionProfileDistances.R`				            (Section-3)
+- 1.  `investigateDistributionsOfExpressionProfileDistances.R`		      (Section-3)                          
+- 2.  `plotDistributionsOfExpressionProfileDistances.R`			      (Section-3)
 
-      `expressionProfilesDists()`         (expression_funks.R)	          (Section-3) 
+      `expressionProfilesDists()`         (expression_funks.R)	              (Section-3) 
 
-- 1.  `generateRpkmExpressionProfiles.R` 		                              (Section-4) 
+- 1.  `generateRpkmExpressionProfiles.R` 		                      (Section-4) 
 - 2.  `expressionAngles.R`	                                              (Section-4) 
 
-      `exprVecSpaceEvolutionAfterDupl()` 	(expression_funks.R)            (Section-4) 
-      `cosDiag()`						  	          (expression_funks.R)            (Section-4) 
+      `exprVecSpaceEvolutionAfterDupl()` 	(expression_funks.R)          (Section-4) 
+      `cosDiag()`				(expression_funks.R)          (Section-4) 
 
 -----------------------------------------------------------------------------------------
 ## Files:
