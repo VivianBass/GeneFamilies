@@ -9,6 +9,16 @@ This file contains all the descriptions for every input file that you need to ru
 
     /media/BioNAS/ag_hallab/EasyVectorOmics/GeneFamilies/inputs/drosophila_file_RPKM_modify.tsv
 
+    #### Response:
+
+    - GeneFamilies can have various orthologs _of the same_ species. This is
+      confusing, I know, but orthology and paralogy are context dependent
+      terms. 
+    - Use all genes classified as orthologs and analyse our gene family data:
+        - See, which gene families have more than one ortholog? Plot the number of
+          orthologs per gene family in a boxplot or raincloud plot, i.e. the
+          distribution of number of orthologs per gene family.
+
 
 2. Gene families
 
@@ -26,6 +36,27 @@ This file contains all the descriptions for every input file that you need to ru
 
     Or should we use a tool to group the families and have the genes for the other species?
 
+    #### Response:
+
+    The family file is correct. The gene family file currently only uses gene
+    identifier for _D. melanogaster_. The format is understood correctly. We
+    have to associate this with another file (information source) about which
+    genes are orthologs and which are paralogs. In the original `Gene_Families`
+    project this was stored as binary RData (see [this file in
+    Gene_Families](https://github.com/asishallab-group/GeneFamilies/blob/master/exec/loadOrthologsAndTandems.R)).
+    The RData file `orthologsTandems.RData` contains the information which
+    genes are orthologs and which are paralogs. Investigate:
+    ```r
+    load('./data/orthologsTandems.RData')
+    ls()
+    ```
+    What we need to do is provide _any means_ of obtaining, storing, and using
+    this information for e.g. Drosophila species. The easiest I can think of is
+    to have another table in the same format as our gene families file, in
+    which the ortholog-groups and paralog-groups are defined, e.g.
+    `Group-ID <TAB> Group-Type (ortholog|paralog|tandem cluster) <TAB> Gene-ID-1,Gene-ID-2,Gene-ID-3,...,Gene-ID-N`
+    Use any format that works for you. You can also use separate tables for
+    ortholog and paralog groups.
 
 
 3. Coding Sequences
@@ -41,6 +72,12 @@ This file contains all the descriptions for every input file that you need to ru
     If we use this type of file, we can't cross the information of our genes on script reconstructFamilyPhylogenes.R
     Maybe we should use this one but we have to map the parent genes somehow? Is that even correct?
 
+    #### Response
+
+    In the context of Easy Vector Omics, we only need coding sequences if and
+    only if we need to estimate expression levels from raw reads ourselves. And
+    in this case, we'd do that "outside" of the EasyVectorOmics R-Package;
+    preparing our expression tables with e.g. Salmon or Bowtie2 ...
 
 4. Orthologs
 
@@ -53,6 +90,23 @@ This file contains all the descriptions for every input file that you need to ru
 
     Should we use the one from flybase that only has one gene or use multiple genes for each specie?
 
+    #### Response
+
+    See 'Response' for point two, please. We need to merge the information of genes, i.e. for each gene we need data to answer the questions:
+    - Are you a ortholog or paralog?
+    - To which gene family to you belong?
+
+    Ideally, we have several sets of data:
+    - A list of gene families, consisting of gene family ID, and genes
+      belonging to the respective family
+    - A list of orthogroups, same format, i.e. group-ID and genes belonging to
+      the respective orthogroup
+    - The same for paralogs. Consequenctly by mathematical set-intersection, we
+      find the orthologs and paralogs of a gene family.
+
+    It is _very_ good, that we have the OrthoFinder results. If point two gives
+    us not enough orthologs per family, we can check if OrthoFinder helps us
+    out here.
 
 5. Paralogs
 
@@ -70,6 +124,10 @@ This file contains all the descriptions for every input file that you need to ru
     For Drosohpila we used aminoacid sequences to run Blast.
 
 ## Scripts
+
+Ignore all scripts that deal with the detection of positive selection, like
+FUBAR, MEME, pairwise Ka/Ks, etc. These look for signals of Darwinian selection
+which we at this point do not want to include in our EasyVectorOmics analysis. 
 
 - generateFubarBatchFiles.R 
 
