@@ -21,11 +21,6 @@ calculate_means <- function(df, column_name) {
   return(df_mean)
 }
 
-# Usage:
-# df_means <- calculate_means(df = df, column_name = column_name)
-# column_name <- "paralogs.exp.prof.dists"
-# df <- para
-
 # -----------------------------------------------------------------------------
 
 # Function for performing t-tests and Wilcoxon tests on pairwise distribution data
