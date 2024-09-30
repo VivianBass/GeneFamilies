@@ -1,0 +1,32 @@
+
+- Expression profiles of orthologs and paralogs
+ [8] "df14_M_dmel"
+[10] "df14_P_dmel"
+
+- Euclidean distance between expression profiles of orthologs and paralogs
+[13] "orthologs.exp.prof.dists"
+[16] "orthologs.exp.prof.dists_dataframe"
+[14] "orthologs.exp.prof.dists.tissue"
+[15] "orthologs.exp.prof.dists.tissue_dataframe"
+
+[22] "paralogs.exp.prof.dists"
+[25] "paralogs.exp.prof.dists_dataframe"
+[23] "paralogs.exp.prof.dists.tissue"
+[24] "paralogs.exp.prof.dists.tissue_dataframe"
+
+- statistics of distances between expression profiles of orthologs and paralogs
+[26] "paralogs.exp.prof.dists_stats_df"
+[3]  "df_median_mean_paralogs.exp.prof.dists.tissue"
+[17] "orthologs.exp.prof.dists_stats_df"
+[1]  "df_median_mean_orthologs.exp.prof.dists.tissue"
+
+- Genefamilies dataframes
+[28] "vv_df2_merged_449_rows"
+[30] "vv_df3_ortho"
+[31] "vv_df3_ortho.lst"
+[32] "vv_df3_para"
+[33] "vv_df3_para.lst"
+
+- angles of expression profiles
+[18] "orths.expr.angle.diag.df"
+[21] "paralog.expr.angle.diag.df"

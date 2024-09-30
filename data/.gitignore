@@ -1,5 +1,4 @@
 # Ignore everything in this directory
-*.RData
 
 # Except this file
 !.gitignore
