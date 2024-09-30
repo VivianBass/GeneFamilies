@@ -1,0 +1,54 @@
+Here's a summary of the key points:
+
+Scaling by 
+2
+2
+​
+ :
+
+Simple Rescaling: Dividing by 
+2
+2
+​
+  scales the distances or angles down by a constant factor. This operation preserves the relative distances between points, meaning the shape and structure of the vector cloud remain unchanged.
+Not Full Normalization: Dividing by 
+2
+2
+​
+  doesn't fully normalize the data, but it serves to rescale values in a way that standardizes distances or angles across different comparisons.
+Normalization and Context:
+
+Normalization: In certain contexts, dividing by 
+2
+2
+​
+  may arise when working with vectors in diagonal directions or high-dimensional spaces. It helps adjust distances or angles to ensure that they are comparable across different spaces or dimensions.
+High-Dimensional Space: In high-dimensional vector spaces, such as gene expression data, distances between vectors can behave differently. Dividing by 
+2
+2
+​
+  helps maintain consistent scaling when comparing angles between expression vectors (e.g., between orthologs and paralogs).
+Cosine Similarity in High-Dimensional Space:
+
+Cosine Formula: When computing the cosine similarity between two vectors, dividing by 
+2
+2
+​
+  might normalize the diagonal distances in the space, making the angular comparison more interpretable and comparable.
+Diagonal Distance: If vectors lie on a diagonal, their Euclidean norm can be larger. Dividing by 
+2
+2
+​
+  corrects for this, ensuring that angles between vectors in the space are properly scaled.
+Use Case in Gene Expression Analysis:
+
+Gene Expression Vectors: In gene expression studies, dividing by 
+2
+2
+​
+  helps standardize the analysis of angles and distances between ortholog and paralog expression vectors. This normalization makes changes in tissue versatility and specificity easier to interpret, ensuring a consistent comparison across the dataset.
+In conclusion, dividing by 
+2
+2
+​
+  is used to rescale distances and angles in high-dimensional spaces, particularly when working with vectors along diagonals. It ensures a more consistent and meaningful comparison, especially when analyzing complex data like gene expression profiles.
