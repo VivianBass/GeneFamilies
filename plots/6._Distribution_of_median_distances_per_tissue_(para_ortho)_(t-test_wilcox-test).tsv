@@ -1,0 +1,57 @@
+.y.	group1	group2	n1	n2	statistic	df	p	p.adj	p.adj.signif	adjusted_p
+value	Median_Fat_Body.x	Median_Fat_Body.y	403	403	NA	402	NA	NA		NA
+value	Median_Fat_Body.x	Median_Gut.x	403	403	-2.69950045712174	402	0.007	0.029	*	0.007
+value	Median_Fat_Body.x	Median_Gut.y	403	403	-2.69950045712174	402	0.007	0.029	*	0.007
+value	Median_Fat_Body.x	Median_Muscle.x	403	403	-5.90585083262886	402	7.48e-09	8.98e-08	****	9.97333333333333e-09
+value	Median_Fat_Body.x	Median_Muscle.y	403	403	-5.90585083262886	402	7.48e-09	8.98e-08	****	9.97333333333333e-09
+value	Median_Fat_Body.x	Median_Whole_Body.x	403	403	-12.611160532511	402	5.92e-31	1.42e-29	****	2.368e-30
+value	Median_Fat_Body.x	Median_Whole_Body.y	403	403	-12.611160532511	402	5.92e-31	1.42e-29	****	2.368e-30
+value	Median_Fat_Body.y	Median_Gut.x	403	403	-2.69950045712174	402	0.007	0.029	*	0.007
+value	Median_Fat_Body.y	Median_Gut.y	403	403	-2.69950045712174	402	0.007	0.029	*	0.007
+value	Median_Fat_Body.y	Median_Muscle.x	403	403	-5.90585083262886	402	7.48e-09	8.98e-08	****	9.97333333333333e-09
+value	Median_Fat_Body.y	Median_Muscle.y	403	403	-5.90585083262886	402	7.48e-09	8.98e-08	****	9.97333333333333e-09
+value	Median_Fat_Body.y	Median_Whole_Body.x	403	403	-12.611160532511	402	5.92e-31	1.42e-29	****	2.368e-30
+value	Median_Fat_Body.y	Median_Whole_Body.y	403	403	-12.611160532511	402	5.92e-31	1.42e-29	****	2.368e-30
+value	Median_Gut.x	Median_Gut.y	403	403	NA	402	NA	NA		NA
+value	Median_Gut.x	Median_Muscle.x	403	403	-3.52410205039508	402	0.000474	0.004	**	0.000517090909090909
+value	Median_Gut.x	Median_Muscle.y	403	403	-3.52410205039508	402	0.000474	0.004	**	0.000517090909090909
+value	Median_Gut.x	Median_Whole_Body.x	403	403	-11.1850276980515	402	1.81e-25	3.62e-24	****	5.43e-25
+value	Median_Gut.x	Median_Whole_Body.y	403	403	-11.1850276980515	402	1.81e-25	3.62e-24	****	5.43e-25
+value	Median_Gut.y	Median_Muscle.x	403	403	-3.52410205039508	402	0.000474	0.004	**	0.000517090909090909
+value	Median_Gut.y	Median_Muscle.y	403	403	-3.52410205039508	402	0.000474	0.004	**	0.000517090909090909
+value	Median_Gut.y	Median_Whole_Body.x	403	403	-11.1850276980515	402	1.81e-25	3.62e-24	****	5.43e-25
+value	Median_Gut.y	Median_Whole_Body.y	403	403	-11.1850276980515	402	1.81e-25	3.62e-24	****	5.43e-25
+value	Median_Muscle.x	Median_Muscle.y	403	403	NA	402	NA	NA		NA
+value	Median_Muscle.x	Median_Whole_Body.x	403	403	-8.27456356852571	402	1.92e-15	3.07e-14	****	3.29142857142857e-15
+value	Median_Muscle.x	Median_Whole_Body.y	403	403	-8.27456356852571	402	1.92e-15	3.07e-14	****	3.29142857142857e-15
+value	Median_Muscle.y	Median_Whole_Body.x	403	403	-8.27456356852571	402	1.92e-15	3.07e-14	****	3.29142857142857e-15
+value	Median_Muscle.y	Median_Whole_Body.y	403	403	-8.27456356852571	402	1.92e-15	3.07e-14	****	3.29142857142857e-15
+value	Median_Whole_Body.x	Median_Whole_Body.y	403	403	NA	402	NA	NA		NA
+value	Median_Fat_Body.x	Median_Fat_Body.y	403	403	0	NA	NA	NA		NA
+value	Median_Fat_Body.x	Median_Gut.x	403	403	24463	NA	9.47e-06	3.79e-05	****	1.1364e-05
+value	Median_Fat_Body.x	Median_Gut.y	403	403	24463	NA	9.47e-06	3.79e-05	****	1.1364e-05
+value	Median_Fat_Body.x	Median_Muscle.x	403	403	15775	NA	1.84e-20	2.94e-19	****	4.416e-20
+value	Median_Fat_Body.x	Median_Muscle.y	403	403	15775	NA	1.84e-20	2.94e-19	****	4.416e-20
+value	Median_Fat_Body.x	Median_Whole_Body.x	403	403	10479	NA	5.91e-38	1.42e-36	****	7.092e-37
+value	Median_Fat_Body.x	Median_Whole_Body.y	403	403	10479	NA	5.91e-38	1.42e-36	****	7.092e-37
+value	Median_Fat_Body.y	Median_Gut.x	403	403	24463	NA	9.47e-06	3.79e-05	****	1.1364e-05
+value	Median_Fat_Body.y	Median_Gut.y	403	403	24463	NA	9.47e-06	3.79e-05	****	1.1364e-05
+value	Median_Fat_Body.y	Median_Muscle.x	403	403	15775	NA	1.84e-20	2.94e-19	****	4.416e-20
+value	Median_Fat_Body.y	Median_Muscle.y	403	403	15775	NA	1.84e-20	2.94e-19	****	4.416e-20
+value	Median_Fat_Body.y	Median_Whole_Body.x	403	403	10479	NA	5.91e-38	1.42e-36	****	7.092e-37
+value	Median_Fat_Body.y	Median_Whole_Body.y	403	403	10479	NA	5.91e-38	1.42e-36	****	7.092e-37
+value	Median_Gut.x	Median_Gut.y	403	403	0	NA	NA	NA		NA
+value	Median_Gut.x	Median_Muscle.x	403	403	21070	NA	2.87e-13	2.3e-12	****	4.305e-13
+value	Median_Gut.x	Median_Muscle.y	403	403	21070	NA	2.87e-13	2.3e-12	****	4.305e-13
+value	Median_Gut.x	Median_Whole_Body.x	403	403	13286	NA	1.71e-31	3.42e-30	****	1.026e-30
+value	Median_Gut.x	Median_Whole_Body.y	403	403	13286	NA	1.71e-31	3.42e-30	****	1.026e-30
+value	Median_Gut.y	Median_Muscle.x	403	403	21070	NA	2.87e-13	2.3e-12	****	4.305e-13
+value	Median_Gut.y	Median_Muscle.y	403	403	21070	NA	2.87e-13	2.3e-12	****	4.305e-13
+value	Median_Gut.y	Median_Whole_Body.x	403	403	13286	NA	1.71e-31	3.42e-30	****	1.026e-30
+value	Median_Gut.y	Median_Whole_Body.y	403	403	13286	NA	1.71e-31	3.42e-30	****	1.026e-30
+value	Median_Muscle.x	Median_Muscle.y	403	403	0	NA	NA	NA		NA
+value	Median_Muscle.x	Median_Whole_Body.x	403	403	21023	NA	1.04e-16	1.25e-15	****	2.08e-16
+value	Median_Muscle.x	Median_Whole_Body.y	403	403	21023	NA	1.04e-16	1.25e-15	****	2.08e-16
+value	Median_Muscle.y	Median_Whole_Body.x	403	403	21023	NA	1.04e-16	1.25e-15	****	2.08e-16
+value	Median_Muscle.y	Median_Whole_Body.y	403	403	21023	NA	1.04e-16	1.25e-15	****	2.08e-16
+value	Median_Whole_Body.x	Median_Whole_Body.y	403	403	0	NA	NA	NA		NA

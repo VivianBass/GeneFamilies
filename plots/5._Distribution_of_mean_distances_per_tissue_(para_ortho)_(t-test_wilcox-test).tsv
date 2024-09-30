@@ -1,0 +1,57 @@
+.y.	group1	group2	n1	n2	statistic	df	p	p.adj	p.adj.signif	adjusted_p
+value	Mean_Fat_Body.x	Mean_Fat_Body.y	415	415	NA	414	NA	NA		NA
+value	Mean_Fat_Body.x	Mean_Gut.x	415	415	-0.745421206214602	414	0.456	1	ns	0.456
+value	Mean_Fat_Body.x	Mean_Gut.y	415	415	-0.745421206214602	414	0.456	1	ns	0.456
+value	Mean_Fat_Body.x	Mean_Muscle.x	415	415	-5.50198876223921	414	6.59e-08	7.91e-07	****	8.78666666666667e-08
+value	Mean_Fat_Body.x	Mean_Muscle.y	415	415	-5.50198876223921	414	6.59e-08	7.91e-07	****	8.78666666666667e-08
+value	Mean_Fat_Body.x	Mean_Whole_Body.x	415	415	-9.41564259349705	414	3.32e-19	7.97e-18	****	9.96e-19
+value	Mean_Fat_Body.x	Mean_Whole_Body.y	415	415	-9.41564259349705	414	3.32e-19	7.97e-18	****	9.96e-19
+value	Mean_Fat_Body.y	Mean_Gut.x	415	415	-0.745421206214602	414	0.456	1	ns	0.456
+value	Mean_Fat_Body.y	Mean_Gut.y	415	415	-0.745421206214602	414	0.456	1	ns	0.456
+value	Mean_Fat_Body.y	Mean_Muscle.x	415	415	-5.50198876223921	414	6.59e-08	7.91e-07	****	8.78666666666667e-08
+value	Mean_Fat_Body.y	Mean_Muscle.y	415	415	-5.50198876223921	414	6.59e-08	7.91e-07	****	8.78666666666667e-08
+value	Mean_Fat_Body.y	Mean_Whole_Body.x	415	415	-9.41564259349705	414	3.32e-19	7.97e-18	****	9.96e-19
+value	Mean_Fat_Body.y	Mean_Whole_Body.y	415	415	-9.41564259349705	414	3.32e-19	7.97e-18	****	9.96e-19
+value	Mean_Gut.x	Mean_Gut.y	415	415	NA	414	NA	NA		NA
+value	Mean_Gut.x	Mean_Muscle.x	415	415	-3.96869326910358	414	8.52e-05	0.000682	***	0.00010224
+value	Mean_Gut.x	Mean_Muscle.y	415	415	-3.96869326910358	414	8.52e-05	0.000682	***	0.00010224
+value	Mean_Gut.x	Mean_Whole_Body.x	415	415	-8.65518189369888	414	1.1e-16	2.2e-15	****	2.2e-16
+value	Mean_Gut.x	Mean_Whole_Body.y	415	415	-8.65518189369888	414	1.1e-16	2.2e-15	****	2.2e-16
+value	Mean_Gut.y	Mean_Muscle.x	415	415	-3.96869326910358	414	8.52e-05	0.000682	***	0.00010224
+value	Mean_Gut.y	Mean_Muscle.y	415	415	-3.96869326910358	414	8.52e-05	0.000682	***	0.00010224
+value	Mean_Gut.y	Mean_Whole_Body.x	415	415	-8.65518189369888	414	1.1e-16	2.2e-15	****	2.2e-16
+value	Mean_Gut.y	Mean_Whole_Body.y	415	415	-8.65518189369888	414	1.1e-16	2.2e-15	****	2.2e-16
+value	Mean_Muscle.x	Mean_Muscle.y	415	415	NA	414	NA	NA		NA
+value	Mean_Muscle.x	Mean_Whole_Body.x	415	415	-6.07545294566247	414	2.8e-09	4.48e-08	****	4.2e-09
+value	Mean_Muscle.x	Mean_Whole_Body.y	415	415	-6.07545294566247	414	2.8e-09	4.48e-08	****	4.2e-09
+value	Mean_Muscle.y	Mean_Whole_Body.x	415	415	-6.07545294566247	414	2.8e-09	4.48e-08	****	4.2e-09
+value	Mean_Muscle.y	Mean_Whole_Body.y	415	415	-6.07545294566247	414	2.8e-09	4.48e-08	****	4.2e-09
+value	Mean_Whole_Body.x	Mean_Whole_Body.y	415	415	NA	414	NA	NA		NA
+value	Mean_Fat_Body.x	Mean_Fat_Body.y	415	415	0	NA	NA	NA		NA
+value	Mean_Fat_Body.x	Mean_Gut.x	415	415	32447	NA	0.004	0.017	*	0.00436363636363636
+value	Mean_Fat_Body.x	Mean_Gut.y	415	415	32447	NA	0.004	0.017	*	0.00436363636363636
+value	Mean_Fat_Body.x	Mean_Muscle.x	415	415	20952	NA	7.65e-18	9.18e-17	****	1.836e-17
+value	Mean_Fat_Body.x	Mean_Muscle.y	415	415	20952	NA	7.65e-18	9.18e-17	****	1.836e-17
+value	Mean_Fat_Body.x	Mean_Whole_Body.x	415	415	17420	NA	1.74e-25	3.48e-24	****	1.044e-24
+value	Mean_Fat_Body.x	Mean_Whole_Body.y	415	415	17420	NA	1.74e-25	3.48e-24	****	1.044e-24
+value	Mean_Fat_Body.y	Mean_Gut.x	415	415	32447	NA	0.004	0.017	*	0.00436363636363636
+value	Mean_Fat_Body.y	Mean_Gut.y	415	415	32447	NA	0.004	0.017	*	0.00436363636363636
+value	Mean_Fat_Body.y	Mean_Muscle.x	415	415	20952	NA	7.65e-18	9.18e-17	****	1.836e-17
+value	Mean_Fat_Body.y	Mean_Muscle.y	415	415	20952	NA	7.65e-18	9.18e-17	****	1.836e-17
+value	Mean_Fat_Body.y	Mean_Whole_Body.x	415	415	17420	NA	1.74e-25	3.48e-24	****	1.044e-24
+value	Mean_Fat_Body.y	Mean_Whole_Body.y	415	415	17420	NA	1.74e-25	3.48e-24	****	1.044e-24
+value	Mean_Gut.x	Mean_Gut.y	415	415	0	NA	NA	NA		NA
+value	Mean_Gut.x	Mean_Muscle.x	415	415	19410	NA	1.3e-20	2.08e-19	****	5.2e-20
+value	Mean_Gut.x	Mean_Muscle.y	415	415	19410	NA	1.3e-20	2.08e-19	****	5.2e-20
+value	Mean_Gut.x	Mean_Whole_Body.x	415	415	14970	NA	4.23e-30	1.02e-28	****	5.076e-29
+value	Mean_Gut.x	Mean_Whole_Body.y	415	415	14970	NA	4.23e-30	1.02e-28	****	5.076e-29
+value	Mean_Gut.y	Mean_Muscle.x	415	415	19410	NA	1.3e-20	2.08e-19	****	5.2e-20
+value	Mean_Gut.y	Mean_Muscle.y	415	415	19410	NA	1.3e-20	2.08e-19	****	5.2e-20
+value	Mean_Gut.y	Mean_Whole_Body.x	415	415	14970	NA	4.23e-30	1.02e-28	****	5.076e-29
+value	Mean_Gut.y	Mean_Whole_Body.y	415	415	14970	NA	4.23e-30	1.02e-28	****	5.076e-29
+value	Mean_Muscle.x	Mean_Muscle.y	415	415	0	NA	NA	NA		NA
+value	Mean_Muscle.x	Mean_Whole_Body.x	415	415	27871	NA	5.99e-10	4.79e-09	****	1.02685714285714e-09
+value	Mean_Muscle.x	Mean_Whole_Body.y	415	415	27871	NA	5.99e-10	4.79e-09	****	1.02685714285714e-09
+value	Mean_Muscle.y	Mean_Whole_Body.x	415	415	27871	NA	5.99e-10	4.79e-09	****	1.02685714285714e-09
+value	Mean_Muscle.y	Mean_Whole_Body.y	415	415	27871	NA	5.99e-10	4.79e-09	****	1.02685714285714e-09
+value	Mean_Whole_Body.x	Mean_Whole_Body.y	415	415	0	NA	NA	NA		NA
