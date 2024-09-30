@@ -32,12 +32,12 @@ ortho_median <- orthologs.exp.prof.dists_stats_df[ ,  c("Family", "median")]
 # calculate mean Values for the Dataframe if row/column Element contain multiple values
 # column_name , column where the mean is calculated
 
-column_name <- "median"
-df <- para_median
+column_name <- "mean"
+df <- ortho_mean
 
 library(dplyr)
 
-source("exec/t_test_functions.R")
+source("R/t_test_functions.R")
 
 df_means <- calculate_means(df , column_name = column_name)
 

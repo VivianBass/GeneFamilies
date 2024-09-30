@@ -190,6 +190,13 @@ for each gene-family f_i in fams_with_separated_orth_paral_expr_clouds
   - maybe some kind of normalization?
   - check the function bodies. How does Asis calculate these angles?
 
+
+- 
+Dividing by 2 scales distances and angles uniformly, preserving the shape of vector clouds but does not fully normalize the data.
+In high-dimensional spaces like gene expression data, dividing by 2 helps maintain consistent scaling for comparisons of distances and angles, especially between orthologs and paralogs.
+This rescaling aids in gene expression analysis by standardizing the interpretation of tissue-specific and versatile expression patterns across datasets.
+
+
 find out why is he dividing the cosine by sqrt(2)?
 -----------------------------------
 
@@ -244,35 +251,8 @@ Expression angles
 Expression versatility
 
 
-find out why is he dividing the cosine by sqrt(2)?
 
 
 
 
 
- [8] "df14_M_dmel"
-[10] "df14_P_dmel"
-
-[13] "orthologs.exp.prof.dists"
-[17] "orthologs.exp.prof.dists_stats_df"
-[16] "orthologs.exp.prof.dists_dataframe"
-[14] "orthologs.exp.prof.dists.tissue"
-[15] "orthologs.exp.prof.dists.tissue_dataframe"
-[1]  "df_median_mean_orthologs.exp.prof.dists.tissue"
-
-[22] "paralogs.exp.prof.dists"
-[25] "paralogs.exp.prof.dists_dataframe"
-[26] "paralogs.exp.prof.dists_stats_df"
-[23] "paralogs.exp.prof.dists.tissue"
-[24] "paralogs.exp.prof.dists.tissue_dataframe"
- [3] "df_median_mean_paralogs.exp.prof.dists.tissue"
-
-
-[28] "vv_df2_merged_449_rows"
-[30] "vv_df3_ortho"
-[31] "vv_df3_ortho.lst"
-[32] "vv_df3_para"
-[33] "vv_df3_para.lst"
-
-[18] "orths.expr.angle.diag.df"
-[21] "paralog.expr.angle.diag.df"

@@ -1,0 +1,2 @@
+variables	.y.	group1	group2	n1	n2	statistic	df	p	p.adj	p.adj.signif	y.position	groups	xmin	xmax
+exp.prof.dist	value	ortholog	paralog	403	415	0.9449924524665164	815.2963582309126	0.345	0.345	ns	0.77068		1	2
