@@ -170,3 +170,11 @@ plot <- create_and_save_boxplot(
   x_label = x_label,
   y_label = y_label
 )
+
+
+# ------------------------------------------------------------------------------------------------------
+4. Distributions of distances per tissue
+# ------------------------------------------------------------------------------------------------------
+
+7. Expression angles
+8. Expression versatility
