@@ -1,0 +1,5 @@
+variables	.y.	group1	group2	n1	n2	statistic	p	p.signif	y.position	groups	xmin	xmax
+Mean_Fat_Body	value	ortholog	paralog	403	415	75035	0.011	*	0.40984		1	2
+Mean_Gut	value	ortholog	paralog	403	415	82990.5	0.852	ns	0.77884		1	2
+Mean_Muscle	value	ortholog	paralog	403	415	76667.5	0.0395	*	0.57884		1	2
+Mean_Whole_Body	value	ortholog	paralog	403	415	91398.5	0.0214	*	0.56784		1	2

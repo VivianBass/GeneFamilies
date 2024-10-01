@@ -56,6 +56,33 @@ perform_analysis <- function(data_long, output_file) {
   return(list(results = combined_results))
 }
 
+# Function for performing t-tests and Wilcoxon tests on pairwise distribution data
+
+# Input: data (Dataframe) and output_file (Output file name)
+
+perform_wilcox_test <- function(data_long, output_file) {
+
+  library(ggplot2)
+  library(tidyr)
+  library(dplyr)
+  library(rstatix)
+  library(ggpubr)  
+  
+  # Perform the Wilcoxon test
+  wilcox_result <- data_long %>%
+    wilcox_test(value ~ group, paired = TRUE) %>%  # If your data is paired
+    adjust_pvalue(method = "BH") %>%               # Adjust p-values using Benjamini-Hochberg (BH)
+    add_significance()                             # Add significance stars
+  
+  # Save the results to a .tsv file
+  write.table(wilcox_result, 
+              file = file.path("plots", paste0(output_file, ".tsv")), 
+              sep = "\t", row.names = FALSE, quote = FALSE)
+
+  # Return results for further analysis or plotting
+  return(list(results = wilcox_result))
+}
+
 # -----------------------------------------------------------------------------
 
 # Function for creating and saving boxplot from t-test and Wilcoxon test results

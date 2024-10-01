@@ -112,6 +112,78 @@ write_tsv(stat.test, "plots/t-test-plots/exp.prof.dists_statistical_results.tsv"
 
 # --------------------------------------------------------------------------------
 
+paralogs.exp.prof.dists_stats_df
+orthologs.exp.prof.dists_stats_df
+
+df1 <- paralogs.exp.prof.dists_stats_df
+df2 <- orthologs.exp.prof.dists_stats_df
+
+
+calculate_means <- function(df, column_name) {
+  library(dplyr)
+
+  df_mean <- df %>%
+    rowwise() %>%  
+    mutate(
+      mean_value = mean(as.numeric(unlist(strsplit(as.character(get(column_name)), ","))), na.rm = TRUE)
+    ) %>%
+    ungroup() %>%
+    select(Family, mean_value)
+  
+  colnames(df_mean) <- c("Family", column_name)
+
+  return(df_mean)
+}
+
+df1 <- calculate_means(df1 , column_name = "median")
+df2 <- calculate_means(df2 , column_name = "median")
+
+para_stats_median <- df1[ , c("Family", "median")]
+ortho_stats_median <- df2[ , c("Family", "median")]
+
+para_stats_mean <- df1[ , c("Family", "mean")]
+ortho_stats_mean <- df2[ , c("Family", "mean")]
+
+
+p.lst <- list(paralog = para_stats_median , ortholog = ortho_stats_median)
+p.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
+    data.frame(gene.type = gene.type, median = p.lst[[gene.type]]$median, 
+        stringsAsFactors = FALSE)
+}))
+
+mydata <- p.df %>% as_tibble()
+
+mydata.long <- mydata %>% pivot_longer(-gene.type, names_to = "variables", values_to = "value")
+mydata.long <- mydata.long %>% filter(!is.na(value) & !is.infinite(value))
+
+stat.test <- mydata.long %>%
+  group_by(variables) %>%  
+  t_test(value ~ gene.type) %>%  
+  adjust_pvalue(method = "BH") %>%  
+  add_significance()
+
+# Create the boxplot again
+myplot <- ggboxplot(
+  mydata.long,
+  x = "gene.type",
+  y = "value",
+  fill = "gene.type",
+  palette = "npg",
+  legend = "none",
+  ggtheme = theme_pubr(border = TRUE)
+) +
+facet_wrap(~variables) 
+
+# Add p-values to the plot
+stat.test <- stat.test %>% add_xy_position(x = "gene.type") 
+myplot_with_pvals <- myplot + stat_pvalue_manual(stat.test, label = "p.adj.signif")
+
+# Save the plot as a PDF
+ggsave("plots/t-test-plots/median_exp.prof.dists_boxplot_with_pvalues.pdf", plot = myplot_with_pvals, width = 10, height = 7)
+write_tsv(stat.test, "plots/t-test-plots/median_exp.prof.dists_statistical_results.tsv")
+
+# --------------------------------------------------------------------------------
+
 
 # exp.prof.dists.tissue
 
@@ -148,7 +220,7 @@ df_ortho_para_median
 
 library(parallel)
 
-p.lst <- list(paralog = df_paralog_mean, ortholog = df_ortho_mean)
+p.lst <- list(paralog = df_ortho_mean, ortholog = df_paralog_mean)
 
 
 p.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
@@ -163,36 +235,7 @@ p.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
 }))
 
 
-library(tidyverse)
-library(rstatix)
-library(ggpubr)
 
-
-mydata <- p.df  
-mydata_long <- mydata %>% pivot_longer(cols = -gene.type, names_to = "variables", values_to = "value")
-mydata_long <- mydata_long %>% filter(!is.na(value) & !is.infinite(value))
-
-stat.test <- mydata_long %>%
-  group_by(variables) %>%
-  pairwise_t_test(value ~ gene.type, p.adjust.method = "BH")
-
-myplot <- ggboxplot(
-  mydata_long,
-  x = "gene.type",
-  y = "value",
-  fill = "gene.type",
-  palette = "npg",  
-  legend = "none",
-  ggtheme = theme_pubr(border = TRUE)
-) +
-  facet_wrap(~variables)  
-
-stat.test <- stat.test %>% add_xy_position(x = "gene.type")
-myplot_with_pvals <- myplot + stat_pvalue_manual(stat.test, label = "p.adj.signif")
-
-ggsave("plots/t-test-plots/tissues_mean_boxplot_with_pvalues.pdf", plot = myplot_with_pvals, width = 12, height = 8)
-
-write_tsv(stat.test, "plots/t-test-plots/tissues_mean_statistical_results.tsv")
 
 # --------------------------------------------------------------------------------
 
@@ -200,8 +243,23 @@ df_ortho_para_median
 
 library(parallel)
 
-p.lst <- list(paralog = df_paralog_median, ortholog = df_ortho_median)
 
+
+p.lst <- list(paralog = df_ortho_mean, ortholog = df_paralog_mean)
+
+p.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
+  data.frame(
+    gene.type = gene.type,
+    Mean_Fat_Body = p.lst[[gene.type]]$Mean_Fat_Body, 
+    Mean_Gut = p.lst[[gene.type]]$Mean_Gut,
+    Mean_Muscle = p.lst[[gene.type]]$Mean_Muscle,
+    Mean_Whole_Body = p.lst[[gene.type]]$Mean_Whole_Body,
+    stringsAsFactors = FALSE
+  )
+}))
+
+# Combine ortholog and paralog median datasets
+p.lst <- list(paralog = df_paralog_median, ortholog = df_ortho_median)
 
 p.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
   data.frame(
@@ -214,15 +272,19 @@ p.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
   )
 }))
 
-
+# Reshape data into long format
 mydata <- p.df  
-mydata_long <- mydata %>% pivot_longer(cols = -gene.type, names_to = "variables", values_to = "value")
-mydata_long <- mydata_long %>% filter(!is.na(value) & !is.infinite(value))
+mydata_long <- mydata %>% 
+  pivot_longer(cols = -gene.type, names_to = "variables", values_to = "value") %>% 
+  filter(!is.na(value) & !is.infinite(value))
 
-stat.test <- mydata_long %>%
-  group_by(variables) %>%
-  pairwise_t_test(value ~ gene.type, p.adjust.method = "BH")
+# Perform Wilcoxon test for each tissue (variables) across gene types
+stat.test <- mydata_long %>% 
+  group_by(variables) %>% 
+  wilcox_test(value ~ gene.type, p.adjust.method = "BH") %>% 
+  add_significance()
 
+# Create the boxplot
 myplot <- ggboxplot(
   mydata_long,
   x = "gene.type",
@@ -231,12 +293,14 @@ myplot <- ggboxplot(
   palette = "npg",  
   legend = "none",
   ggtheme = theme_pubr(border = TRUE)
-) +
-  facet_wrap(~variables)  
+) + facet_wrap(~variables)
 
+# Add p-values to the plot
 stat.test <- stat.test %>% add_xy_position(x = "gene.type")
 myplot_with_pvals <- myplot + stat_pvalue_manual(stat.test, label = "p.adj.signif")
 
-ggsave("plots/t-test-plots/tissues_median_boxplot_with_pvalues.pdf", plot = myplot_with_pvals, width = 12, height = 8)
+# Save the plot as a PDF
+ggsave("plots/wilcox-test-plots/tissues_mean_boxplot_with_pvalues.pdf", plot = myplot_with_pvals, width = 12, height = 8)
 
-write_tsv(stat.test, "plots/t-test-plots/tissues_median_statistical_results.tsv")
+# Save the statistical results as a .tsv file
+write_tsv(stat.test, "plots/wilcox-test-plots/tissues_mean_statistical_results.tsv")

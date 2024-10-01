@@ -8,7 +8,71 @@
 
 # -----------------------------------------------------------------------------
 
-# R Libraries for t-tests and Wilcoxon tests, rstatix and ggpubr
+# R Libraries for Wilcoxon tests, rstatix and ggpubr
+
+perform_wilcox_test <- function(data_long, output_file) {
+
+  library(ggplot2)
+  library(tidyr)
+  library(dplyr)
+  library(rstatix)
+  library(ggpubr)  
+  
+  # Perform the Wilcoxon test
+  wilcox_result <- data_long %>%
+    wilcox_test(value ~ group, paired = TRUE) %>%  # If your data is paired
+    adjust_pvalue(method = "BH") %>%               # Adjust p-values using Benjamini-Hochberg (BH)
+    add_significance()                             # Add significance stars
+  
+  # Save the results to a .tsv file
+  write.table(wilcox_result, 
+              file = file.path("plots", paste0(output_file, ".tsv")), 
+              sep = "\t", row.names = FALSE, quote = FALSE)
+
+  # Return results for further analysis or plotting
+  return(list(results = wilcox_result))
+}
+
+# Load necessary libraries
+library(ggplot2)
+library(tidyr)
+library(dplyr)
+library(rstatix)
+library(ggpubr)
+
+# Reshape the data to long format
+mydata <- p.df  
+mydata_long <- mydata %>% 
+  pivot_longer(cols = -gene.type, names_to = "variables", values_to = "value") %>%
+  filter(!is.na(value) & !is.infinite(value))
+
+# Perform Wilcoxon test with Benjamini-Hochberg (BH) p-value adjustment
+stat.test <- mydata_long %>%
+  group_by(variables) %>%
+  wilcox_test(value ~ gene.type, p.adjust.method = "BH") %>%
+  add_significance()
+
+# Create boxplot for the data
+myplot <- ggboxplot(
+  mydata_long,
+  x = "gene.type",
+  y = "value",
+  fill = "gene.type",
+  palette = "npg",
+  legend = "none",
+  ggtheme = theme_pubr(border = TRUE)
+) +
+  facet_wrap(~variables)
+
+# Add p-values to the plot
+stat.test <- stat.test %>% add_xy_position(x = "gene.type")
+myplot_with_pvals <- myplot + stat_pvalue_manual(stat.test, label = "p.adj.signif")
+
+# Save the plot
+ggsave("plots/wilcox-test-plots/order_tissues_mean_boxplot_with_pvalues.pdf", plot = myplot_with_pvals, width = 12, height = 8)
+
+# Save the statistical test results to a file
+write_tsv(stat.test, "plots/wilcox-test-plots/order_tissues_mean_statistical_results.tsv")
 
 # -----------------------------------------------------------------------------
 1. Distributions of distances of paralogs and orthologs
@@ -83,6 +147,7 @@ plot <- create_and_save_boxplot(
   plot_width = 8, 
   plot_height = 6 
 )
+
 
 # -----------------------------------------------------------------------------
 
