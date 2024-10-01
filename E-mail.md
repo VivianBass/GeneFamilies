@@ -3,7 +3,6 @@
 # `Is there a difference in expression diversity between Orthologs and Paralogs? Drosophila dataset:`
 
 ## 1. Gene-Family Datatable ---> 2 Subsets (Paralogs / Orthologs) 
----------------------------------------------------------------------------
 
 - Drosophila Datasets:
 
@@ -29,7 +28,6 @@ The distribution of counts per cluster was then plotted using the plot_distribut
 
 
 ## 2. Expression-Profiles 
----------------------------------------------------------------------------
 
 `Interspecies Comparative Analyses Reveal Distinct Carbohydrate-Responsive
  Systems among Drosophila Species`
@@ -67,7 +65,6 @@ Expression Dataframes: Based on the above, expression dataframes were created:
 
 
 ## 3. Measure Euclidean Distances 
----------------------------------------------------------------------------
 
 - Measure for each gene family the pairwise expression distances of the subset of Paralogs and Orthologs
 were measured 
@@ -96,7 +93,6 @@ paralogs.exp.prof.dists.tissue
 
 
 ## 4. statistics: Mean / Median - Euclidean Distances 
----------------------------------------------------------------------------
 
 
 - for each family and each subset (Orthologs, Paralogs) measure the mean expression distance
@@ -125,15 +121,14 @@ for each gene-family f_i in drosophila families, do:
 - exec\calculate_mean_median_statistics.R was used to calculate the mean and median of the expression distances 
 for the 2 Subsets each
 
-# df_median_mean_paralogs.exp.prof.dists
-# df_median_mean_orthologs.exp.prof.dists
+- df_median_mean_paralogs.exp.prof.dists
+- df_median_mean_orthologs.exp.prof.dists
 
-# df_median_mean_paralogs.exp.prof.dists.tissue
-# df_median_mean_orthologs.exp.prof.dists.tissue
+- df_median_mean_paralogs.exp.prof.dists.tissue
+- df_median_mean_orthologs.exp.prof.dists.tissue
   									
 
 ## 5. Plot the results (Scientific Plots)
-------------------------------------------------------------------------------------
 
 - Create two scientific plots, both boxplots, or raincloud plots (package grain)
   - Each plot should visualize the distribution of the expression distances in orthologs and paralogs
@@ -203,7 +198,7 @@ for each gene-family f_i in fams_with_separated_orth_paral_expr_clouds
 
 
 ## 7. Plot distributions of the above calculated angles, please, using boxplots and/or raincloud plots.
-------------------------------------------------------------------------------------
+
 
 
 
@@ -213,7 +208,7 @@ for each gene-family f_i in fams_with_separated_orth_paral_expr_clouds
 
 
 ## 8. Pairwise t-tests and wilcox-tests
-------------------------------------------------------------------------------------
+-
 
 For all distributions that we generate do pairwise tests, 
 to see whether the respective empirical distributions differ significantly:
@@ -280,7 +275,6 @@ true effects and minimizing false discoveries.
 
 
 ## Open questions and issues: `Why do we divide the cosine by sqrt(2)?`
-------------------------------------------------------------------------------------
 
 - Try out the functions with given angles and see what comes out. 
 - Maybe then we can see why we do this division. (angles to try could be 0,45,90,..,180,..,360)
