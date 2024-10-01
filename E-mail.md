@@ -1,6 +1,6 @@
 
 
-# `Is there a difference in expression diversity between Orthologs and Paralogs? Drosophila dataset:`
+## `Is there a difference in expression diversity between Orthologs and Paralogs? Drosophila dataset:`
 
 ## 1. Gene-Family Datatable ---> 2 Subsets (Paralogs / Orthologs) 
 
@@ -140,7 +140,6 @@ for the 2 Subsets each
 -> siehe : plots directory
 
 ## 6. Angles, Change in Tissue Versatility
-------------------------------------------------------------------------------------
 
 Tissue Versatility: In the context of gene expression, tissue versatility refers to 
 how similar or distinct the gene expression profiles are across different tissues. 
