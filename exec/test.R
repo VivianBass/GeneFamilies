@@ -1,10 +1,4 @@
-# 1. T-Test (t.test): Used to determine if the means of two groups (e.g., orthologs vs paralogs) are significantly different. For example, you can compare mean median expression profile distances between groups using t.test(). The alternative hypothesis (e.g., "greater", "less") specifies the direction of the test.
 
-# 2. Wilcox on Rank Sum Test (wilcox.test): A non-parametric test that checks if the overall distributions between two groups differ without assuming normality. It assesses whether one group tends to have larger values than the other.
-
-# 3. P-Value Adjustment (p.adjust): After obtaining p-values from multiple comparisons (t-tests and Wilcoxon tests), they are adjusted to control for multiple hypothesis testing using p.adjust(). This helps to reduce false positives.
-
-# Benjamini-Hochberg (BH) Correction: This method is used to adjust p-values for multiple hypothesis testing by controlling the False Discovery Rate (FDR). It ensures a balance between detecting true effects and minimizing false discoveries.
 
 # -----------------------------------------------------------------------------
 

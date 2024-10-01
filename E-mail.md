@@ -31,25 +31,39 @@ The distribution of counts per cluster was then plotted using the plot_distribut
 ## 2. Expression-Profiles 
 ---------------------------------------------------------------------------
 
+`Interspecies Comparative Analyses Reveal Distinct Carbohydrate-Responsive
+ Systems among Drosophila Species`
+
+from: https://www.cell.com/cell-reports
+
+The paper investigates how different Drosophila species exhibit distinct responses 
+to carbohydrate-rich diets, highlighting variations in gene regulation and metabolic pathways.
+
+Generalist Species Diets: Generalist species like D. melanogaster and D. simulans 
+thrive on a broad range of rotting fruits, vegetables, and plant matter, 
+which contain varying carbohydrate levels.
+Specialist Species Diets: Specialist species such as D. sechellia feed exclusively 
+on specific plants like Morinda citrifolia, which may have a more specialized 
+nutritional composition, requiring unique metabolic adaptations
+
+Three diet types were analyzed (M, P, C).
+Distinct Diets (M and P): The M diet is carbohydrate-rich and protein-poor, while the P diet is protein-rich with low carbohydrates. These diets help explore how Drosophila species respond to different nutrient balances. C Diet (Control): A balanced diet with moderate levels of carbohydrates and proteins, used as a reference in studies
+
 - Expression Profiles Data:
 
-Expression profile data were gathered from a shared drive.
 The dataset contained expression values for four Drosophila species 
-(D. melanogaster, D. simulans, D. yakuba, and D. erecta).
-Three diet types were analyzed (M, P, etc.).
+(D. melanogaster, D. simulans, etc.) --> directory: data/mmc7.xlsx
 From this, the expression.profiles dataframe was derived.
 For the analysis, we focused only on one diet and D. melanogaster, 
 selecting expression data from four tissues: Fat Body, Muscle, Gut, and Whole Body.
+For simplicity, only D. melanogaster data were used in this analysis.
 
 Expression Dataframes: Based on the above, expression dataframes were created:
 - df14_P_dmel
 - df14_M_dmel
+- df14_P_dmel represents RNA-seq expression profiles for one of the diets.
+- for the 3 samples taken for each tissue , the mean value was calculated 
 
-Details:
-
-"P" and "M" represent the different diets used in the experiment.
-For simplicity, only D. melanogaster data were used in this analysis.
-df14_P_dmel represents RNA-seq expression profiles for one of the diets.
 
 
 ## 3. Measure Euclidean Distances 
@@ -133,8 +147,27 @@ for the 2 Subsets each
 ## 6. Angles, Change in Tissue Versatility
 ------------------------------------------------------------------------------------
 
+Tissue Versatility: In the context of gene expression, tissue versatility refers to 
+how similar or distinct the gene expression profiles are across different tissues. 
+Greater versatility would mean that a gene is expressed in many tissues, 
+while less versatility suggests that the gene expression is more restricted to certain tissues.
 
-Then, we want the angles -> for all families, that have a positive distance between their ortholog and paralog expression vector clouds (slide 15).
+Euclidean Distances Between Expression Profiles: The Euclidean distance 
+between two points (representing expression levels in tissue X and Y) reflects 
+how different the gene expression profiles are between the two tissues. In the plot:
+
+ ) appear to represent the Euclidean distances between gene expression profiles 
+ of two groups (e.g., gene sets) in tissues X and Y.
+Angles in the Plot: The angles in the plot seem to represent the degree 
+of separation in gene expression profiles between the tissues:
+
+A smaller angle between two points in the gene expression space (such as for 
+
+ ) suggests greater similarity in expression profiles.
+A larger angle indicates more divergent gene expression patterns between the two tissues.
+
+Then, we want the angles -> for all families, that have a positive distance between 
+their ortholog and paralog expression vector clouds (slide 15).
 
 - Change in tissue versatility (slide 16) 
 - Change in tissue specificity (slide 18)
@@ -159,6 +192,10 @@ for each gene-family f_i in fams_with_separated_orth_paral_expr_clouds
 
     exprVecSpaceEvolutionAfterDupl <- function(genes, family.name, classifier.lst, 
   
+
+
+
+  !!!
   cosAngleVec <- function(a, b)
     phi_angle_orthologs_paralogs =
     // store in a table with columns Family-ID, delta_angle_orths, delta_angle_paral, phi_orth_paral
@@ -175,20 +212,106 @@ for each gene-family f_i in fams_with_separated_orth_paral_expr_clouds
 
 
 
+## 8. Pairwise t-tests and wilcox-tests
+------------------------------------------------------------------------------------
+
+For all distributions that we generate do pairwise tests, 
+to see whether the respective empirical distributions differ significantly:
+
+
+- Are the mean values significantly different? 
+  - Compare orthologs vs paralogs
+- Are the overall distributions different, i.e. the values of the first above those of the other?
+  use wilcox ranked sum test:
+- After obtaining all p-values correct them for multiple hypothesis testing with
+  p.adjust( vector-of-p_values, method="BH")
+
+
+- Distributions of distances of paralogs and orthologs
+Distribution of mean distances
+Distribution of median distances
+- Distributions of distances per tissue
+Distribution of mean distances per tissue
+Distribution of median distances per tissue
+- Expression angles
+- Expression versatility
+
+
+
+T-test Overview: 
+
+-  A parametric test used to compare the means of two groups to determine 
+if they are significantly different. Assumes normal distribution and equal variances.
+Assumes Normality of data distribution and Homogeneity of variance (in both groups).
+
+Null hypothesis (H₀): The means of the two groups are equal.
+Alternative hypothesis (H₁): The means of the two groups are different.
+
+
+Wilcoxon Test (Wilcoxon Rank-Sum Test) Overview: 
+
+- A non-parametric alternative to the t-test, used when the assumptions 
+of normality or equal variances are not met. It compares ranks instead of means.
+The data can be ordinal or continuous but doesn’t require normality.
+It assesses whether one group tends to have larger values than the other.
+
+Null hypothesis (H₀): The distributions of the two groups are the same.
+Alternative hypothesis (H₁): The distributions of the two groups are different.
+
+Test statistic (W or U): Measures the sum of ranks; large or small values indicate differences between groups.
+p-value: If p < 0.05, reject the null hypothesis, indicating significant differences.
+Effect size (r): Indicates the magnitude of the difference; small (≈0.1), medium (≈0.3), and large (≈0.5).
+
+
+P-Value Adjustment (p.adjust): 
+
+After obtaining p-values from multiple comparisons (t-tests and Wilcoxon tests), 
+they are adjusted to control for multiple hypothesis testing using p.adjust(). 
+This helps to reduce false positives.
+
+
+Benjamini-Hochberg (BH) Correction:
+
+This method is used to adjust p-values for multiple hypothesis testing by 
+controlling the False Discovery Rate (FDR). It ensures a balance between detecting 
+true effects and minimizing false discoveries.
 
 
 
 
+## Open questions and issues: `Why do we divide the cosine by sqrt(2)?`
+------------------------------------------------------------------------------------
+
+- Try out the functions with given angles and see what comes out. 
+- Maybe then we can see why we do this division. (angles to try could be 0,45,90,..,180,..,360)
+
+
+- Functions: 
+
+- Angle for each row Vector group (a and b) -> Vector a and b (contain numeric dist values)
+- a as x Vector and b as diagonal Vector  d.v
+- Vektor b ein Diagonalvektor ist, das heißt, er ist ein Vektor, in dem alle Einträge gleich 1 sind
+- b=[1,1,1,…] , n ist die Länge des Vektors 𝑏 also die Anzahl der Elemente in 𝑎
+- Ein höheres 𝑛 (mayne as the number of tissues present in the rpkm.expr.profiles for the vector)
+  führt zu einer kleineren Größe des Terms sqrt(2) / sqrt(n), was bedeutet, dass der Wert von cosDiag
+  cosDiag verringert wird, wenn mehr Datenpunkte betrachtet werden.
+
+
+cosDiag(x = rpkm.expr.profiles.df[which(rpkm.expr.profiles.df$Gene == x), expr.cols], )/`sqrt(2)`
+
+a = x = = rpkm.expr.profiles.df[which(rpkm.expr.profiles.df$Gene == x), expr.cols]
+b = d.v = rep(1, length(x))
+
+cosDiag --> {`sum(a * b)/(sqrt(sum(a^2)) * sqrt(sum(b^2)))`} /`sqrt(2)`
+
+--> `(sum(a * b) * sqrt(2)) / (sqrt(sum(a^2)) * sqrt(sum(b^2)))`
+
+--> `(sum(a) * sqrt(2)) / (sqrt(n) * sqrt(sum(a^2)))`
+
+-->  `sqrt(2) / sqrt(n)`
 
 
 
-
-# Open questions and issues:
-
-- Why do we divide the cosine by sqrt(2)? Try out the functions with given angles and see what comes out. Maybe then we can see why we do this division.
-  - angles to try could be 0,45,90,..,180,..,360
-  - maybe some kind of normalization?
-  - check the function bodies. How does Asis calculate these angles?
 
 
 - 
@@ -196,63 +319,23 @@ Dividing by 2 scales distances and angles uniformly, preserving the shape of vec
 In high-dimensional spaces like gene expression data, dividing by 2 helps maintain consistent scaling for comparisons of distances and angles, especially between orthologs and paralogs.
 This rescaling aids in gene expression analysis by standardizing the interpretation of tissue-specific and versatile expression patterns across datasets.
 
+The expression `sqrt(2) / sqrt(n)`  is a form of standardization that accounts for the influence of the number of elements on the measure of 
+cosDiag
+cosDiag. This can help in comparing results when dealing with different data set sizes or varying contexts.
 
-find out why is he dividing the cosine by sqrt(2)?
------------------------------------
-
-cosAngleVec <- function(a, b) {
-    if (length(a) != length(b)) 
-        stop("'cosAngleVec(a, b)': Argument vectors 'a' and 'b' are not of identical dimensions.")
-    if (hasInvalidVecSpaceComponents(rbind(a, b))) 
-        return(NaN)
-    sum(a * b)/(euclNorm(a) * euclNorm(b))
-}
-
-cosDiag <- function(x, d.v = rep(1, length(x))) {
-    cosAngleVec(x, d.v)
-}
-
-euclNorm <- function(x) {
-    if (hasInvalidVecSpaceComponents(x)) 
-        return(NaN)
-    sqrt(sum(x^2))
-}
-
-paralog.expr.angle.diag.df <- data.frame(gene = para.expr, angle.diag = as.numeric(mclapply(para.expr, 
-    function(x) {
-        cosDiag(rpkm.expr.profiles.df[which(rpkm.expr.profiles.df$Gene == 
-            x), expr.cols])/sqrt(2)
-    })), stringsAsFactors = FALSE)
+Correlation and Variation:
+The term also impacts the interpretation of 
+cosDiag
+cosDiag in the context of correlation or variation of the data, as it adjusts the result relative to the number of data points.
 
 
-## 8. Pairwise t-tests and wilcox-tests
-------------------------------------------------------------------------------------
+At 0° (or 360°), the cosine value is 1, indicating maximum alignment, where vectors point in the same direction, resulting in perfect similarity. At 45°, the cosine is approximately 0.707, suggesting partial alignment and moderate similarity between the vectors. At 90°, the cosine value is 0, meaning the vectors are perpendicular, showing no similarity or projection between them.
 
-For all distributions that we generate do pairwise tests, to see whether the respective empirical distributions
-differ significantly:
-- Are the mean values significantly different? Use a t-test; in R
-  See ?t.test for details and the attached snippet
-  - Compare orthologs vs paralogs
-  - you can consider putting the comparisons into the plots - try it out and / or write all comparisons into a table
-- Are the overall distributions different, i.e. the values of the first above those of the other?
-  use wilcox ranked sum test:
-  ?wilcox.test
-- After obtaining all p-values correct them for multiple hypothesis testing with
-  ?p.adjust( vector-of-p_values, method="BH")
+At 180°, the cosine value is -1, indicating that the vectors are pointing in opposite directions, representing maximum dissimilarity. Similarly, at 270°, the cosine value is 0 again, indicating perpendicular vectors but with a reversed orientation. Finally, at 360° (or back to 0°), the cosine returns to 1, indicating perfect alignment once more after completing a full rotation.
 
+without sqrt(2) 
+As n increases (more data points or higher dimensions), the overall result becomes smaller because the denominator increases. For large n, this would reduce the impact of the cosine similarity value.
 
-Distributions of distances of paralogs and orthologs
-Distribution of mean distances
-Distribution of median distances
-Distributions of distances per tissue
-Distribution of mean distances per tissue
-Distribution of mean distances per tissue
-Expression angles
-Expression versatility
+For smaller n, the scaling would have less of an impact, and the cosine similarity would remain closer to its unscaled value.
 
-
-
-
-
-
-
+This reflects how larger datasets or higher-dimensional data may require additional normalization to account for complexity.
