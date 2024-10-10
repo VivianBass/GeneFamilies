@@ -9,3 +9,4 @@ feb*
 interpro.xml
 experiments/*/data
 inputs/
+test.py
