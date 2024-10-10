@@ -7,3 +7,5 @@ Rplots.pdf
 data/*
 feb*
 interpro.xml
+experiments/*/data
+inputs/
