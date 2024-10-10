@@ -10,3 +10,4 @@ interpro.xml
 experiments/*/data
 inputs/
 test.py
+test2.py
