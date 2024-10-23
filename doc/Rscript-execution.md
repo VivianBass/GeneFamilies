@@ -1,18 +1,15 @@
 
-# `Section-1` - Loading
 
-- 1. `loadRpkmRnaSeqCounts.R`	-> Load gene expressions.	   X                                  
-- 2. `loadcodingSequences.R`       dont need ??
-- 3. `LoadOrthologsAndTandems.R`   sim, all vs all fehlt noch  X
-- 4. `loadGeneFamilies.R`           X
+## Section-1 - Loading Data
+
+- 1.  `loadRpkmRnaSeqCounts.R`	          -> `load_expression_data`
+- 1.  `LoadOrthologsParalogsTandems.R`    -> `load_paralogs_orthologs_tandems_data`
+- 3.  `loadGeneFamilies.R`	              -> `load_genefamilies_data`
+
 
 - basically already creates the expression profiles , do we need the script generateRpmkExpressionProfils ???
 1.  Rscript exec/loadRpkmRnaSeqCounts.R <RPKM_counts_table.tsv>
 -   Rscript exec/loadRpkmRnaSeqCounts.R experiments/RPKM_flybase/RPKM.tsv
-
-- do we need all.cds at all ??
-2.  loadcodingSequences.R`
-
 
 - would have to add Tandems to, calculate  the sim ??, need all vs all blast/Diamond
 3.  Rscript exec/loadOrthologsAndTandems.R <all_vs_all_file> <orthologs_file> <paralogs_file>
@@ -25,34 +22,23 @@
 
 
 
+## Section-2 - Computing Distances, Statistics, T-tests and Angles
+			                                      
+- 1.  `computeExpressionProfileDistances.R` 	      
+- 2.  `investigateDistributionsOfExpressionProfileDistances.R`
+- 3.  `t-tests`
+- 4.  `angles`  expressionAngles.R
 
-
-
-
-# `Section-2` - computing
-
-- 1. `generateRpkmExpressionProfiles.R`		                                       
-- 2. `computeExpressionProfileDistances.R` 	 
-- 3. `investigateDistributionsOfExpressionProfileDistances.R`
-
-1. Rscript exec/generateRpkmExpressionProfiles.R
-- Rscript path/2/GeneFamilies/exec/generateRpkmExpressionProfiles.R path/2/GeneFamilies")
-
-
-
-- load("data/data.RData")
-2. Rscript exec/computeExpressionProfileDistances.R
 
 - Rscript exec/investigateDistributionsOfExpressionProfileDistances.R <input_file>
 
 
 
-# `Section-3` - Plotting
+## Section-3 - Plotting Distributions
 
-	                                  
-- 2.  `plotDistributionsOfExpressionProfileDistances.R`	
-- 2.  `expressionAngles.R`	 
+                                       
+- 1.  `plotDistributionsOfExpressionProfileDistances.R`	
+- plot Distances
+- plot Distances Tissue
 
-
-
-# t tests
+- 2.  `plot_expressionAngles.R`	

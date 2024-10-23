@@ -1,0 +1,156 @@
+
+
+-----------------------------------------------------------------------------------
+# R-Package-Structure
+-----------------------------------------------------------------------------------
+
+- https://r-pkgs.org/whole-game.html 
+
+- create Package `EasyVectorOmics`
+- Sidenote: use snake-case for variable names, not dot notation
+
+- package.skeleton
+
+		-> reference: https://search.r-project.org/R/refmans/utils/html/package.skeleton.html
+		-> GeneFamilies Package as example
+		
+		EasyVectorOmics (Package):
+			├
+			├── DESCRIPTION	Include title, author, description, license, dependencies, etc.
+			├── NAMESPACE
+			├── R/		directory for R code, Use roxygen2 comments above your functions
+			├── man/ 		directory for documentation 
+			├── data/
+			├── inst/
+			├── tests/
+			├── exec/
+			├── vignettes/
+			└── LICENSE	Choose an appropriate license and add it
+			├── read-and-delete-me file (eventuell) Create a README.md file explaining your package
+			
+		Essential Directories and Files:
+		a. R/: Contains R code files (.R)
+		b. man/: For documentation files (.Rd)
+		c. DESCRIPTION: Metadata about the package , List all required packages in DESCRIPTION
+		d. NAMESPACE: Exports and imports declarations
+		Optional but Recommended Directories:
+		a. data/: For included datasets
+		b. inst/: For additional files to be installed with the package
+		c. tests/: For unit tests (e.g., using testthat)
+		d. vignettes/: For long-form documentation
+
+			
+			
+		# Create the package skeleton -> package.skeleton(name = "EasyVectorOmicx")
+		# use create_package() (from devtools) or package.skeleton()
+		# devtools::create_package("path/to/mypackage")
+		Building and Checking:
+		
+		
+		package.skeleton(name = "EasyVectorOmics")
+		
+		library(devtools)
+		create_package("C:/Users/andre/Desktop/EasyVectorOmics")
+		
+		After creating the package structure with either method, you will need to populate the DESCRIPTION, NAMESPACE, 
+		and R/ directories with your package metadata, namespace information, and R functions, respectively.
+You can use roxygen2 comments in your R scripts to automatically generate documentation files in the man/ directory.
+Make sure to add a proper LICENSE file and a README.md to provide information about your package.
+
+		
+
+		Use devtools::build() to build the package
+		Use devtools::check() to run R CMD check
+
+		# Set your working directory to where you want to create the package -> setwd("~/R_packages")
+		
+		# Edit the DESCRIPTION file to add proper metadata. -> copy from GeneFamilies / use roxygen2
+		# Documentation File in vignettes/
+		# Develop and test package.
+
+
+
+		# vignette("namespace") describes how to generate a NAMESPACE file, h
+		ow namespacing works in R, and how you can use roxygen2 to be specific about what your package needs and supplies.
+
+
+- Use:
+		- OptParser for command line arguments
+		- Roxygen2 for automated documentation
+		--> Reference: https://cran.r-project.org/web/packages/roxygen2/vignettes/roxygen2.html
+
+- exec folder:
+
+		- develop executable scripts into the exec dir !!
+		- make them versatile ??, require the output file path
+
+- Dos/Donts:
+
+		- do no longer store a predefined RData in './data'
+		
+- Testing:
+
+		Unit tests: Write tests for individual functions
+		Integration tests: Test how functions work together
+		Use testthat package for structured testing
+		
+		h. Write tests:
+Use usethis::use_testthat() to set up testing infrastructure
+
+
+Documentation:
+
+		Function-level docs: Use roxygen2 comments -> e. Generate documentation:
+		devtools::document() to create .Rd files
+
+		Package-level docs: Create a package.R file with roxygen comments
+		Vignettes: For in-depth tutorials and examples
+		i. Create vignettes (optional):
+Use usethis::use_vignette() for long-form documentation
+
+- Data 
+
+
+		g. Add data (if needed):
+		Use usethis::use_data() to add datasets
+
+
+d. Error handling: Use proper error checking in your functions
+g. CRAN policies: If you plan to submit to CRAN, review their policies
+h. Continuous Integration: Set up CI/CD (e.g., GitHub Actions)
+
+
+vignette("namespace") describes how to generate a NAMESPACE file, how namespacing works in R, and how you can use roxygen2 to be specific about what your package needs and supplies.
+
+-----------------------------------------------------------------------------------
+# Package - Functions
+-----------------------------------------------------------------------------------
+
+library(devtools) required
+
+These functions setup parts of the package and are typically called once per package:
+
+create_package()
+use_git()
+use_mit_license()
+use_testthat()
+use_github()
+use_readme_rmd()
+You will call these functions on a regular basis, as you add functions and tests or take on dependencies:
+
+use_r()
+use_test()
+use_package()
+You will call these functions multiple times per day or per hour, during development:
+
+load_all()
+document()
+test()
+check()
+
+
+- load_all() 	(Functionen und Rscripte verfügbar machen)
+
+
+- check()  	(checking if package is working)
+- install()  	(quasi wie ein Uptade, reinstall Package)
