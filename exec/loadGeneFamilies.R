@@ -21,6 +21,9 @@ readMclOutputTest <- function(path.2.mcl.out, family.name.prefix = "cluster_") {
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
+input.args[[1]] <- "experiments/RPKM_flybase/families.tsv"
+input.args[[2]] <- "experiments/RPKM_flybase/counts.txt"
+
 families.genes.df <- readMclOutputTest(input.args[[1]])
 # print(families.genes.df)
 families.lst <- mclDataFrameAsList(families.genes.df)

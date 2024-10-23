@@ -12,11 +12,14 @@ message("- eight_brassicaceae_tandems.txt is a TAb separated table with header '
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
+input.args[[1]] <- "experiments/RPKM_flybase/orthologs.csv"
+input.args[[2]] <- "experiments/RPKM_flybase/paralogs.csv"
+
 #' Load data:
-all.vs.all.sim <- fread(input.args[[1]], data.table = FALSE, header = FALSE, stringsAsFactors = FALSE, 
-    sep = "\t", na.strings = "", colClasses = c(rep("character", 2), rep("numeric", 
-        10)))
-orthologs <- read.table(input.args[[2]], header = TRUE, sep = "\t", comment.char = "", 
+#all.vs.all.sim <- fread(input.args[[1]], data.table = FALSE, header = FALSE, stringsAsFactors = FALSE, 
+#    sep = "\t", na.strings = "", colClasses = c(rep("character", 2), rep("numeric", 
+#        10)))
+orthologs <- read.table(input.args[[1]], header = TRUE, sep = "\t", comment.char = "", 
     quote = "", na.strings = "", colClasses = rep("character", 1))
 
 orths.nms <- paste("ortholog_cluster_", 1:nrow(orthologs), sep = "")
@@ -31,7 +34,7 @@ orthologs.genes <- unlist(orthologs.lst)
 
 # tandems <- read.table(input.args[[3]], header = TRUE, sep = "\t", comment.char = "", 
 #     quote = "", na.strings = "", colClasses = rep("character", 2))
-paralogs <- read.table(input.args[[3]], header = TRUE, sep = "\t", comment.char = "", 
+paralogs <- read.table(input.args[[2]], header = TRUE, sep = "\t", comment.char = "", 
     quote = "", na.strings = "", colClasses = rep("character", 2))
 paralogs.nms <- unique(paralogs$Family)
 paralogs.lst <- setNames(mclapply(paralogs.nms, function(x) paralogs[which(paralogs$Family == 
@@ -40,6 +43,6 @@ paralogs.genes <- unlist(paralogs.lst)
 paralogs.genes.nev <- removeExpressionVariant(paralogs.genes)
 #' Save loaded data:
 save(orthologs, orthologs.lst,orthologs.genes,paralogs, paralogs.lst, paralogs.genes, paralogs.genes.nev, file = file.path(output_data_dir, "orthologsTandems.RData"))
-save(all.vs.all.sim, file = file.path(output_data_dir, "pairwiseSequenceSimilarities.RData"))
+#save(all.vs.all.sim, file = file.path(output_data_dir, "pairwiseSequenceSimilarities.RData"))
 
 message("DONE")

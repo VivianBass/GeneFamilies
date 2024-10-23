@@ -1,0 +1,26 @@
+
+- run script and check if it works , up until distances
+-> works 
+
+- have to check , multiple scripts doing the same
+- analyse_tissues_distances.R 
+- compute ExpressionProfileDistances.R 
+- distances.R 
+- mean median
+- investigateDistributionOf...
+
+
+- do we need all.cds at all ??
+- would have to add Tandems to, calculate  the sim ??, need all vs all blast/Diamond
+- do we need all cds ? it was used to create expressionprofils variance column ??
+- need all.cds to generate , and we had the expression profile data downloaded drive 
+
+- generateRpkmExpressionprofils script ?? already in load 
+
+- change the sections a little bit ?? Loading, computing, plotting, t-tests etc. 
+
+- upload to github, setup correctly
+
+
+- /media/BioNAS/ag_hallab/EasyVectorOmics/doc/documentation.md
+- check complete documentation

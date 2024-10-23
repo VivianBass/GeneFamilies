@@ -11,6 +11,9 @@ message("Note, that the table in argument file 'RPKM_counts_table.tsv' is expect
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
+input.args[[1]] <- "experiments/RPKM_flybase/RPKM.tsv"
+
+
 #' Read RPKM normalized counts:
 rpkm.rna.seq.counts <- read.table(input.args[[1]], sep = "\t", header = TRUE, stringsAsFactors = FALSE, 
     comment.char = "", quote = "", na.strings = "", colClasses = c(rep("character", 
@@ -52,19 +55,6 @@ rna.seq.exp.profils <- tryCatch({
     cat("Mensaje de error:", e$message, "\n")
     NULL  # Retorna NULL en caso de error
 })
-
-# #' Add matching gene-names _with_ expression variants:
-# rna.seq.exp.profils$gene.exp.var <- as.character(unlist(mclapply(rna.seq.exp.profils$gene, 
-#     function(x) {
-#         x.exp.var <- names(all.cds)[grepl(paste("^", x, sep = ""), names(all.cds))]
-#         if (length(x.exp.var) == 1) {
-#             x.exp.var
-#         } else {
-#             warning("Found != 1 matching expression variants for '", x, "': ", paste(x.exp.var, 
-#                 collapse = ", "), " !")
-#             NA
-#         }
-#     })))
 
 #' Save results:
 save(rna.seq.exp.profils, rpkm.rna.seq.counts, file = file.path(output_data_dir, "RNA_Seq_RPKM_and_profiles.RData"))
