@@ -2,9 +2,9 @@
 
 ## Section-1 - Loading Data
 
-- 1.  `loadRpkmRnaSeqCounts.R`	          -> `load_expression_data`
-- 1.  `LoadOrthologsParalogsTandems.R`    -> `load_paralogs_orthologs_tandems_data`
-- 3.  `loadGeneFamilies.R`	              -> `load_genefamilies_data`
+- 1.  `load_expression_data.R`	          
+- 1.  `load_paralogs_orthologs_tandems_data.R`    
+- 3.  `load_genefamilies_data.R`	              
 
 
 - basically already creates the expression profiles , do we need the script generateRpmkExpressionProfils ???
@@ -24,10 +24,10 @@
 
 ## Section-2 - Computing Distances, Statistics, T-tests and Angles
 			                                      
-- 1.  `computeExpressionProfileDistances.R` 	      
-- 2.  `investigateDistributionsOfExpressionProfileDistances.R`
-- 3.  `t-tests`
-- 4.  `angles`  expressionAngles.R
+- 1.  `compute_exp.prof.dists.R` 	                        X
+- 2.  `compute_exp.prof.dists_statistics.R`
+- 3.  `compute_t-tests_wilcox-tests.R`
+- 4.  `compute_exp.prof.dists_angles.R`  
 
 
 - Rscript exec/investigateDistributionsOfExpressionProfileDistances.R <input_file>
@@ -36,9 +36,8 @@
 
 ## Section-3 - Plotting Distributions
 
-                                       
+- 1. plot_expression_angles.R                                    
 - 1.  `plotDistributionsOfExpressionProfileDistances.R`	
 - plot Distances
 - plot Distances Tissue
 
-- 2.  `plot_expressionAngles.R`	

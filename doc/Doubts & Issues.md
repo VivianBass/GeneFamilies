@@ -2,26 +2,33 @@
 
 
 
-- results
-Looking at our current results, it seems that the orthologs are quite tissue specific, i.e. the are expressed in a few, maybe even just a single tissue while the paralogs
-obtained more tissues in which they are expressed, i.e. they are less tissue specific.
-
-Evidence for this:
-
-- intra-ortholog distances compared to intra-paralog distances
-([mean|median]_exp.prof.dists_boxplot-with-pvalues.pdf)
-
-- the angles between mean ortholog expression to the diag
-are signif. greater than those between mean paralog expression to the diag (Angles_boxplot-with-pvalues.pdf)
-
-- the intra-ortholog rotation angles (change in tissue specificity) are greater than the intra-paralog rotation angles
-(relativeExpressionVersatilityBoxplot.pdf)
+- `How to distinguish between Orthologs and Paralogs? if a gene could be both?`
+-> orthologs and paralogs are somewhat context specific terms
 
 
+- `how and where to find the tandems?`
+- you can write a short script that parses the GFF or GTF table for D. melanogaster Each gene identifier is provided its genomic coordinates in that file.
+- If genes are in close neighborhood and are paralogs, you can conclude them to be tandem duplicates. Allow for a neighborhood of maybe five genes. Check the descriptions for GTF and GFF formats: https://www.ensembl.org/info/website/upload/gff.html
 
 
+- `naming convention of Drosophila genes?` different drosophila species but they have the same gene name idetifiers. ?
 
--------------------------------------------------------------------------------------------
+    
+- The easiest I can think of is
+to have another table in the same format as our gene families file, in
+which the ortholog-groups and paralog-groups are defined, e.g.
+`Group-ID <TAB> Group-Type (ortholog|paralog|tandem cluster) <TAB> Gene-ID-1,Gene-ID-2,Gene-ID-3,...,Gene-ID-N`
+Use any format that works for you. You can also use separate tables for
+ortholog and paralog groups.
+
+
+- which plots exactly: ??  just the means, and or the medians etc. ??
+- `should we use the ortholog/paralog groups or genefamily clusters? for printing the distribution plots?`
+
+- for the angles to the diagonal: measure the angle to the diag for each gene, not only the angle between 
+the mean expression vector of e.g. orthologs (or paralogs) and the diag
+(currently Angles_boxplot-with-pvalues.pdf)
+
 
 
 
@@ -31,7 +38,8 @@ are signif. greater than those between mean paralog expression to the diag (Angl
 
 - #### Doubt: regarding Genesets, Subgroups
 
-- See whether we can find other meaningful sub-groups in the families to investigate what happened to gene expression during the evolution of a particular gene family? 
+- See whether we can find other meaningful sub-groups in the families to investigate what 
+  happened to gene expression during the evolution of a particular gene family? 
 - E.g. tandem clusters or conserved domain architecture or something else.
 
 
@@ -65,10 +73,6 @@ cosDiag --> {`sum(a * b)/(sqrt(sum(a^2)) * sqrt(sum(b^2)))`} /`sqrt(2)`
 --> `(sum(a) * sqrt(2)) / (sqrt(n) * sqrt(sum(a^2)))`
 
 -->  `sqrt(2) / sqrt(n)`
-
-
-
-
 
 - 
 Dividing by 2 scales distances and angles uniformly, preserving the shape of vector clouds but does not fully normalize the data.

@@ -69,3 +69,11 @@ To Do:
 After we have all our analyses clear and done, we will redo them using logarithmic transformation of RPKM values.
 
 Soon, we will collect all results and interprete them before more experiments.
+
+
+- as for expression profiles
+- two factor data (ST-Exp) (Experiment) -> min 4 family members (species) & multiple tissues
+- to have enough axes (species) to form a viable expression vector space?
+- Example:  D.sec_brain, D.mel_brain, D.sec_muscle, D.mel_muscle, etc .....
+- therefor the expression data / tables should account for this 
+- `what exactly should ST-exp contain ?`
