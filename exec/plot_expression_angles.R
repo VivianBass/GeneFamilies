@@ -6,10 +6,10 @@ library(RColorBrewer)
 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-message("USAGE: Rscript path/2/GeneFamilies/exec/")
+message("USAGE: Rscript exec/plot_expression_angles.R")
+                
+load(file.path(output_data_dir,"expr.angle.diag.RData"))
 
-load(file.path(output_data_dir, "exp.angle.diag.RData"))                       
- 
 # plotting the expression angle data
 plot.df <- expr.angle.diag.df[!is.nan(expr.angle.diag.df$angle.diag), ]
 plot.df$gene.type <- factor(plot.df$gene.type, levels = c("ortholog", "paralog"))

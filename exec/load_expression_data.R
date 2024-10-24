@@ -5,24 +5,18 @@ library(dotenv)
 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-message("USAGE: Rscript path/2/GeneFamilies/exec/loadRpkmRnaSeqCounts.R RPKM_counts_table.tsv")
-message("Note, that the table in argument file 'RPKM_counts_table.tsv' is expected to be TAB-Delimited and have a header line:\n", 
-    "id tissue rank expression variance")
+message("USAGE:  Rscript exec/load_expression_data.R <RPKM_counts_table.tsv>")
+message("Note:   <RPKM_counts_table.tsv> is expected to be TAB-Delimited and have a header line:\n", "id | tissue | rank")
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
-input.args[[1]] <- "experiments/RPKM_flybase/RPKM.tsv"
-
-
-#' Read RPKM normalized counts:
+# read RPKM normalized counts:
 rpkm.rna.seq.counts <- read.table(input.args[[1]], sep = "\t", header = TRUE, stringsAsFactors = FALSE, 
-    comment.char = "", quote = "", na.strings = "", colClasses = c(rep("character", 
-        3), rep("numeric", "2")))
-#' Transform into expression profiles:
+    comment.char = "", quote = "", na.strings = "", colClasses = c(rep("character", 3), rep("numeric", "2")))
+
+# Transform into expression profiles:
 genes <- sort(unique(rpkm.rna.seq.counts$id))
 tissues <- sort(unique(rpkm.rna.seq.counts$tissue))
-
-# All posible issued
 all_tissues <- unique(rpkm.rna.seq.counts$tissue)
 
 # Process every gene
@@ -34,7 +28,6 @@ process_gene <- function(x) {
     colnames(x.df) <- all_tissues
     rownames(x.df) <- NULL
     
-    # Fill the tissues that exists for this gene
     tissue_names <- y$tissue
     expressions <- y$expression / sum(y$expression, na.rm = TRUE)
     
@@ -42,21 +35,19 @@ process_gene <- function(x) {
         x.df[tissue_names[i]] <- expressions[i]
     }
     
-    # Add gene column
     x.df$gene <- x
     x.df
 }
 
-# Combine results
 rna.seq.exp.profils <- tryCatch({
-    do.call("rbind", mclapply(genes, process_gene, mc.cores = parallel::detectCores()))  # Ajusta el número de núcleos según tus necesidades
+    do.call("rbind", mclapply(genes, process_gene, mc.cores = parallel::detectCores()))  
 }, error = function(e) {
     cat("Error al combinar los data.frames con rbind:\n")
     cat("Mensaje de error:", e$message, "\n")
-    NULL  # Retorna NULL en caso de error
+    NULL  
 })
 
-#' Save results:
+# Save results:
 save(rna.seq.exp.profils, rpkm.rna.seq.counts, file = file.path(output_data_dir, "RNA_Seq_RPKM_and_profiles.RData"))
 write.table(rna.seq.exp.profils, file.path(output_data_dir, "RNA_Seq_RPKM_and_profiles.tsv"), 
     sep = "\t", row.names = FALSE, quote = FALSE)

@@ -7,74 +7,59 @@ library(dotenv)
 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-message("USAGE: Rscript path/2/GeneFamilies/exec/expressionAngles.R path/2/GeneFamilies")
+source("R/expression_funks.R")
+load(file.path(output_data_dir, "RNA_Seq_RPKM_and_profiles.RData"))
+
+# Define expression vector space (you can modify this as needed)
+# The number of tissues corresponds to the count of axes, excluding the gene column in the names.
+expr.cols <- names(rpkm.expr.profiles.df)[names(rpkm.expr.profiles.df) != "Gene"]
+n.dims <- length(expr.cols)
+
+message("USAGE: Rscript exec/compute_exp.prof.dists_angles.R")
 message("Defining expression vector space with the following axes: ", paste(expr.cols, collapse = ", "))
 
 source("R/expression_funks.R")
-
 load(file.path(output_data_dir, "RNA_Seq_RPKM_and_profiles.RData"))
 
 
+# calculate exp.prof.dists angles to diagonal for paralogs 
 
-# need the expression lists (median) for paralogs and orthologs
+paralog.genes <- unlist(paralogs.lst)
+para.expr <- intersect(paralog.genes, rpkm.expr.profiles.df$Gene)
 
-
-
-load("data/data.RData")
-
-# Inputs used in this script:
-rna.seq.exp.profils <- df14_P_dmel
-para.expr.lst <- vv_df3_para.lst
-orths.expr.lst <- vv_df3_ortho.lst
-
-
-input.args <- list()
-input.args[[1]] <- orths.expr.lst
-input.args[[2]] <- para.expr.lst
-input.args[[3]] <- rna.seq.exp.profils
-
-# Define expression vector space (you can modify this as needed)
-expr.cols <- c("Whole_Body", "Muscle", "Gut", "Fat_Body")
-n.dims <- length(expr.cols)
-
-# - need a function for this
+paralog.expr.angle.diag.df <- data.frame(gene = para.expr, angle.diag = as.numeric(mclapply(para.expr, 
+    function(x) {
+        cosDiag(rpkm.expr.profiles.df[which(rpkm.expr.profiles.df$Gene == 
+            x), expr.cols])/sqrt(2)
+    })), stringsAsFactors = FALSE)
 
 
-# calculate angles between expression profiles and diagonal , as measure of tissue specificity
-# Function to calculate angles to diagonal for a list of genes
-calculate_angle_to_diagonal <- function(gene_list, expression_profiles, expression_columns) {
-  # Find intersection of input gene list with available genes in the expression profile data
-  genes_with_expr <- intersect(unlist(gene_list), expression_profiles$Gene)
-  
-  # Calculate the angle to the diagonal for each gene
-  angle_diag_df <- data.frame(
-    Gene = genes_with_expr,
-    angle.diag = as.numeric(mclapply(genes_with_expr, function(gene) {
-      # Compute cosine diagonal distance for the expression profile of the gene
-      cosDiag(expression_profiles[which(expression_profiles$Gene == gene), expression_columns]) / sqrt(2)
-    })),
-    stringsAsFactors = FALSE
-  )
-  
-  return(angle_diag_df)
-}
+# calculate exp.prof.dists angles to diagonal for orthologs 
 
-para.expr.angle.diag.df <- calculate_angle_to_diagonal(input.args[[1]], input.args[[3]], expr.cols)
-orths.expr.angle.diag.df <- calculate_angle_to_diagonal(input.args[[2]], input.args[[3]], expr.cols)
+orthologs.genes <- unlist(orthologs.lst)
+orths.expr <- intersect(orthologs.genes, rpkm.expr.profiles.df$Gene)
 
-# merge paralog.expr.angle.diag.df and orths.expr.angle.diag.df as one df:
+orths.expr.angle.diag.df <- data.frame(Gene = orths.expr, angle.diag = as.numeric(mclapply(orths.expr, 
+    function(x) {
+        cosDiag(rpkm.expr.profiles.df[which(rpkm.expr.profiles.df$Gene == 
+            x), expr.cols])/sqrt(2)
+    })), stringsAsFactors = FALSE)
+
+
+# merge paralog.expr.angle.diag.df and orths.expr.angle.diag.df and plot results:
+
 p.lst <- list(paralog = paralog.expr.angle.diag.df, ortholog = orths.expr.angle.diag.df)
 expr.angle.diag.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
     data.frame(gene.type = gene.type, angle.diag = p.lst[[gene.type]]$angle.diag, 
         stringsAsFactors = FALSE)
 }))
 
-save(para.expr.angle.diag.df, orths.expr.angle.diag.df, expr.angle.diag.df,
+save(p.lst, para.expr.angle.diag.df, orths.expr.angle.diag.df, expr.angle.diag.df, 
     file = file.path(output_data_dir, "expr.angle.diag.RData"))
 
 message("DONE")
 
-# - would need to clear for invalid numbers
+
 
 
 

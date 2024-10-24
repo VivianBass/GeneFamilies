@@ -4,7 +4,7 @@ library(dotenv)
 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-message("USAGE: Rscript path/2/GeneFamilies/exec/computeExpressionProfileDistances.R")
+message("USAGE: Rscript path/2/GeneFamilies/exec/compute_exp.prof.dists.R")
 
 input.args <- commandArgs(trailingOnly = TRUE)
 load(file.path(output_data_dir, "families.RData"))                       
@@ -17,10 +17,8 @@ test_expressionProfilesDists <- function(gene.accessions, expression.profiles = 
     dist.method = "euclidean", per.tissue = FALSE) {
 
     all_genes <- unlist(gene.accessions)
-    # print(all_genes)
     inds <- which(expression.profiles$gene %in% all_genes)
 
-    # print(length(inds))
     if (length(inds) > 1) {
 
         exp.profs <- expression.profiles[inds, ]
