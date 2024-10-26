@@ -13,7 +13,6 @@ library(purrr)
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
 
-
 load(file.path(output_data_dir, "expression_profile_distances_statistics.RData"))
 load(file.path(output_data_dir, "ExpressionProfileDistances.RData"))
 
@@ -24,8 +23,6 @@ significance_level <- function(p) {
   else if (p < 0.05) return("*")
   else return("ns")  
 }
-
-# - combined df ???? from genefamilies
 
 # mean and median expression distances
 # df_median_mean_paralogs 
@@ -75,25 +72,9 @@ pdf(file.path(results_dir,"boxplots_expression_distances_with_jitter.pdf"), heig
 grid.arrange(boxplot_median, boxplot_mean, ncol = 1)
 dev.off()
 
-# ----------------------------------------------------------------
 
-# assuming they have the same row length ?? i guess ??
-# assuming gene_family_expression_dists_stats is a combined df ??
-# should we use this code ??
 
-# Create a dataframe with median distances
-median_distances <- data.frame(
-  distance = c(gene_family_expression_dists_stats$median_ortholog_exp_dists,
-               gene_family_expression_dists_stats$median_paralog_exp_dists),
-  group = rep(c("Orthologs", "Paralogs"), each = nrow(gene_family_expression_dists_stats))
-)
 
-# Create a dataframe with mean distances
-mean_distances <- data.frame(
-  distance = c(gene_family_expression_dists_stats$mean_ortholog_exp_dists,
-               gene_family_expression_dists_stats$mean_paralog_exp_dists),
-  group = rep(c("Orthologs", "Paralogs"), each = nrow(gene_family_expression_dists_stats))
-)
 
 # t-tests
 # # Uncomment this part to perform t-test for medians
@@ -146,4 +127,35 @@ mean_distances <- data.frame(
 
 
 
+
+# -----------------------------------------------------------------------------
+
+# t-tests and plots based on:
+# https://www.datanovia.com/en/fr/blog/comment-effectuer-un-test-t-multiple-dans-r-pour-differentes-variables/
+# located in folder: plots/t-test-plots
+
+library(tidyverse)
+library(rstatix)
+library(ggpubr)
+library(tibble)
+
+
+
+# --------------------------------------------------------
+
+
+mydata <- p.df %>% as_tibble()
+
+mydata.long <- mydata %>% pivot_longer(-gene.type, names_to = "variables", values_to = "value")
+mydata.long <- mydata.long %>% filter(!is.na(value) & !is.infinite(value))
+
+stat.test <- mydata.long %>%
+  group_by(variables) %>%  
+  t_test(value ~ gene.type) %>%  
+  adjust_pvalue(method = "BH") %>%  
+  add_significance()
+
+# Add p-values to the plot
+stat.test <- stat.test %>% add_xy_position(x = "gene.type") 
+myplot_with_pvals <- myplot + stat_pvalue_manual(stat.test, label = "p.adj.signif")
 

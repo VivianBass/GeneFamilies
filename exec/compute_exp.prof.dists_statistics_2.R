@@ -10,7 +10,7 @@ output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
 message("USAGE: Rscript path/2/GeneFamilies/exec/investigateDistributionsOfExpressionProfileDistances.R path/2/GeneFamilies")
 
-load("experiments/RPKM_flybase/data/ExpressionProfileDistances.RData")
+load(file.path(output_data_dir, "ExpressionProfileDistances.RData"))
 
 
 # Function to calculate statistics (mean, median) for orthologs or paralogs expression profile distances
@@ -24,8 +24,6 @@ calculate_expression_profile_statistics <- function(data) {
       Family = name,
       Mean = mean(dist_matrix, na.rm = TRUE),
       Median = median(dist_matrix, na.rm = TRUE),
-      Max = max(dist_matrix, na.rm = TRUE),
-      Min = min(dist_matrix[dist_matrix > 0], na.rm = TRUE)
     )
   })
 
