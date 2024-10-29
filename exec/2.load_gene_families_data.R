@@ -20,11 +20,15 @@ input.args <- commandArgs(trailingOnly = TRUE)
 
 input.args[[1]] <- "experiments/test/Orthogroups.tsv"
 
-
 families.df <-  read.table(input.args[[1]], 
                 header = TRUE, sep = "\t", 
                 comment.char = "", quote = "", na.strings = "", 
                 colClasses = rep("character", ncol(read.table(input.args[[1]], header = TRUE, sep = "\t"))))
+
+# count the number of genes in each family
+families.counts.df <- families.df %>%
+                mutate(across(all_of(gene_columns), 
+                ~lengths(strsplit(., ",\\s*"))))
 
 # Automatically define the vector of gene columns by excluding 'Family'
 gene_columns <- setdiff(names(families.df), "Family")
@@ -34,12 +38,11 @@ families.lst <- families.df %>%
                 group_by(Family) %>%
                 summarise(across(all_of(gene_columns), ~ list(.))) %>%
                 nest(data = all_of(gene_columns)) %>%
-                mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
-                select(cluster_name, data) %>%
+                select(Family, data) %>%
                 deframe()
 
-
 # Save data:
-save(families.lst, families.df, file = file.path(output_data_dir, "gene_families.RData"))
+save(families.lst, families.df, families.counts.df,
+     file = file.path(output_data_dir, "gene_families.RData"))
 
 message("DONE")
