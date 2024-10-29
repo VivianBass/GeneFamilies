@@ -28,7 +28,22 @@
 
 - adjusted messages in loading rscripts
 
+- adjusted the exec/3.load_gene_groups_data.R for 5 different gene-groups
+- code used see below
 
+```R
+library(dplyr)
+library(tidyr)
+library(tibble)
+
+con_orthologs <- read.table(input.args[[1]], header = TRUE, sep = "\t", 
+                comment.char = "", quote = "", na.strings = "", 
+                colClasses = rep("character", 5))
+
+con_orthologs.lst <- con_orthologs %>% group_by(Family) %>% summarise(Gene = list(Gene)) %>%
+                mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
+                select(cluster_name, Gene) %>% deframe()
+```
 
 
 **Doubts and Issues**:
