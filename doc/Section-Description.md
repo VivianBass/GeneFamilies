@@ -152,41 +152,7 @@ comparing ranks to assess if one group tends to have larger values.
 correction with p.adjust() to control the False Discovery Rate (FDR) and minimize false positives.
 
 
-- 4.  `compute_exp.prof.dists_angles.R`
-
-
-**Angle Analysis in Gene Expression**:
-
-**Angle Calculation**: The script computes angles between expression vectors (gene expression profiles) 
-within gene families and the diagonal using the `cosDiag` function.
-
-**Diagonal Reference**: The diagonal represents equal expression across all tissues 
-(a line from the origin to the point (1,1,...)). Angles to this diagonal measure 
-deviations from balanced expression, indicating tissue specificity.
-
-**Interpretation**: 
-  - **Small Angles**: Suggest balanced gene expression across tissues (high tissue versatility).
-  - **Large Angles**: Indicate tissue-specific expression.
-
-**Expression Vectors**: Represent gene-family clusters with gene expression profiles across tissues. 
-Mean expression vectors are used to calculate angles, 
-assessing functional diversification through rotation around the diagonal.
-
-**Tissue Specificity and Versatility**:
-Angles measure how specific or versatile a gene's expression is. 
-Small angles indicate high versatility (broad expression), 
-while larger angles show more tissue-specific expression.
-
-**Ortholog vs. Paralog Comparison**:
-Mean expression vectors for orthologs and paralogs are compared within 
-each gene family by calculating angles between the diagonal and their mean expression vectors. 
-This helps evaluate tissue specificity and functional shifts post-duplication.
-
-
 ## Section-3 - Plotting Distributions
-
-- 1. `plot_expression_angles.R`    
-
 
 - **Scientific Plots Overview**:
 
@@ -194,6 +160,3 @@ This helps evaluate tissue specificity and functional shifts post-duplication.
 **First Plot**: ...
 **Second Plot**: ...
 
-**Boxplot of Expression Angles**:
-Visualizes the distribution of calculated angles between expression vectors and 
-the diagonal for gene families with a positive distance between ortholog and paralog expression profiles.

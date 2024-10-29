@@ -49,18 +49,8 @@
 
 To Do:
 
-- open issues from the last meeting:
-
-  - do the expression distances and angle measures for tandems and trans-duplicates separately
-
-  - species and tissue two factor analysis
-
-- If the biological question is whether after duplication there was a change in gene expression we might want to measure the distances between pairs of one ortholog and one paralog. The assumption being that the ortholog was the ancestor (conserved expression) of the paralog (duplicated and evolved expression). For this let's do an ANOVA like ChatGPT suggested:
-  https://chatgpt.com/share/66fc1cb1-6c4c-800b-a190-5d0d12972b41
-
-  - This might even work better for our multi-species setup. Do one additional ANOVA in this species~tissue setting:
-
-     - Create expression vectors in an expression vector space JUST defined by tissues, i.e. the axes are tissues
+  - species and tissue two factor analysis, species~tissue setting:
+  - Create expression vectors in an expression vector space JUST defined by tissues, i.e. the axes are tissues
 
      - Using gene identity we now can measure distances between species, i.e. dist( Gene-A~species-1, Gene-A~species-2)
      - Now we can categorize these distances by whether a gene is an ortholog or an paralog and investigate whether gene expression appears to be more conserved in orthologs or in paralogs. For this, we do an ANOVA, comparing distances between orthologs with distances between paralogs. 
@@ -68,12 +58,16 @@ To Do:
 
 After we have all our analyses clear and done, we will redo them using logarithmic transformation of RPKM values.
 
-Soon, we will collect all results and interprete them before more experiments.
+### --------------------------------------------------
 
+two-factor data (ST-Exp) should contain and its purpose:
 
-- as for expression profiles
-- two factor data (ST-Exp) (Experiment) -> min 4 family members (species) & multiple tissues
-- to have enough axes (species) to form a viable expression vector space?
-- Example:  D.sec_brain, D.mel_brain, D.sec_muscle, D.mel_muscle, etc .....
-- therefor the expression data / tables should account for this 
-- `what exactly should ST-exp contain ?`
+1. **Species and Tissue as Primary Factors:** ST-Exp should include gene expression data across multiple species and tissues, treating both species and tissue types as two independent factors.
+
+2. **Minimum Family Members:** Each family group must have at least four members across different species to allow for meaningful comparisons.
+
+3. **Gene Duplication Types:** Measure expression distances for orthologs, paralogs, 5 groups
+
+4. **Expression Distance Metrics:** Calculate expression distances per gene type (ortholog, paralog, etc.) across species, with one distribution plot per species (boxplot/raincloud) and pairwise statistical testing (t-tests, Wilcoxon tests).
+
+5. **ANOVA for Conservation Analysis:** Compare expression conservation across species by measuring distances in a tissue-defined vector space, assessing if orthologs retain expression more than paralogs.
