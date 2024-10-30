@@ -13,11 +13,9 @@ message("USAGE:  Rscript exec/load_expression_data.R <RPKM_counts_table.tsv>")
 
 message("input.args[[1]]: <RPKM_counts_table.tsv>")
 message("<RPKM_counts_table.tsv> expected to be TAB-Delimited")
-message("<RPKM_counts_table.tsv> Header : \n", "id | tissue | expression")
+message("<RPKM_counts_table.tsv> Header : \n", "id / tissue / expression")
 
 input.args <- commandArgs(trailingOnly = TRUE)
-
-input.args[[1]] <- "experiments/test/RPKM.tsv"
 
 # read RPKM counts:
 rpkm.rna.seq.counts <- read.table(input.args[[1]], 
@@ -26,18 +24,19 @@ rpkm.rna.seq.counts <- read.table(input.args[[1]],
         select(id, tissue, expression) %>%
         mutate(expression = as.numeric(expression))
 
-genes <- sort(unique(rpkm.rna.seq.counts$id))
-tissues <- sort(unique(rpkm.rna.seq.counts$tissue))
+# create expression matrix, with all the tissues as Header 
+expression_matrix <- rpkm.rna.seq.counts %>%
+        pivot_wider(id_cols = id, names_from = tissue, values_from = expression,
+        values_fn = list(expression = mean), values_fill = 0)
 
-# compute expression profiles for each gene and normalize them
-rna.seq.exp.profils <- do.call("rbind", mclapply(genes, function(x) {
-    y <- rpkm.rna.seq.counts[which(rpkm.rna.seq.counts$id == x), ]
-    x.df <- as.data.frame(t(setNames(y[, "expression"]/sum(y[, "expression"], 
-    na.rm = TRUE),  y$tissue)), stringsAsFactors = FALSE)
-    x.df$gene <- x
-    x.df
-}))
+expression_matrix <- expression_matrix %>% select(-`NA`)
 
+# normalize the expression matrix
+rna.seq.exp.profils <- expression_matrix %>% rowwise() %>%
+        mutate(row_sum = sum(c_across(-id), na.rm = TRUE)) %>%
+        mutate(across(-c(id, row_sum), ~./row_sum)) %>%
+        select(-row_sum) %>% ungroup()
+        
 # Save results:
 save(rna.seq.exp.profils, rpkm.rna.seq.counts, file = file.path(output_data_dir,"gene_expression.RData"))
 
@@ -45,3 +44,4 @@ write.table(rna.seq.exp.profils, file.path(output_data_dir, "RNA_Seq_RPKM_and_pr
             sep = "\t", row.names = FALSE, quote = FALSE)
 
 message("DONE")
+

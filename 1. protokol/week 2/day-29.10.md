@@ -82,3 +82,10 @@ con_orthologs.lst <- con_orthologs %>% group_by(Family) %>% summarise(Gene = lis
 ```
 
 
+
+
+
+
+load("experiments/test/data/gene_families.RData")
+load("experiments/test/data/gene_groups.RData")
+load("experiments/test/data/gene_expression.RData")

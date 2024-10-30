@@ -27,20 +27,21 @@ works for other data-sets as well.
 - main question:
 - Is there a difference in expression diversity between Orthologs and Paralogs?
 
+In the new EasyVectorOmics we will need from the user:
 
 The steps and data required to carry out the original analysis are devided into 3 Sections 
 
 - `1. Loading Data`                                                             (Section-1) 
-- `2. Computing Distances, Statistics, T-tests and Angles`                      (Section-2) 
+- `2. Computing Distances, Statistics, T-tests`                                 (Section-2) 
 - `3. Plotting Distributions`                                                   (Section-3) 
 
 -------------------------------------------------------------------------------------------
 
 ## Section-1 - Loading Data
 
-- 1.  `load_expression_data.R`	          
-- 2.  `load_paralogs_orthologs_tandems_data.R`    
-- 3.  `load_genefamilies_data.R`
+- 1.  `load_gene_expression_data.R`	          
+- 2.  `load_gene_groups_data.R`    
+- 3.  `load_gene_families_data.R`	
 
 Tools for identifying paralogs, orthologs, tandems, and gene families:
 
@@ -54,7 +55,7 @@ homologous sequences (orthologs, paralogs) by comparing query sequences to a dat
 MCL groups genes into clusters (e.g., gene families) 
 by creating a similarity matrix from pairwise sequence similarities derived from BLAST results.
 
-- 1. `load_expression_data`:
+- 1.  `load_gene_expression_data.R`	
 
 Load expression data for different gene sets (e.g., orthologs, paralogs, tandem genes). 
 Expression data, represented as RNA count numbers per unit time, indicates gene activity: 
@@ -75,7 +76,7 @@ and RNA quality to allow fair comparison of gene expression levels across differ
 **Normalization Methods**: TPM (Transcripts Per Million), FPKM, and RPKM are commonly 
 used to normalize gene expression data for accurate analysis.
 
-- 2. `load_paralogs_orthologs_tandems_data`:
+- 2.  `load_gene_groups_data.R`
 
 Gene Groups: Load information on orthologs, paralogs, and tandem genes 
 identified within species genomes.
@@ -83,7 +84,7 @@ identified within species genomes.
 The files contain data on pairwise sequence similarities for orthologs and paralogs, 
 used to identify these relationships.
 
-- 3. `load_genefamilies_data`:
+- 3.  `load_gene_families_data.R`	
 
 Load information on gene families from MCL output files.
 MCL generates gene clusters (gene families), 
@@ -95,7 +96,7 @@ where each cluster groups genes that are related by sequence similarity.
 - 1.  `compute_exp.prof.dists.R` 	                        
 - 2.  `compute_exp.prof.dists_statistics.R`
 - 3.  `compute_t-tests_wilcox-tests.R`
-- 4.  `compute_exp.prof.dists_angles.R`  
+
 
 - Starting point: a gene family dataframe containing gene family clusters.
 
