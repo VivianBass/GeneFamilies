@@ -5,32 +5,68 @@
 
 **Tasks**:
 
-- got new to do 
+- **Goal Definition**: Established primary objectives for the coming weeks.
+  
+- **Data Loading and Distance Calculation**: 
+Set up to load all five files related to gene families and expression values. 
+Distances will be computed between gene pairs.
 
-        - we need another way to load the data 
-        - we need to load pairs of orthologs, pairs of paralogs (not only the list itself)
+- **Gene Group Classification**: Created five distinct gene groups:
+  1. **Conserved Orthologs**
+  2. **In-Paralogs with Orthologs**
+  3. **In-Paralogs without Orthologs**
+  4. **Out-Paralogs with Orthologs**
+  5. **Out-Paralogs without Orthologs**
 
-        - you have to modify the way the scripts are working, because, as I told you, we need to work with pairs of genes instead of a list of genes.
-        - We only need you to measure distances as we are measure them now and also with logarithm transformed. 
+- **File Structure and Headers**:
+  - Defined headers for paralog files: 
+    `Family`/ `Gene`/ `Gene_species`/ `Paralog`/ `Paralog_species`
 
-        We will have 5 groups:
-        conserved orthologs
-        in paralogs with orthologs
-        in paralogs without orthologs
-        out paralogs with orthologs
-        out paralogs without orthologs
+  - Example header structure for **Conserved Orthologs**:  
+    ```
+    Family      Gene        Gene_species    Ortholog      Ortholog_species
+    OG0000000   FBpp0117097 dana            FBpp0172663   dmoj
+    ```
 
-        So you have to be able to load all 5 files, families and expression values, and measure the distances between the pairs
+- **Script Adjustments**:
+  - **Data Loading**:
+    - Updated `exec/3.load_gene_groups_data.R` to load the five gene groups 
+    (conserved orthologs, in-paralogs, out-paralogs, special_in-paralogs, special_out-paralogs).
+    - Command for this script:  
+        ```
+        Rscript load_gene_groups_data.R <in_paralogs.tsv> <special_in_paralogs.tsv> <out_paralogs.tsv> <special_out_paralogs.tsv> <conserved_orthologs.tsv>
+        ```
+  - **Gene Families**:
+    - Adapted `exec/2.load_gene_families_data.R` to the new OrthoFinder input format:
+      ```
+      Family      species1        species2        species3
+      family_1    gene1,gene2,gene3  gene4,gene5,gene6  gene7,gene8,gene9
+      ```
+  - **Gene Expression**:
+    - Revised `exec/1.load_gene_expression_data.R`.
 
-- adjusted exec/3.load_gene_groups_data.R for the new 5 gene groups
+- **Improved messages**: improved messages across all three data loading scripts.
 
-- thought to separate the all vs all (blast) from loading gene groups to a separate rscript just for blast etc. 
 
-- adjusted messages in loading rscripts
+**Doubts and Issues**:
 
-- adjusted the exec/3.load_gene_groups_data.R for 5 different gene-groups
-- code used see below
+- Clarify the specific differences among the five gene groups and how to categorize them accordingly.
+- Need to clarify the method for performing log-transformed distance calculations. What is the   
+  exact process for applying logarithmic transformation to distance measurements?
 
+
+**Next Steps**:
+
+- Adapt distance and statistical computations to include all five gene groups.
+- Finalize the structure and required inputs for each of the five gene group files.
+- perform log-transformed distance calculations (exec/5.compute_exp.prof.dists.R)
+
+---
+
+**Code**
+
+
+- code for loading conserved orthologs data
 ```R
 library(dplyr)
 library(tidyr)
@@ -46,10 +82,3 @@ con_orthologs.lst <- con_orthologs %>% group_by(Family) %>% summarise(Gene = lis
 ```
 
 
-**Doubts and Issues**:
-
-**Next Steps**:
-
----
-
-**Code**

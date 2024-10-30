@@ -1,6 +1,11 @@
 require(GeneFamilies)
 options(mc.cores = getMcCores())
 library(dotenv)
+library(parallel)
+
+library(dplyr)
+library(tidyr)
+library(tibble)
 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
@@ -12,46 +17,31 @@ message("<RPKM_counts_table.tsv> Header : \n", "id | tissue | expression")
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
-# read RPKM normalized counts:
-rpkm.rna.seq.counts <- read.table(input.args[[1]], sep = "\t", header = TRUE, 
-    stringsAsFactors = FALSE, comment.char = "", quote = "", na.strings = "", 
-    colClasses = c(rep("character", 3), rep("numeric", "2")))
+input.args[[1]] <- "experiments/test/RPKM.tsv"
 
-# Function for ...
-process_gene <- function(x) {
-    y <- rpkm.rna.seq.counts[which(rpkm.rna.seq.counts$id == x), ]
-    x.df <- as.data.frame(matrix(NA, nrow = 1, ncol = length(all_tissues)))
-    colnames(x.df) <- all_tissues
-    rownames(x.df) <- NULL
-    
-    tissue_names <- y$tissue
-    expressions <- y$expression / sum(y$expression, na.rm = TRUE)
-    
-    for (i in seq_along(tissue_names)) {
-        x.df[tissue_names[i]] <- expressions[i]
-    }
-    
-    x.df$gene <- x
-    x.df
-}
+# read RPKM counts:
+rpkm.rna.seq.counts <- read.table(input.args[[1]], 
+        sep = "\t", header = TRUE, fill = TRUE,
+        stringsAsFactors = FALSE, comment.char = "", quote = "", na.strings = "") %>%
+        select(id, tissue, expression) %>%
+        mutate(expression = as.numeric(expression))
 
-# Transform into expression profiles:
 genes <- sort(unique(rpkm.rna.seq.counts$id))
 tissues <- sort(unique(rpkm.rna.seq.counts$tissue))
-all_tissues <- unique(rpkm.rna.seq.counts$tissue)
 
-rna.seq.exp.profils <- tryCatch({
-    do.call("rbind", mclapply(genes, process_gene, mc.cores = parallel::detectCores()))  
-}, error = function(e) {
-    cat("Error al combinar los data.frames con rbind:\n")
-    cat("Mensaje de error:", e$message, "\n")
-    NULL  
-})
+# compute expression profiles for each gene and normalize them
+rna.seq.exp.profils <- do.call("rbind", mclapply(genes, function(x) {
+    y <- rpkm.rna.seq.counts[which(rpkm.rna.seq.counts$id == x), ]
+    x.df <- as.data.frame(t(setNames(y[, "expression"]/sum(y[, "expression"], 
+    na.rm = TRUE),  y$tissue)), stringsAsFactors = FALSE)
+    x.df$gene <- x
+    x.df
+}))
 
 # Save results:
 save(rna.seq.exp.profils, rpkm.rna.seq.counts, file = file.path(output_data_dir,"gene_expression.RData"))
 
 write.table(rna.seq.exp.profils, file.path(output_data_dir, "RNA_Seq_RPKM_and_profiles.tsv"), 
-    sep = "\t", row.names = FALSE, quote = FALSE)
+            sep = "\t", row.names = FALSE, quote = FALSE)
 
 message("DONE")

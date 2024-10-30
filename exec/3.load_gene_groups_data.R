@@ -36,12 +36,12 @@ input.args[[5]] <- "experiments/test/special_out_paralogs_test.tsv"
 # Orthologs
 # conserved orthologs
 con_orthologs <- read.table(input.args[[1]], header = TRUE, sep = "\t", 
-                 comment.char = "", quote = "", na.strings = "", 
-                 colClasses = rep("character", 5))
+               comment.char = "", quote = "", na.strings = "", 
+               colClasses = rep("character", 5))
 
 con_orthologs.lst <- con_orthologs %>% group_by(Family) %>% summarise(Gene = list(Gene)) %>%
-                     mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
-                     select(cluster_name, Gene) %>% deframe()
+               mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
+               select(cluster_name, Gene) %>% deframe()
 
 # Paralogs
 # in paralogs with orthologs
@@ -50,8 +50,8 @@ in_paralogs <- read.table(input.args[[2]], header = TRUE, sep = "\t",
                colClasses = rep("character", 5))
 
 in_paralogs.lst <- in_paralogs %>% group_by(Family) %>% summarise(Gene = list(Gene)) %>%
-                     mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
-                     select(cluster_name, Gene) %>% deframe()
+               mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
+               select(cluster_name, Gene) %>% deframe()
 
 # in paralogs without orthologs
 out_paralogs <- read.table(input.args[[3]], header = TRUE, sep = "\t",          
@@ -59,8 +59,8 @@ out_paralogs <- read.table(input.args[[3]], header = TRUE, sep = "\t",
                colClasses = rep("character", 5))
 
 out_paralogs.lst <- in_paralogs %>% group_by(Family) %>% summarise(Gene = list(Gene)) %>%
-                     mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
-                     select(cluster_name, Gene) %>% deframe()
+               mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
+               select(cluster_name, Gene) %>% deframe()
 
 # out paralogs with orthologs
 special_in_paralogs <- read.table(input.args[[4]], header = TRUE, sep = "\t",          
@@ -68,8 +68,8 @@ special_in_paralogs <- read.table(input.args[[4]], header = TRUE, sep = "\t",
                colClasses = rep("character", 5))
 
 special_in_paralogs.lst <- in_paralogs %>% group_by(Family) %>% summarise(Gene = list(Gene)) %>%
-                     mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
-                     select(cluster_name, Gene) %>% deframe()
+               mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
+               select(cluster_name, Gene) %>% deframe()
 
 # out paralogs without orthologs
 special_out_paralogs <- read.table(input.args[[5]], header = TRUE, sep = "\t",          
@@ -77,8 +77,8 @@ special_out_paralogs <- read.table(input.args[[5]], header = TRUE, sep = "\t",
                colClasses = rep("character", 5))
 
 special_out_paralogs.lst <- in_paralogs %>% group_by(Family) %>% summarise(Gene = list(Gene)) %>%
-                     mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
-                     select(cluster_name, Gene) %>% deframe()
+               mutate(cluster_name = paste("Orthogroup_", row_number(), sep = "")) %>%
+               select(cluster_name, Gene) %>% deframe()
 
 
 save(con_orthologs, con_orthologs.lst,
