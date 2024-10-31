@@ -21,7 +21,9 @@
 - would need a naming convention for files across the package to maintain consistent and standardized names.
 - Define input/output file formats, including data structure and required formats, to ensure compatibility throughout the pipeline.
 
-# -----------------------------------------------------------------------
+---
+
+**Code**
 
 - Code for the t-tests
 
