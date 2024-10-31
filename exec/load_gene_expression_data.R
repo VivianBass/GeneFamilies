@@ -17,9 +17,6 @@ message("<RPKM_counts_table.tsv> Header : \n", "id / tissue / expression")
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
-# Functions used from:
-source("R/loading_section_funks.R")
-
 # read RPKM counts:
 rpkm.rna.seq.counts <- read.table(input.args[[1]], 
         sep = "\t", header = TRUE, fill = TRUE,
