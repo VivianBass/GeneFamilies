@@ -35,7 +35,7 @@ The steps and data required to carry out the original analysis are devided into 
 - `2. Computing Distances, Statistics, T-tests`                                 (Section-2) 
 - `3. Plotting Distributions`                                                   (Section-3) 
 
--------------------------------------------------------------------------------------------
+---
 
 ## Section-1 - Loading Data
 
@@ -83,6 +83,14 @@ identified within species genomes.
 
 The files contain data on pairwise sequence similarities for orthologs and paralogs, 
 used to identify these relationships.
+
+# Load Data:
+# Load gene pairs for orthologs and paralogs, rather than just lists of genes.
+# Work with specific pairs of genes, instead of individual gene lists. 
+
+
+
+
 
 - 3.  `load_gene_families_data.R`	
 

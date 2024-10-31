@@ -17,6 +17,9 @@ message("<RPKM_counts_table.tsv> Header : \n", "id / tissue / expression")
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
+# Functions used from:
+source("R/loading_section_funks.R")
+
 # read RPKM counts:
 rpkm.rna.seq.counts <- read.table(input.args[[1]], 
         sep = "\t", header = TRUE, fill = TRUE,
@@ -28,8 +31,6 @@ rpkm.rna.seq.counts <- read.table(input.args[[1]],
 expression_matrix <- rpkm.rna.seq.counts %>%
         pivot_wider(id_cols = id, names_from = tissue, values_from = expression,
         values_fn = list(expression = mean), values_fill = 0)
-
-expression_matrix <- expression_matrix %>% select(-`NA`)
 
 # normalize the expression matrix
 rna.seq.exp.profils <- expression_matrix %>% rowwise() %>%

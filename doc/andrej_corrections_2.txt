@@ -1,0 +1,46 @@
+Load expressions 
+
+
+
+	
+Input_files.md
+	Write the documentation thinking that other users will read it, not for you. Adjust line 21:
+		Expression values  (the same as we are using now only delete rank and variance) Expected input:
+
+	Write a small description for each file
+	
+rscript_execution.md
+	Write the documentation more readable for the user, for example, instead of this:
+	- 2. example: Rscript exec/load_gene_groups_data.R 
+	    <conserved_orthologs.tsv> <in_paralogs.tsv> <special_in_paralogs.tsv> <out_paralogs.tsv> <special_out_paralogs.tsv>
+
+	    Rscript exec/load_gene_groups_data.R ...
+
+	    input.args[[1]] <- "experiments/test/conserved_orthologs_test.txt"
+	    
+	You can say:
+	- 2. example: Rscript exec/load_gene_groups_data.R 
+	    <conserved_orthologs.tsv> <in_paralogs.tsv> <special_in_paralogs.tsv> <out_paralogs.tsv> <special_out_paralogs.tsv>
+		Where:
+			-conserved_orthologs.tsv is the file that contains the pairs of orthologs in each species. For details go to input_files.md
+			-in_paralogs.tsv is the file....
+			-special_in_paralogs is the file...
+			
+			
+		
+		
+Definitions of groups:
+	Conserved Orthologs
+	Definition: Conserved orthologs are highly conserved orthologous genes found across different species. Following an analysis with Orthofinder, the best ortholog is selected for each species-gene pair, ensuring that each gene in one species has only one corresponding ortholog in another species. This group represents the most reliable and evolutionarily conserved orthologous relationships.
+		
+	In Paralogs
+	Definition: In paralogs are duplicated genes within the same species that are not directly related to a conserved ortholog. These genes arise from recent duplication events and do not belong to the groups of conserved orthology. They are specific to the species in question and have no ortholog in another species.
+
+	Special In Paralogs
+	Definition: Special in paralogs are duplicated genes within the same species that do have a relationship with a conserved ortholog. This classification as a special variant of in paralogs suggests a possible functional or structural conservation.
+	
+	Out Paralogs
+	Definition: Out paralogs are duplicated genes in different species that have no relationship with a conserved ortholog. These genes represent duplications that predate speciation and are not conserved in the main orthologous group.
+
+	Special Out Paralogs
+	Definition: Special out paralogs are duplicated genes in other species that do have a relationship with a conserved ortholog. They represent duplications that occurred in different lineages but have retained a relationship with the conserved ortholog genes.

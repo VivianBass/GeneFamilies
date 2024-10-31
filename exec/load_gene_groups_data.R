@@ -9,27 +9,23 @@ library(tibble)
 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-message("USAGE: Rscript exec/load_gene_groups_data.R  ...")
+message("USAGE: Rscript exec/load_gene_groups_data.R  input.args ...")
 
-message("We will have 5 groups:")
-message("Orthologs_Header: Family / Gene / Gene_species / Ortholog / Ortholog_species")
-message("input.args[[1]]: conserved orthologs file")
+message("PURPOSE: This R script loads five different gene groups of pairwise orthologs and paralogs data, including one conserved ortholog file and four different paralog files. 
+All four paralog files should follow the same header naming convention.")
 
-message("Paralogs_Header: Family / Gene / Gene_species / Paralog / Paralog_species ")
+message("Orthologs_Header: Family | Gene | Gene_species | Ortholog | Ortholog_species")
+message("input.args[[1]]:  path/2/<conserved_orthologs.tsv>")
 
-# - In the message you can explain that all paralogs file should have the same header. It's clear for us but maybe is not clear for other users.
-message("input.args[[2]]: in paralogs with orthologs")
-message("input.args[[3]]: in paralogs without orthologs")
-message("input.args[[4]]: out paralogs with orthologs")
-message("input.args[[5]]: out paralogs without orthologs")
+message("Paralogs_Header:  Family | Gene | Gene_species | Paralog | Paralog_species ")
+message("input.args[[2]]:  path/2/<in_paralogs.tsv>")
+message("input.args[[3]]:  path/2/<special_in_paralogs.tsv> ")
+message("input.args[[4]]:  path/2/<out_paralogs.tsv>")
+message("input.args[[5]]:  path/2/<special_out_paralogs.tsv>")
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
-# Load Data:
-# Load gene pairs for orthologs and paralogs, rather than just lists of genes.
-# Work with specific pairs of genes, instead of individual gene lists. 
-
-# Orthologs
+# orthologs
 # conserved orthologs
 con_orthologs <- read.table(input.args[[1]], header = TRUE, sep = "\t", 
                comment.char = "", quote = "", na.strings = "", 
@@ -44,7 +40,7 @@ con_orthologs.lst <- con_orthologs %>%
                group_by(Family) %>%
                summarise(gene_info = list(setNames(orthologs, paste0("(", Gene_species, ", ", Gene, ")"))), .groups = "drop") %>% deframe()
 
-# Paralogs
+# paralogs
 # in paralogs with orthologs
 in_paralogs <- read.table(input.args[[2]], header = TRUE, sep = "\t",          
                comment.char = "", quote = "", na.strings = "", 
@@ -111,4 +107,6 @@ save(con_orthologs, con_orthologs.lst,
      file = file.path(output_data_dir, "gene_groups.RData"))
 
 message("DONE")
+
+
 

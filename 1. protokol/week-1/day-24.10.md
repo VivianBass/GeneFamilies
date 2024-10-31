@@ -3,6 +3,8 @@
 **Date**: 24.10.2024  
 **Git Branch**: `Gene-Families-tests-Andre`
 
+---
+
 **Tasks**:
 1. **Documentation Updates**:
 - Updated section and input file descriptions; added R package setup instructions. 
