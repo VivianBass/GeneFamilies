@@ -37,7 +37,7 @@ Format Description of the Input files:
 
 
 
-## Section-2 - Computing Distances, Statistics, T-tests 
+## Section-2 - Computing Distances & Statistics
 			                                      
 - 1.  `compute_exp.prof.dists.R` 	                        
 - 2.  `compute_exp.prof.dists_statistics.R`

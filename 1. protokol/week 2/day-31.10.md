@@ -58,7 +58,7 @@ load_data_frame <- function(file_path) {
 
 
 # Function to create nested lists from data frames
-# used in load_gene_groups_data.R
+# This function is used in load_gene_groups_data.R
 create_nested_list <- function(df, header_type) {
     # Determine the appropriate column names based on header_type
     if (header_type == "Ortholog") {
