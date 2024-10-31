@@ -6,38 +6,49 @@
 - 2.  `load_gene_groups_data.R`    
 - 3.  `load_gene_families_data.R`	              
 
-- 1. example: Rscript exec/load_gene_expression_data.R <RPKM_counts_table.tsv>
+### 1. `load_gene_expression_data.R`
+  
+USAGE: Rscript exec/load_gene_expression_data.R <RPKM_counts_table.tsv>
 
-    Rscript exec/load_gene_expression_data.R experiments/test/RPKM.tsv
+Format Description of the Input files:
 
-    input.args[[1]] <- "experiments/test/RPKM.tsv"
+- <RPKM_counts_table.tsv> :     Header: id | tissue	| expression
 
-- 2. example: Rscript exec/load_gene_groups_data.R 
-    <conserved_orthologs.tsv> <in_paralogs.tsv> <special_in_paralogs.tsv> <out_paralogs.tsv> <special_out_paralogs.tsv>
+### 2. `load_gene_groups_data.R`  
 
-    Rscript exec/load_gene_groups_data.R ...
+USAGE: Rscript exec/load_gene_groups_data.R <conserved_orthologs.tsv> 
+<in_paralogs.tsv> <out_paralogs.tsv> <special_in_paralogs.tsv> <special_out_paralogs.tsv>
 
-    input.args[[1]] <- "experiments/test/conserved_orthologs_test.txt"
-    input.args[[2]] <- "experiments/test/in_paralogs_test.tsv"
-    input.args[[3]] <- "experiments/test/special_in_paralogs_test.tsv"
-    input.args[[4]] <- "experiments/test/out_paralogs_test.tsv"
-    input.args[[5]] <- "experiments/test/special_out_paralogs_test.tsv"
+Format Description of the Input files:
 
-- 3. example: Rscript exec/load_gene_families_data.R <families_file> 
+- <conserved_orthologs.tsv> :   Header: Family | Gene | Gene_species | Ortholog | Ortholog_species
+- <in_paralogs.tsv> :           Header: Family | Gene | Gene_species | Paralog  | Paralog_species
+- <out_paralogs.tsv> :          Header: Family | Gene | Gene_species | Paralog  | Paralog_species
+- <special_in_paralogs.tsv> :   Header: Family | Gene | Gene_species | Paralog  | Paralog_species 
+- <special_out_paralogs.tsv> :  Header: Family | Gene | Gene_species | Paralog  | Paralog_species
 
-    Rscript exec/load_gene_families_data.R experiments/test/Orthogroups.tsv
+### 3. `load_gene_families_data.R`
 
-    input.args[[1]] <- "experiments/test/Orthogroups.tsv"
+USAGE: Rscript exec/load_gene_families_data.R <families_file> 
+
+Format Description of the Input files:
+
+- <families_file> :             Header: Family | ...
+
 
 
 ## Section-2 - Computing Distances, Statistics, T-tests 
 			                                      
 - 1.  `compute_exp.prof.dists.R` 	                        
 - 2.  `compute_exp.prof.dists_statistics.R`
-- 3.  `compute_t-tests_wilcox-tests.R`
+
+### 1. `compute_exp.prof.dists.R`
+### 2. `compute_exp.prof.dists_statistics.R`
 
 ## Section-3 - Plotting Distributions
 
+- 1. `plot_exp.prof.dists_distribution.R`
+- 2. `plot_exp.prof.dists_distribution_tissue.R`
 
-
-
+### 1. `plot_exp.prof.dists_distribution.R`
+### 2. `plot_exp.prof.dists_distribution_tissue.R`

@@ -16,7 +16,7 @@ message("PURPOSE: This R script loads five different gene groups of pairwise ort
 
 message("Header-Type-Orthologs: Family | Gene | Gene_species | Ortholog | Ortholog_species")
 message("input.args[[1]]:  path/2/<conserved_orthologs.tsv>")
-message("Header-Type-Paralogs:  Family | Gene | Gene_species | Paralog | Paralog_species")
+message("Header-Type-Paralogs:  Family | Gene | Gene_species | Paralog  | Paralog_species")
 message("input.args[[2]]:  path/2/<in_paralogs.tsv>")
 message("input.args[[3]]:  path/2/<out_paralogs.tsv>")
 message("input.args[[4]]:  path/2/<special_in_paralogs.tsv>")

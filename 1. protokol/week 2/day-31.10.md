@@ -25,10 +25,16 @@ account for 5 gene groups and also include them in the description
 	https://smartbear.com/learn/automated-testing/what-is-unit-testing/
 	https://www.geeksforgeeks.org/unit-testing-in-r-programming/
 
-- construct some dumy files for quickly testing , 
+
+
+- improved the the documentation files inside the doc directory, to also include the 
+descriptions for the 5 genegroups and the format of the input files
 
 - see how to change dists rscript for logarythmic data
 
+- construct some dumy files for quickly testing , 
+- created a folder called dummy-datasets in experiments/dummy-datasets used to located
+mixed data of different kind for testing purposes
 
 **Doubts and Issues**:
 

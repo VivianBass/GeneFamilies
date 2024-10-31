@@ -41,8 +41,7 @@ families.lst <- families.df %>%
                 group_by(Family) %>%
                 summarise(across(all_of(gene_columns), ~ list(.))) %>%
                 nest(data = all_of(gene_columns)) %>%
-                select(Family, data) %>%
-                deframe()
+                select(Family, data) %>% deframe()
 
 # Save data:
 save(families.lst, families.df, families.counts.df,
