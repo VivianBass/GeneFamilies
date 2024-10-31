@@ -7,14 +7,16 @@ library(dplyr)
 library(tidyr)
 library(tibble)
 
+# Set up output directory, defined in the .env file 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
 message("USAGE:  Rscript exec/load_expression_data.R <RPKM_counts_table.tsv>")
 
 message("input.args[[1]]: <RPKM_counts_table.tsv>")
 message("<RPKM_counts_table.tsv> expected to be TAB-Delimited")
-message("<RPKM_counts_table.tsv> Header : \n", "id / tissue / expression")
+message("<RPKM_counts_table.tsv> Header : \n", "id | tissue | expression")
 
+# Parse input arguments
 input.args <- commandArgs(trailingOnly = TRUE)
 
 # read RPKM counts:

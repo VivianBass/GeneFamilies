@@ -48,4 +48,4 @@ save(con_orthologs, con_orthologs.lst, in_paralogs, in_paralogs.lst,
      special_out_paralogs, special_out_paralogs.lst, 
      file = file.path(output_data_dir, "gene_groups.RData"))
 
-message("done")
+message("DONE")
