@@ -18,7 +18,6 @@ message("<families_file> contains gene-family clusters and their respective gene
 # Parse input arguments
 input.args <- commandArgs(trailingOnly = TRUE)
 
-
 families.df <-  read.table(input.args[[1]], 
                 header = TRUE, sep = "\t", 
                 comment.char = "", quote = "", na.strings = "", 

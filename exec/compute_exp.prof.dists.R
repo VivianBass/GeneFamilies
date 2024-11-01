@@ -2,6 +2,10 @@ require(GeneFamilies)
 options(mc.cores = getMcCores())
 library(dotenv)
 
+library(dplyr)
+library(tidyr)
+library(tibble)
+
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
 message("USAGE: Rscript exec/compute_exp.prof.dists.R")
@@ -11,46 +15,30 @@ load(file.path(output_data_dir, "gene_families.RData"))
 load(file.path(output_data_dir, "gene_groups.RData"))              
 load(file.path(output_data_dir, "gene_expression.RData"))     
 
-# Function for ...
-expressionProfilesDists <- function(gene.accessions, expression.profiles = rna.seq.exp.profils,
-    expr.prof.gene.col = "gene",
-    tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col)),
-    dist.method = "euclidean", per.tissue = FALSE) {
+# Functions ... sourced from:
+source("R/compute_funks.R")
 
-    all_genes <- unlist(gene.accessions)
-    inds <- which(expression.profiles$gene %in% all_genes)
+# Gene-Groups:
+con_orthologs.dists <- mclapply(con_orthologs.lst, exp.prof.dists)
+con_orthologs.dists.tissue <- mclapply(con_orthologs.lst, exp.prof.dists, per.tissue = TRUE)
 
-    if (length(inds) > 1) {
+in_paralogs.dists <- mclapply(in_paralogs.lst, exp.prof.dists)
+in_paralogs.dists.tissue <- mclapply(in_paralogs.lst, exp.prof.dists, per.tissue = TRUE)
 
-        exp.profs <- expression.profiles[inds, ]
-        exp.profs <- as.data.frame(exp.profs)
-        rownames(exp.profs) <- exp.profs$gene
+out_paralogs.dists <- mclapply(out_paralogs.lst, exp.prof.dists)
+out_paralogs.dists.tissue <- mclapply(out_paralogs.lst, exp.prof.dists, per.tissue = TRUE)
 
-        if (per.tissue) {
-            setNames(mclapply(tissues, function(tissue) dist(setNames(exp.profs[,
-                tissue], rownames(exp.profs)), method = dist.method)),
-                tissues)
-        } else dist(exp.profs[, tissues], method = dist.method)
+special_in_paralogs.dists <- mclapply(special_in_paralogs.lst, exp.prof.dists)
+special_in_paralogs.dists.tissue <- mclapply(special_in_paralogs.lst, exp.prof.dists, per.tissue = TRUE)
 
-    } else NA
-}
-
-# Orthologs:
-orthologs.exp.prof.dists <- mclapply(orthologs.lst, expressionProfilesDists)
-orthologs.exp.prof.dists.tissue <- mclapply(orthologs.lst, expressionProfilesDists,
-                                            per.tissue = TRUE)
-
-# Paralogs:
-paralogs.exp.prof.dists <- mclapply(paralogs.lst, expressionProfilesDists)
-paralogs.exp.prof.dists.tissue <- mclapply(paralogs.lst, expressionProfilesDists,
-                                            per.tissue = TRUE)
+special_out_paralogs.dists <- mclapply(special_out_paralogs.lst, exp.prof.dists)
+special_out_paralogs.dists.tissue <- mclapply(special_out_paralogs.lst, exp.prof.dists, per.tissue = TRUE)
 
 # Gene-Families:
 non.singleton.fams <- families.df$id[which(families.df$size > 1)]
-families.exp.prof.dists <- mclapply(families.lst[non.singleton.fams], expressionProfilesDists)
-families.exp.prof.dists.tissue <- mclapply(families.lst[non.singleton.fams], expressionProfilesDists,
-                                            per.tissue = TRUE)
-
+families.exp.prof.dists <- mclapply(families.lst[non.singleton.fams], exp.prof.dists)
+families.exp.prof.dists.tissue <- mclapply(families.lst[non.singleton.fams], 
+                                        exp.prof.dists, per.tissue = TRUE)
 
 save(orthologs.exp.prof.dists,orthologs.exp.prof.dists.tissue, 
      paralogs.exp.prof.dists, paralogs.exp.prof.dists.tissue,

@@ -13,7 +13,7 @@ is configured to save generated files in the designated output path within the t
 
 1. example: Rscript exec/load_gene_expression_data.R <RPKM_counts_table.tsv>
 
-    - input.args[[1]] <- "experiments/test/RPKM.tsv"
+    - input.args[[1]] <- "experiments/test/RPKM_dummy.tsv"
 
 2. example: Rscript exec/load_gene_groups_data.R 
     <conserved_orthologs.tsv> <in_paralogs.tsv> <special_in_paralogs.tsv> <out_paralogs.tsv> <special_out_paralogs.tsv>
@@ -29,14 +29,16 @@ is configured to save generated files in the designated output path within the t
     - input.args[[1]] <- "experiments/test/Orthogroups.tsv"
 
 
-
-
 ## Section-2 - Computing Distances & Statistics
 			                                      
 - 1.  `compute_exp.prof.dists.R` 	                        
 - 2.  `compute_exp.prof.dists_statistics.R`
 
 ### 1. `compute_exp.prof.dists.R`
+
+
+
+
 ### 2. `compute_exp.prof.dists_statistics.R`
 
 ## Section-3 - Plotting Distributions
@@ -46,3 +48,5 @@ is configured to save generated files in the designated output path within the t
 
 ### 1. `plot_exp.prof.dists_distribution.R`
 ### 2. `plot_exp.prof.dists_distribution_tissue.R`
+
+

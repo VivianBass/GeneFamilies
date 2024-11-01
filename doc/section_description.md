@@ -1,7 +1,7 @@
 
 # EasyVectorOmics Package
 
-In this profect the goal is to reproduce the vector space analyses as done in
+In this project the goal is to reproduce the vector space analyses as done in
 the _Cardamine hirsuta_ genome project [1]. The R-Code required to do so shall
 be isolated and made usabel with _any_ data. Next, this code shall be used to
 analyse public open access data of model species to evaluate whether the method

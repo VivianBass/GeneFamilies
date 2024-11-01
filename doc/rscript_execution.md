@@ -33,8 +33,7 @@ USAGE: Rscript exec/load_gene_families_data.R <families_file>
 
 Format Description of the Input files:
 
-- <families_file> :             Header: Family | ...
-
+- <families_file> :             Header: Family | species1 | species2 ...
 
 
 ## Section-2 - Computing Distances & Statistics

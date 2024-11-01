@@ -26,16 +26,16 @@ message("input.args[[5]]:  path/2/<special_out_paralogs.tsv>")
 input.args <- commandArgs(trailingOnly = TRUE)
 
 # Functions load_data_frame() & create_nested_list() sourced from:
-source("R/loading_section_funks.R")
+source("R/load_data_funks.R")
 
-# Load data frames using the load_data_frame() function from R/loading_section_funks.R
+# Load data frames using the load_data_frame() function from R/load_data_funks.R
 con_orthologs <- load_data_frame(input.args[[1]])
 in_paralogs <- load_data_frame(input.args[[2]])
 out_paralogs <- load_data_frame(input.args[[3]])
 special_in_paralogs <- load_data_frame(input.args[[4]])
 special_out_paralogs <- load_data_frame(input.args[[5]])
 
-# Create nested lists using the create_nested_list() function from R/loading_section_funks.R
+# Create nested lists using the create_nested_list() function from R/load_data_funks.R
 con_orthologs.lst <- create_nested_list(con_orthologs, "Ortholog")
 in_paralogs.lst <- create_nested_list(in_paralogs, "Paralog")
 out_paralogs.lst <- create_nested_list(out_paralogs, "Paralog")
