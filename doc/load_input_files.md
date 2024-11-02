@@ -16,7 +16,7 @@
 - is expected is expected to be TAB-Delimited and have the Header: id | tissue | expression
 
 ```R
-	id		tissue		expression
+	id	tissue		expression
 	gene1	tissue1		####
 	gene2	tissue1		####
 	gene1	tissue2		####
@@ -37,23 +37,23 @@
 ```R
 	conserved_orthologs:
 	Family		Gene		Gene_species	Ortholog	Ortholog_species
-	OG0000000	FBpp0117097	dana			FBpp0172663	dmoj
+	OG0000000	FBpp0117097	dana		FBpp0172663	dmoj
 
 	in_paralogs:
 	Family		Gene		Gene_species	Paralog		Paralog_species
-	OG0000000	FBpp0117097	dana			FBpp0172663	dmoj
+	OG0000000	FBpp0117097	dana		FBpp0172663	dmoj
 	
 	special_in_paralogs:
 	Family		Gene		Gene_species	Paralog		Paralog_species
-	OG0000000	FBpp0117097	dana			FBpp0172663	dmoj
+	OG0000000	FBpp0117097	dana		FBpp0172663	dmoj
 	
 	out_paralog_
 	Family		Gene		Gene_species	Paralog		Paralog_species
-	OG0000000	FBpp0117097	dana			FBpp0172663	dmoj
+	OG0000000	FBpp0117097	dana		FBpp0172663	dmoj
 	
 	special_out_paralog:
 	Family		Gene		Gene_species	Paralog		Paralog_species
-	OG0000000	FBpp0117097	dana			FBpp0172663	dmoj
+	OG0000000	FBpp0117097	dana		FBpp0172663	dmoj
 ```
 
 ### 3. `load_gene_families_data.R` 
@@ -63,7 +63,7 @@
 - <families_file> :
 
 ```R
-	Family		species1			species2			species3
+	Family		species1		species2		species3
 	family_1	gene1,gene2,gene3	gene4,gene5,gene6	gene7,gene8,gene9
 ```
 
