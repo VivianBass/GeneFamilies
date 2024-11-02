@@ -7,8 +7,13 @@ distances. Draws a line from each upper Whisker to the next in order to
 highlight the hourglass shape. Tissues must be given in the order according
 to a plant's life.}
 \usage{
-plotTissueSpecificExpressionProfileDistanceDistribs(plot.df, tissues,
-  gene.classes, pdf.path, plot.title = "")
+plotTissueSpecificExpressionProfileDistanceDistribs(
+  plot.df,
+  tissues,
+  gene.classes,
+  pdf.path,
+  plot.title = ""
+)
 }
 \arguments{
 \item{plot.df}{A data.frame with the following columns: \code{'Tissue',

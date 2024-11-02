@@ -6,9 +6,10 @@
 \code{expr.prof.dists} which is expected to be an instance of class
 \code{base::dist} (See \code{expressionProfilesDists} for more details).}
 \usage{
-interVsIntraSpeciesExpressionProfileDists(expr.prof.dists,
-  gene.ids.to.specs.regex = list(ath = "^AT[0-9CM]G\\\\d+$", chi =
-  "^CARHR\\\\d+$"))
+interVsIntraSpeciesExpressionProfileDists(
+  expr.prof.dists,
+  gene.ids.to.specs.regex = list(ath = "^AT[0-9CM]G\\\\d+$", chi = "^CARHR\\\\d+$")
+)
 }
 \arguments{
 \item{expr.prof.dists}{an instance of \code{base::dist} a single result from
