@@ -101,34 +101,9 @@ test_that("load_data_frame handles extra columns gracefully", {
 This setup provides a reliable structure for testing various cases, ensuring that functions perform as expected across different scenarios.
 
 
-Here’s a concise summary of the testing Scenario:
-
-1. **Define Objective**: Clearly state the function's expected behavior in this scenario (e.g., load only specific columns).
-
-2. **Set Up Scenario**: Create necessary input data or test environment, like a temporary file with additional columns.
-
-3. **Simulate Input**: Use the relevant function (`writeLines`) to structure test data with both required and extra columns.
-
-4. **Call Function**: Run `load_data_frame()` on the input to observe its handling of the extra data.
-
-5. **Assert Outcomes**: Verify expected results with assertions like `expect_equal()`, focusing on specific behaviors (e.g., only five columns loaded).
-
-6. **Clean Up**: Remove temporary files or reset modified states to maintain test environment integrity.
-
-7. **Boundary Testing**: Check behavior at input limits (e.g., empty file, only headers).
-
-8. **Error Testing**: Test for expected failures, such as missing columns or incorrect file paths.
-
-9. **Happy Path Testing**: Confirm function performs as expected with standard, valid inputs.
-
-10. **Negative Testing**: Use incorrect data formats to verify robust error handling or messaging.
-
-
-
 ### **5. Run Tests:**
 
 - Use `devtools::test()` command from R-Terminal to run all tests in the `tests/testthat` directory.
-- Hereby every test script inside `tests/testthat` directory will executed.
 - **All Tests**: Run all tests with `devtools::test()` from the package root.
 - **Single Test File**: Run a specific test file with `test_file("tests/testthat/test-myfunction.R")`.
 - Note: you dont need to link the functions you are testing. explicetly in the test file. 
