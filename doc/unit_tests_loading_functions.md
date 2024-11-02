@@ -57,3 +57,31 @@
 ---
 
 ### **Testing Scenarios**
+
+1. **Basic Functionality: Nested List for Orthologs**
+   - **Description**: Verifies that `create_nested_list` can correctly create a nested list from a data frame containing ortholog gene data. Checks that the output matches the expected nested structure when the header type is `"Ortholog"`.
+
+2. **Basic Functionality: Nested List for Paralogs**
+   - **Description**: Tests that `create_nested_list` correctly generates a nested list for paralog gene data. Confirms the expected structure when using the `"Paralog"` header type.
+
+3. **Empty Data Frame Handling**
+   - **Description**: Ensures that `create_nested_list` can handle an empty data frame input without error, and returns an empty list as expected.
+
+4. **Multiple Families Handling**
+   - **Description**: Verifies that `create_nested_list` correctly separates and nests genes within distinct families in the output structure. Tests the function’s ability to handle multiple families within the same data frame.
+
+5. **Error Handling: Missing Required Columns**
+   - **Description**: Confirms that `create_nested_list` throws an informative error when required columns (e.g., `Gene`, `Ortholog`) are missing from the data frame. This validates the function’s input validation.
+
+6. **Header Type Variability**
+   - **Description**: Tests that `create_nested_list` can handle different header types (e.g., `"Ortholog"` and `"Paralog"`) and produce the correct structure based on the header type specified.
+
+7. **Duplicate Genes within the Same Family**
+   - **Description**: Ensures that `create_nested_list` handles duplicate genes within the same family by merging their associated data under the same gene key in the output list.
+
+8. **Non-Character Data Type Handling**
+   - **Description**: Checks that `create_nested_list` can process non-character data types (e.g., factors and integers) and converts them to characters as needed, ensuring consistent data types in the output list.
+
+9. **Error Handling: Invalid Header Type**
+   - **Description**: Tests that `create_nested_list` throws an error if an invalid header type is provided, confirming that only valid types (like `"Ortholog"` or `"Paralog"`) are accepted.
+

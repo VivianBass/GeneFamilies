@@ -35,7 +35,7 @@
 - <special_out_paralogs.tsv> :	
 
 ```R
-	conserved_orthologs:
+	con_orthologs:
 	Family		Gene		Gene_species	Ortholog	Ortholog_species
 	OG0000000	FBpp0117097	dana			FBpp0172663	dmoj
 
