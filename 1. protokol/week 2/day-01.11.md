@@ -1,50 +1,23 @@
 
-**Date**:  
+
+**Date**: 01.11.2024  
 **Git Branch**: `Gene-Families-tests-Andre`
 
 ---
 
 **Tasks**:
 
-- check statistics rscript with new input data , 5 gene groups
-- check distances rscript with new input data , 5 gene groups
-- see how to change dists rscript for logarythmic data
+1. **Distance Calculations**:
+- Tested `compute_exp.prof.dists.R` with new five-group input data.
+- Began adapting the script for log-transformed distance calculations.
 
-
-- weekly report
-
-- unit tests for the functions using testthat package
-- All the functions inside your load_data_funks.R should have unit tests.
-- for the functions load_data_frame() & create_nested_list() sourced from: source("R/load_data_funks.R")
-
-- created doc\testing_loading_functions.md for testing scenarios for the loading functions 
-
-- need to do roxygen2 on the functions
-
-
-- VPN, sophos, work on server
-
-
+2. **Unit Testing**:
+- Created unit tests for `load_data_funks.R` functions (`load_data_frame()`, `create_nested_list()`) using the `testthat` package.
+- Documented test cases and scenarios for unit-testing the functions in `doc/testing_loading_functions.md`.
 
 **Doubts and Issues**:
 
-- problem in computing distances with compute_exp.prof.dists.R ,  because gene-id in expression profils is FBgn0000003 and we are using FBpp proteinsequences for the distances
--> so we would need eiter to get the expressionprofils by proteinsequences ids or map the proteinsequences ids first back to the corresponding gene sequences
--> maybe a dummy dataset for trying
--> do we have the mapped data already `?
-
-- for now i will consider the FBgn names for calculating distances
-
-- need data with protein sequences rather then gene sequences for further testing,
-the scriprts are already adjusted for gene sequences like FBgn names
-- need data for FBpp names 
-
-- are we working with protein sequences or gene sequences, for expression profils ect . or interchangeable?
-
+- **Data Alignment**: The script currently encounters mismatched gene IDs between expression profiles (FBgn IDs) and gene-groups data (FBpp IDs). Will continue with FBgn IDs for now and seek mapped data for consistent ID use.
 
 **Next Steps**:
-
-
----
-
-**Code:**
+- Initiated and complete `roxygen2` documentation for all functions in `load_data_funks.R`.Complete `roxygen2` documentation.
