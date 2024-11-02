@@ -18,7 +18,6 @@ message("<RPKM_counts_table.tsv> Header : \n", "id | tissue | expression")
 
 # Parse input arguments
 input.args <- commandArgs(trailingOnly = TRUE)
-input.args[[1]] <- "experiments/test/RPKM_dummy.tsv"
 
 # read RPKM counts:
 rpkm.rna.seq.counts <- read.table(input.args[[1]], 

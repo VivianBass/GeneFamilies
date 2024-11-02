@@ -17,6 +17,9 @@
 - All the functions inside your load_data_funks.R should have unit tests.
 - for the functions load_data_frame() & create_nested_list() sourced from: source("R/load_data_funks.R")
 
+- created doc\testing_loading_functions.md for testing scenarios for the loading functions 
+
+- need to do roxygen2 on the functions
 
 
 - VPN, sophos, work on server
@@ -28,6 +31,7 @@
 - problem in computing distances with compute_exp.prof.dists.R ,  because gene-id in expression profils is FBgn0000003 and we are using FBpp proteinsequences for the distances
 -> so we would need eiter to get the expressionprofils by proteinsequences ids or map the proteinsequences ids first back to the corresponding gene sequences
 -> maybe a dummy dataset for trying
+-> do we have the mapped data already `?
 
 - for now i will consider the FBgn names for calculating distances
 
