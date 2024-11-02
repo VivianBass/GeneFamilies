@@ -15,7 +15,7 @@ load(file.path(output_data_dir, "gene_families.RData"))
 load(file.path(output_data_dir, "gene_groups.RData"))              
 load(file.path(output_data_dir, "gene_expression.RData"))     
 
-# Functions ... sourced from:
+# Function exp.prof.dists() sourced from:
 source("R/compute_funks.R")
 
 # Gene-Groups:

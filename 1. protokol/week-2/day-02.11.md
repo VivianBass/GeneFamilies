@@ -13,6 +13,8 @@
 - created just the unit-tests outline. its not finalized yet. would have to modify the test scripts.
 
 
+- create some dummy datasets in the directory 
+
 - Initiated and complete `roxygen2` documentation for all functions in `load_data_funks.R`.Complete `roxygen2` documentation.
 - created a besic workflow , on how to use roxygen2 for function documentation 
 
@@ -21,16 +23,8 @@
 - Update the documentation in the `doc` directory to include detailed descriptions of each gene group and specify the format for input files.
 
 
-
-
-
-
-
-
-
-
-
 **Doubts and Issues**:
+
 
 **Next Steps**:
 
