@@ -36,14 +36,18 @@ special_out_paralogs.dists.tissue <- mclapply(special_out_paralogs.lst, exp.prof
 
 # Gene-Families:
 non.singleton.fams <- families.df$id[which(families.df$size > 1)]
-families.exp.prof.dists <- mclapply(families.lst[non.singleton.fams], exp.prof.dists)
+families.exp.prof.dists <- mclapply(families.lst[non.singleton.fams], exp.prof.dists_2)
 families.exp.prof.dists.tissue <- mclapply(families.lst[non.singleton.fams], 
-                                        exp.prof.dists, per.tissue = TRUE)
+                                        exp.prof.dists_2, per.tissue = TRUE)
 
-save(orthologs.exp.prof.dists,orthologs.exp.prof.dists.tissue, 
-     paralogs.exp.prof.dists, paralogs.exp.prof.dists.tissue,
+save(con_orthologs.dists, con_orthologs.dists.tissue,
+     in_paralogs.dists, in_paralogs.dists.tissue,
+     out_paralogs.dists, out_paralogs.dists.tissue,
+     special_in_paralogs.dists, special_in_paralogs.dists.tissue,
+     special_out_paralogs.dists, special_out_paralogs.dists.tissue,
      families.exp.prof.dists, families.exp.prof.dists.tissue,
      file = file.path(output_data_dir, "exp.prof.dists.RData"))
+
 
 message("DONE")
 
