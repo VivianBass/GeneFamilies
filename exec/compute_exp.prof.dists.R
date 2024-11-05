@@ -22,6 +22,7 @@ source("R/compute_funks.R")
 
 # Gene-Groups-Filtered:
 # Initialize a character vector to store names of created objects
+
 created_objects <- character()
 
 # Calculate distances and add created objects to list if they exist
@@ -67,6 +68,7 @@ if (length(created_objects) > 0) {
 
 # Gene-Groups Ordinary Unfiltered:
 # Gene-Groups Ordinary Unfiltered:# Initialize a character vector to store names of created objects
+
 created_objects <- character()
 
 # Calculate distances and add created objects to list if they exist
@@ -99,7 +101,6 @@ if (exists("special_out_paralogs.lst")) {
     special_out_paralogs.dists.tissue <- mclapply(special_out_paralogs.lst, exp.prof.dists_tissue)
     created_objects <- c(created_objects, "special_out_paralogs.dists", "special_out_paralogs.dists.tissue")
 }
-
 
 # Save only the created objects
 if (length(created_objects) > 0) {
