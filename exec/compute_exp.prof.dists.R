@@ -4,6 +4,7 @@ library(dotenv)
 
 library(dplyr)
 library(tidyr)
+library(purrr)
 library(tibble)
 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
@@ -12,42 +13,100 @@ message("USAGE: Rscript exec/compute_exp.prof.dists.R")
 
 input.args <- commandArgs(trailingOnly = TRUE)
 load(file.path(output_data_dir, "gene_families.RData"))                       
-load(file.path(output_data_dir, "gene_groups.RData"))              
-load(file.path(output_data_dir, "gene_expression.RData"))     
+load(file.path(output_data_dir, "gene_groups.RData"))
+load(file.path(output_data_dir, "gene_groups_filtered.RData"))           
+load(file.path(output_data_dir, "gene_expression.RData")) 
 
 # Function exp.prof.dists() sourced from:
 source("R/compute_funks.R")
 
-# Gene-Groups:
-con_orthologs.dists <- mclapply(con_orthologs.lst, exp.prof.dists)
-con_orthologs.dists.tissue <- mclapply(con_orthologs.lst, exp.prof.dists, per.tissue = TRUE)
+# Gene-Groups-Filtered:
+# Initialize a character vector to store names of created objects
+created_objects <- character()
 
-in_paralogs.dists <- mclapply(in_paralogs.lst, exp.prof.dists)
-in_paralogs.dists.tissue <- mclapply(in_paralogs.lst, exp.prof.dists, per.tissue = TRUE)
+# Calculate distances and add created objects to list if they exist
+if (exists("con_orthologs_filtered.lst")) {
+    con_orthologs.filtered.dists <- mclapply(con_orthologs_filtered.lst, exp.prof.dists)
+    con_orthologs.filtered.dists.tissue <- mclapply(con_orthologs_filtered.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "con_orthologs.filtered.dists", "con_orthologs.filtered.dists.tissue")
+}
 
-out_paralogs.dists <- mclapply(out_paralogs.lst, exp.prof.dists)
-out_paralogs.dists.tissue <- mclapply(out_paralogs.lst, exp.prof.dists, per.tissue = TRUE)
+if (exists("in_paralogs_filtered.lst")) {
+    in_paralogs.filtered.dists <- mclapply(in_paralogs_filtered.lst, exp.prof.dists)
+    in_paralogs.filtered.dists.tissue <- mclapply(in_paralogs_filtered.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "in_paralogs.filtered.dists", "in_paralogs.filtered.dists.tissue")
+}
 
-special_in_paralogs.dists <- mclapply(special_in_paralogs.lst, exp.prof.dists)
-special_in_paralogs.dists.tissue <- mclapply(special_in_paralogs.lst, exp.prof.dists, per.tissue = TRUE)
+if (exists("out_paralogs_filtered.lst")) {
+    out_paralogs.filtered.dists <- mclapply(out_paralogs_filtered.lst, exp.prof.dists)
+    out_paralogs.filtered.dists.tissue <- mclapply(out_paralogs_filtered.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "out_paralogs.filtered.dists", "out_paralogs.filtered.dists.tissue")
+}
 
-special_out_paralogs.dists <- mclapply(special_out_paralogs.lst, exp.prof.dists)
-special_out_paralogs.dists.tissue <- mclapply(special_out_paralogs.lst, exp.prof.dists, per.tissue = TRUE)
+if (exists("special_in_paralogs_filtered.lst")) {
+    special_in_paralogs.filtered.dists <- mclapply(special_in_paralogs_filtered.lst, exp.prof.dists)
+    special_in_paralogs.filtered.dists.tissue <- mclapply(special_in_paralogs_filtered.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "special_in_paralogs.filtered.dists", "special_in_paralogs.filtered.dists.tissue")
+}
 
-# Gene-Families:
-non.singleton.fams <- families.df$id[which(families.df$size > 1)]
-families.exp.prof.dists <- mclapply(families.lst[non.singleton.fams], exp.prof.dists_2)
-families.exp.prof.dists.tissue <- mclapply(families.lst[non.singleton.fams], 
-                                        exp.prof.dists_2, per.tissue = TRUE)
+if (exists("special_out_paralogs_filtered.lst")) {
+    special_out_paralogs.filtered.dists <- mclapply(special_out_paralogs_filtered.lst, exp.prof.dists)
+    special_out_paralogs.filtered.dists.tissue <- mclapply(special_out_paralogs_filtered.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "special_out_paralogs.filtered.dists", "special_out_paralogs.filtered.dists.tissue")
+}
 
-save(con_orthologs.dists, con_orthologs.dists.tissue,
-     in_paralogs.dists, in_paralogs.dists.tissue,
-     out_paralogs.dists, out_paralogs.dists.tissue,
-     special_in_paralogs.dists, special_in_paralogs.dists.tissue,
-     special_out_paralogs.dists, special_out_paralogs.dists.tissue,
-     families.exp.prof.dists, families.exp.prof.dists.tissue,
-     file = file.path(output_data_dir, "exp.prof.dists.RData"))
+# Save only the created objects
+if (length(created_objects) > 0) {
+    save(list = created_objects, file = file.path(output_data_dir, "exp.prof.dists_filtered.RData"))
+    message("Objects have been saved to ", file.path(output_data_dir, "exp.prof.dists_filtered.RData"))
+} else {
+    message("No objects were created, so nothing was saved.")
+}
+
+# ------------------------------------------------------------------------------
+
+# Gene-Groups Ordinary Unfiltered:
+# Gene-Groups Ordinary Unfiltered:# Initialize a character vector to store names of created objects
+created_objects <- character()
+
+# Calculate distances and add created objects to list if they exist
+if (exists("con_orthologs.lst")) {
+    con_orthologs.dists <- mclapply(con_orthologs.lst, exp.prof.dists)
+    con_orthologs.dists.tissue <- mclapply(con_orthologs.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "con_orthologs.dists", "con_orthologs.dists.tissue")
+}
+
+if (exists("in_paralogs.lst")) {
+    in_paralogs.dists <- mclapply(in_paralogs.lst, exp.prof.dists1)
+    in_paralogs.dists.tissue <- mclapply(in_paralogs.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "in_paralogs.dists", "in_paralogs.dists.tissue")
+}
+
+if (exists("out_paralogs.lst")) {
+    out_paralogs.dists <- mclapply(out_paralogs.lst, exp.prof.dists)
+    out_paralogs.dists.tissue <- mclapply(out_paralogs.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "out_paralogs.dists", "out_paralogs.dists.tissue")
+}
+
+if (exists("special_in_paralogs.lst")) {
+    special_in_paralogs.dists <- mclapply(special_in_paralogs.lst, exp.prof.dists)
+    special_in_paralogs.dists.tissue <- mclapply(special_in_paralogs.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "special_in_paralogs.dists", "special_in_paralogs.dists.tissue")
+}
+
+if (exists("special_out_paralogs.lst")) {
+    special_out_paralogs.dists <- mclapply(special_out_paralogs.lst, exp.prof.dists)
+    special_out_paralogs.dists.tissue <- mclapply(special_out_paralogs.lst, exp.prof.dists_tissue)
+    created_objects <- c(created_objects, "special_out_paralogs.dists", "special_out_paralogs.dists.tissue")
+}
 
 
-message("DONE")
+# Save only the created objects
+if (length(created_objects) > 0) {
+    save(list = created_objects, file = file.path(output_data_dir, "exp.prof.dists.RData"))
+    message("Objects have been saved to ", file.path(output_data_dir, "exp.prof.dists.RData"))
+} else {
+    message("No objects were created, so nothing was saved.")
+}
+
 

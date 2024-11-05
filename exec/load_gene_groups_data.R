@@ -24,6 +24,7 @@ message("input.args[[5]]:  path/2/<special_out_paralogs.tsv>")
 
 # Parse input arguments
 input.args <- commandArgs(trailingOnly = TRUE)
+load(file.path(output_data_dir, "gene_expression.RData")) 
 
 # Functions load_data_frame() & create_nested_list() sourced from:
 source("R/load_data_funks.R")
@@ -42,10 +43,51 @@ out_paralogs.lst <- create_nested_list(out_paralogs, "Paralog")
 special_in_paralogs.lst <- create_nested_list(special_in_paralogs, "Paralog")
 special_out_paralogs.lst <- create_nested_list(special_out_paralogs, "Paralog")
 
+# Filter out Data from the DataFrames which have no intersection with the provided expression data 
+# this will reduce uneccessary computation time later on
+# using filter_gene_pairs() from R/load_data_funks.R to reduce computation time.
+con_orthologs_filtered <- filter_gene_pairs(con_orthologs, "Ortholog", rna.seq.exp.profils)
+in_paralogs_filtered <- filter_gene_pairs(in_paralogs, "Paralog", rna.seq.exp.profils)
+out_paralogs_filtered <- filter_gene_pairs(out_paralogs, "Paralog", rna.seq.exp.profils)
+special_in_paralogs_filtered <- filter_gene_pairs(special_in_paralogs, "Paralog", rna.seq.exp.profils)
+special_out_paralogs_filtered <- filter_gene_pairs(special_out_paralogs, "Paralog", rna.seq.exp.profils)
 
-save(con_orthologs, con_orthologs.lst, in_paralogs, in_paralogs.lst,
-     out_paralogs, out_paralogs.lst, special_in_paralogs, special_in_paralogs.lst,
-     special_out_paralogs, special_out_paralogs.lst, 
-     file = file.path(output_data_dir, "gene_groups.RData"))
+# Create nested lists with filtered data, using the create_nested_list() function from R/load_data_funks.R
+con_orthologs_filtered.lst <- create_nested_list(con_orthologs_filtered, "Ortholog")
+in_paralogs_filtered.lst <- create_nested_list(in_paralogs_filtered, "Paralog")
+out_paralogs_filtered.lst <- create_nested_list(out_paralogs_filtered, "Paralog")
+special_in_paralogs_filtered.lst <- create_nested_list(special_in_paralogs_filtered, "Paralog")
+special_out_paralogs_filtered.lst <- create_nested_list(special_out_paralogs_filtered, "Paralog")
+
+
+# Save unfiltered data
+save(
+    con_orthologs, in_paralogs, out_paralogs, special_in_paralogs, special_out_paralogs,
+    con_orthologs.lst, in_paralogs.lst, out_paralogs.lst, 
+    special_in_paralogs.lst, special_out_paralogs.lst,
+    file = file.path(output_data_dir, "gene_groups.RData")
+)
+
+# Save filtered data
+# Create list of objects to save
+filtered_objects <- list()
+
+# Check and add dataframes if they exist
+if(exists("con_orthologs_filtered")) filtered_objects$con_orthologs_filtered <- con_orthologs_filtered
+if(exists("in_paralogs_filtered")) filtered_objects$in_paralogs_filtered <- in_paralogs_filtered
+if(exists("out_paralogs_filtered")) filtered_objects$out_paralogs_filtered <- out_paralogs_filtered
+if(exists("special_in_paralogs_filtered")) filtered_objects$special_in_paralogs_filtered <- special_in_paralogs_filtered
+if(exists("special_out_paralogs_filtered")) filtered_objects$special_out_paralogs_filtered <- special_out_paralogs_filtered
+
+# Check and add nested lists if they exist
+if(exists("con_orthologs_filtered.lst")) filtered_objects$con_orthologs_filtered.lst <- con_orthologs_filtered.lst
+if(exists("in_paralogs_filtered.lst")) filtered_objects$in_paralogs_filtered.lst <- in_paralogs_filtered.lst
+if(exists("out_paralogs_filtered.lst")) filtered_objects$out_paralogs_filtered.lst <- out_paralogs_filtered.lst
+if(exists("special_in_paralogs_filtered.lst")) filtered_objects$special_in_paralogs_filtered.lst <- special_in_paralogs_filtered.lst
+if(exists("special_out_paralogs_filtered.lst")) filtered_objects$special_out_paralogs_filtered.lst <- special_out_paralogs_filtered.lst
+
+# Save only existing objects
+do.call(save, c(names(filtered_objects), list(file = file.path(output_data_dir, "gene_groups_filtered.RData"))))
 
 message("DONE")
+

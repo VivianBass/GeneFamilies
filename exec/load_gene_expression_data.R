@@ -36,6 +36,11 @@ rna.seq.exp.profils <- expression_matrix %>% rowwise() %>%
         mutate(row_sum = sum(c_across(-FBpp_ID), na.rm = TRUE)) %>%
         mutate(across(-c(FBpp_ID, row_sum), ~./row_sum)) %>%
         select(-row_sum) %>% ungroup()
+
+# filter rna.seq.exp.profils for invalid or na values etc.
+rna.seq.exp.profils <- rna.seq.exp.profils %>% rowwise() %>%
+        filter(across(everything(), ~(!is.na(.) && . != "" && . != "NULL" && !is.null(.))))
+                                                
         
 # Save results:
 save(rna.seq.exp.profils, rpkm.rna.seq.counts, file = file.path(output_data_dir,"gene_expression.RData"))
