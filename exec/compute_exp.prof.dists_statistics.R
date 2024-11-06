@@ -26,27 +26,6 @@ log_file <- file.path("exp.prof.dists_statistics_log.txt")
 sink(log_file, append = TRUE)
 cat("Starting statistics computation...\n\n")
 
-# -------------------------------------------------------------------------------------------
-
-# Calculate statistics for unfiltered data
-
-unfiltered_stats <- list()
-unfiltered_stats <- add_to_list_if_exists(unfiltered_stats, "df_median_mean_con_orthologs_unfiltered", "con_orthologs.dists")
-unfiltered_stats <- add_to_list_if_exists(unfiltered_stats, "df_median_mean_in_paralogs_unfiltered", "in_paralogs.dists")
-unfiltered_stats <- add_to_list_if_exists(unfiltered_stats, "df_median_mean_out_paralogs_unfiltered", "out_paralogs.dists")
-unfiltered_stats <- add_to_list_if_exists(unfiltered_stats, "df_median_mean_special_in_paralogs_unfiltered", "special_in_paralogs.dists")
-unfiltered_stats <- add_to_list_if_exists(unfiltered_stats, "df_median_mean_special_out_paralogs_unfiltered", "special_out_paralogs.dists")
-
-# Save unfiltered statistics and log
-if (length(unfiltered_stats) > 0) {
-    save(unfiltered_stats, file = file.path(output_data_dir, "exp.prof.dists_unfiltered_statistics.RData"))
-    cat("Unfiltered statistics saved successfully.\n\n")
-} else {
-    cat("No unfiltered statistics objects to save.\n\n")
-}
-
-# -------------------------------------------------------------------------------------------
-
 # Calculate statistics for filtered data
 
 filtered_stats <- list()

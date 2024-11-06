@@ -36,12 +36,13 @@ out_paralogs <- load_data_frame(input.args[[3]])
 special_in_paralogs <- load_data_frame(input.args[[4]])
 special_out_paralogs <- load_data_frame(input.args[[5]])
 
-# Create nested lists using the create_nested_list() function from R/load_data_funks.R
-con_orthologs.lst <- create_nested_list(con_orthologs, "Ortholog")
-in_paralogs.lst <- create_nested_list(in_paralogs, "Paralog")
-out_paralogs.lst <- create_nested_list(out_paralogs, "Paralog")
-special_in_paralogs.lst <- create_nested_list(special_in_paralogs, "Paralog")
-special_out_paralogs.lst <- create_nested_list(special_out_paralogs, "Paralog")
+# Save unfiltered data
+save(
+    con_orthologs, in_paralogs, out_paralogs, special_in_paralogs, special_out_paralogs,
+    con_orthologs.lst, in_paralogs.lst, out_paralogs.lst, 
+    special_in_paralogs.lst, special_out_paralogs.lst,
+    file = file.path(output_data_dir, "gene_groups.RData")
+)
 
 # Filter out Data from the DataFrames which have no intersection with the provided expression data 
 # this will reduce uneccessary computation time later on
@@ -59,14 +60,6 @@ out_paralogs_filtered.lst <- create_nested_list(out_paralogs_filtered, "Paralog"
 special_in_paralogs_filtered.lst <- create_nested_list(special_in_paralogs_filtered, "Paralog")
 special_out_paralogs_filtered.lst <- create_nested_list(special_out_paralogs_filtered, "Paralog")
 
-
-# Save unfiltered data
-save(
-    con_orthologs, in_paralogs, out_paralogs, special_in_paralogs, special_out_paralogs,
-    con_orthologs.lst, in_paralogs.lst, out_paralogs.lst, 
-    special_in_paralogs.lst, special_out_paralogs.lst,
-    file = file.path(output_data_dir, "gene_groups.RData")
-)
 
 # Save filtered data
 # Create list of objects to save
