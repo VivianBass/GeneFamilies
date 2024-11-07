@@ -39,9 +39,9 @@ rna.seq.exp.profils <- expression_matrix %>% rowwise() %>%
 
 # filter rna.seq.exp.profils for invalid or na values etc.
 rna.seq.exp.profils <- rna.seq.exp.profils %>% rowwise() %>%
-        filter(across(everything(), ~(!is.na(.) && . != "" && . != "NULL" && !is.null(.))))
-                                                
-        
+        filter(if_all(everything(), ~(!is.na(.) && . != "" && . != "NULL")))
+
+                                        
 # Save results:
 save(rna.seq.exp.profils, rpkm.rna.seq.counts, file = file.path(output_data_dir,"gene_expression.RData"))
 

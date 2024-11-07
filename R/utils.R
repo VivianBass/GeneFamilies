@@ -19,3 +19,4 @@ getMcCores <- function(env.var = "MCCORES") {
         detectCores()
     }
 }
+

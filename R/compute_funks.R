@@ -77,28 +77,7 @@ exp.prof.dists_tissue <- function(gene.accessions, expression.profiles = rna.seq
 }
 
 
-#' Add Object to List if Exists
-#'
-#' Checks if a variable exists in the environment and, if so, retrieves it,
-#' adds it to the specified list with a given name, and logs a message about its creation.
-#'
-#' @param list_obj A list to which the variable should be added if it exists.
-#' @param obj_name A character string indicating the name to assign to the object within the list.
-#' @param var_name A character string indicating the name of the variable to check for in the environment.
-#'
-#' @return The updated list with the variable added if it exists; otherwise, returns the list unchanged.
-#' @examples
-#' my_list <- list()
-#' my_list <- add_to_list_if_exists(my_list, "example_obj", "example_var")
-add_to_list_if_exists <- function(list_obj, obj_name, var_name) {
-    if (exists(var_name)) {
-        list_obj[[obj_name]] <- get(var_name)
-        cat(sprintf("Object '%s' created successfully.\n", obj_name))
-    } else {
-        cat(sprintf("Object '%s' does not exist and was not created.\n", obj_name))
-    }
-    return(list_obj)
-}
+
 
 #' Calculate Statistics for Expression Profile Distances
 #'
@@ -139,25 +118,16 @@ calculate_exp.prof.dists.statistics <- function(data) {
 #' @examples
 #' result <- calculate_exp.prof.dists.tissue.statistics(my_data)
 calculate_exp.prof.dists.tissue.statistics <- function(data) {
-  result <- map_dfr(names(data), function(cluster) {
-    map_dfr(names(data[[cluster]]), function(tissue) {
-      tibble(
-        Cluster = cluster,
-        Tissue = tissue,
-        Mean = mean(data[[cluster]][[tissue]], na.rm = TRUE),
-        Median = median(data[[cluster]][[tissue]], na.rm = TRUE)
-      )
-    })
+  result <- map_dfr(names(data), function(name) {
+    tissue_data <- data[[name]]
+    tibble(
+      Family = name,
+      Tissue = names(tissue_data),
+      Mean = sapply(tissue_data, mean, na.rm = TRUE),
+      Median = sapply(tissue_data, median, na.rm = TRUE)
+    )
   })
-  
-  df_transformed <- result %>%
-    pivot_wider(
-      id_cols = Cluster,
-      names_from = Tissue,
-      values_from = c(Mean, Median),
-      names_sep = "_"
-    ) %>%
-    select(Cluster, sort(colnames(.)))
-  
-  return(df_transformed)
+  result <- result %>%
+    filter_all(all_vars(!is.na(.) & !is.infinite(.)))
+  return(result)
 }
