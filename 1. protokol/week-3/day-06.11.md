@@ -29,6 +29,8 @@
 
 **Doubts and Issues**:
 
+- expression profils, double genes etc.
+
 
 **Next Steps**:
 

@@ -13,13 +13,11 @@ cat("USAGE: Rscript exec/compute_exp.prof.dists_statistics.R\n")
 # Load functions:
 source("R/compute_funks.R")
 
-
 # would have to add the families also for distance calculation !?
 # load(file.path(output_data_dir, "gene_families.RData"))
 
-
 # Automatically sort the loaded gene groups data into regular and tissue datasets
-load(file.path(output_data_dir, "exp.prof.dists_v1.RData"))
+load(file.path(output_data_dir, "exp.prof.dists.RData"))
 loaded_objects <- ls()
 data_names <- loaded_objects[grepl("\\.filtered\\.dists$", loaded_objects)]
 data_names_tissue <- loaded_objects[grepl("\\.filtered\\.dists\\.tissue$", loaded_objects)]

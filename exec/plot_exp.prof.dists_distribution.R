@@ -14,25 +14,45 @@ library(purrr)
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
 
-load(file.path(output_data_dir, "exp.prof.sists_statistics.RData.RData"))
-load(file.path(output_data_dir, "exp.prof.dists.RData"))
+load(file.path(output_data_dir, "exp.prof.dists_statistics.RData"))
 
-# mean and median expression distances
-# df_median_mean_paralogs 
-# df_median_mean_orthologs
+# Track created dataframe names for plotting
+# 5 gene groups , 1 ortholog and 4 paralogs, families, 
+# [23] "special_in_paralogs_filtered.filtered.dists.tissue_stats"
+# [24] "special_in_paralogs_filtered.filtered.dists_stats"
 
-paralog.mean.lst <- split(df_median_mean_paralogs$Mean, df_median_mean_paralogs$Family)
-paralog.median.lst <- split(df_median_mean_paralogs$Median, df_median_mean_paralogs$Family)
+# Automatically sort the loadedstatistics data into regular and tissue datasets
+load(file.path(output_data_dir, "exp.prof.dists_statistics.RData"))
+loaded_objects <- ls()
+data_names <- loaded_objects[grepl("\\.dists_stats$", loaded_objects)]
+data_names_tissue <- loaded_objects[grepl("\\.dists\\.tissue_stats$", loaded_objects)]
 
-ortholog.mean.lst <- split(df_median_mean_orthologs$Mean, df_median_mean_orthologs$Family)
-ortholog.median.lst <- split(df_median_mean_orthologs$Median, df_median_mean_orthologs$Family)
+# Initialize empty dataframes
+df_mean.dists <- data.frame()
+df_median.dists <- data.frame()
 
+# Process each dataset
+for (data_name in data_names) {
 
-# basically create df from the lists, beneath each other in the df, regardless of df length
-df_mean.dists <- map_dfr(list(Ortholog = ortholog.mean.lst, Paralog = paralog.mean.lst), ~tibble(Cluster = names(.x), Distance = unlist(.x)), .id = "Type")
-
-df_median.dists <- map_dfr(list(Ortholog = ortholog.median.lst, Paralog = paralog.median.lst), ~tibble(Cluster = names(.x), Distance = unlist(.x)), .id = "Type")
-
+    current_data <- get(data_name)
+    type_name <- sub("_filtered.filtered.dists_stats", "", data_name)
+    
+    # Create and combine mean data
+    temp_mean_df <- tibble(
+        Type = type_name,
+        Cluster = names(current_data$Mean),
+        Distance = unlist(current_data$Mean)
+    )
+    df_mean.dists <- bind_rows(df_mean.dists, temp_mean_df)
+    
+    # Create and combine median data
+    temp_median_df <- tibble(
+        Type = type_name,
+        Cluster = names(current_data$Median),
+        Distance = unlist(current_data$Median)
+    )
+    df_median.dists <- bind_rows(df_median.dists, temp_median_df)
+}
 
 # ---------------------------------------------------------------------------
 
@@ -69,7 +89,6 @@ write.csv(t_test_summary, file.path(results_dir, "t_test_summary.csv"), row.name
 
 # Extract the significance levels are already in the boxplot
 
-
 # Create the boxplot with the significance annotation
 boxplot_mean <- ggplot(df_mean.dists, aes(x = Type, y = Distance, fill = Type)) +
   geom_boxplot(outlier.shape = NA) +
@@ -97,9 +116,10 @@ boxplot_median <- ggplot(df_median.dists, aes(x = Type, y = Distance, fill = Typ
   )
 
 # Save the two Boxplots in a single PDF
-pdf(file.path(results_dir,"boxplots_expression_distances_with_jitter11.pdf"), height = 15, width = 7)
-grid.arrange(boxplot_median, boxplot_mean, ncol = 1)
-dev.off()
+# Arrange plots using gridExtra
+combined_plots <- grid.arrange(boxplot_median, boxplot_mean, ncol = 1)
+ggsave(filename = file.path(results_dir, "boxplots_expression_distances.pdf"),
+       plot = combined_plots, height = 15, width = 7)
 
 
 
