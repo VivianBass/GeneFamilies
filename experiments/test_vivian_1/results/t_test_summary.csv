@@ -1,0 +1,3 @@
+".y.","group1","group2","n1","n2","statistic","df","p","p.adj","significance","analysis"
+"Distance","in_paralogs_v","special_in_paralogs_v",8,144,-1.05096422319439,7.4812914715686,0.837,0.837,"ns","Median"
+"Distance","in_paralogs_v","special_in_paralogs_v",8,144,-0.973555881260026,7.41169452986898,0.82,0.82,"ns","Mean"

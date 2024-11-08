@@ -76,9 +76,6 @@ exp.prof.dists_tissue <- function(gene.accessions, expression.profiles = rna.seq
     } else {NA}
 }
 
-
-
-
 #' Calculate Statistics for Expression Profile Distances
 #'
 #' Computes the mean and median of the expression profile distances for each gene family
@@ -130,4 +127,40 @@ calculate_exp.prof.dists.tissue.statistics <- function(data) {
   result <- result %>%
     filter_all(all_vars(!is.na(.) & !is.infinite(.)))
   return(result)
+}
+
+#' Validate and Filter Loaded Data Objects
+#'
+#' This function filters a list of loaded data objects by a specified pattern and validates them to ensure they meet the required criteria. 
+#' It checks that each object is a non-empty list or vector and contains valid data (i.e., it is not entirely `NA` values).
+#'
+#' @param loaded_objects A character vector containing the names of objects loaded in the R environment.
+#' @param pattern A character string representing the regex pattern to identify the names of the target data objects.
+#' @return A character vector of validated object names that match the specified pattern and contain valid data.
+#'         Invalid data types (e.g., non-lists and non-vectors), empty objects, or objects with only `NA` values are excluded.
+#' @examples
+#' # Load data and then filter and validate the names of loaded gene expression profiles:
+#' loaded_objects <- ls() # List all loaded objects
+#' valid_data_names <- validate_data(loaded_objects, "(_dists$|\\.dists$)")
+#' valid_data_names_tissue <- validate_data(loaded_objects, "(_dists_tissue$|\\.dists\\.tissue$)")
+#' 
+#' @export
+validate_data <- function(loaded_objects, pattern) {
+
+    data_names <- loaded_objects[grepl(pattern, loaded_objects)]
+    valid_names <- character()
+    for (name in data_names) {
+        data_object <- get(name)
+        
+        if (!is.list(data_object) && !is.vector(data_object)) {
+            message(sprintf("Excluding %s - invalid data type", name))
+            next
+        }
+        if (length(data_object) == 0 || all(is.na(unlist(data_object)))) {
+            message(sprintf("Excluding %s - empty or NA-only data", name))
+            next
+        }
+        valid_names <- c(valid_names, name)
+    }
+    return(valid_names)
 }

@@ -9,20 +9,20 @@ library(dotenv)
 # Set up output directory, defined in the .env file 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-cat("USAGE: Rscript exec/load_gene_groups_data.R input.args ...")
-cat("PURPOSE: This R script loads five different gene groups of pairwise orthologs and paralogs data, including one conserved ortholog file") 
-cat("All files should follow the same header naming convention as stated in Header-Type messages below. ") 
+message("USAGE: Rscript exec/load_gene_groups_data.R input.args ...")
+message("PURPOSE: This R script loads five different gene groups as stated in the messages below") 
+message("All files should follow the same header naming convention as stated in Header-Type messages below. ") 
 
-cat("input.args[[1]]:  path/2/<conserved_orthologs.tsv>")
-cat("input.args[[2]]:  path/2/<in_paralogs.tsv>")
-cat("input.args[[3]]:  path/2/<out_paralogs.tsv>")
-cat("input.args[[4]]:  path/2/<special_in_paralogs.tsv>")
-cat("input.args[[5]]:  path/2/<special_out_paralogs.tsv>")
+message("input.args[[1]]:  path/2/<conserved_orthologs.tsv>")
+message("input.args[[2]]:  path/2/<in_paralogs.tsv>")
+message("input.args[[3]]:  path/2/<out_paralogs.tsv>")
+message("input.args[[4]]:  path/2/<special_in_paralogs.tsv>")
+message("input.args[[5]]:  path/2/<special_out_paralogs.tsv>")
 
 input.args <- commandArgs(trailingOnly = TRUE)
 
 # required data and files loaded from:
-load(file.path(output_data_dir, "gene_expression.RData")) 
+load(file.path(output_data_dir, "gene_expression_flybase.RData")) 
 
 # Functions load_data_frame() & create_nested_list() sourced from:
 source("R/load_data_funks.R")
@@ -55,12 +55,13 @@ for (name in names(input_files)) {
 save(list = created_objects, file = file.path(output_data_dir, "gene_groups_unfiltered.RData"))
 
 
-# Track created filtered objects
-filtered_objects <- list()
+# Filtering process: using either filter_v1() or filter_v2() functions to filter out genes
+# that are not present in rna.seq.exp.profiles and therefore lack expression values.
+# Removing these genes helps reduce congestion in subsequent computations.
+# Both filters use the intersect() method to retain only relevant genes.
+# For greater accuracy, use filter_v2() to filter by two columns
 
-# Filter data using filter_v1() on the "Gene" column for each dataset, creating nested lists.
-# Example: df <- intersect(homologs_df$Gene, rna.seq.exp.profils$FBpp_ID)
-# Use filter_v2() to filter by two columns for greater accuracy.
+filtered_objects <- list()
 
 for (name in names(input_files)) {
     tryCatch({
@@ -86,3 +87,7 @@ if (length(names(filtered_objects)) > 0) {
     save(list = names(filtered_objects), 
          file = file.path(output_data_dir, "gene_groups_filtered.RData"))
 }
+message("DONE")
+
+
+

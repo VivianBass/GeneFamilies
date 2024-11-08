@@ -1,25 +1,22 @@
 require(GeneFamilies)
 options(mc.cores = getMcCores())
+
+cat("USAGE: Rscript exec/compute_exp.prof.dists.R")
+
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(tibble)
 library(dotenv)
 
-# Set up output directory, defined in the .env file 
+# Set-up output directory, defined in the .env file 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-cat("USAGE: Rscript exec/compute_exp.prof.dists.R")
-
 # required data and files loaded from:
-load(file.path(output_data_dir, "gene_expression.RData")) 
+load(file.path(output_data_dir, "gene_expression_flybase.RData")) 
                     
-# Functions sourced from:
+# functions sourced from:
 source("R/compute_funks.R")
-
-# would have to add the families also for distance calculation !?
-# load(file.path(output_data_dir, "gene_families.RData"))
-
 
 # load gene-groups datasets and catch the object names
 load(file.path(output_data_dir, "gene_groups_filtered.RData")) 
@@ -47,3 +44,4 @@ for (group in gene_groups) {
 }
 
 save(list = created_objects, file = file.path(output_data_dir, "exp.prof.dists.RData"))
+cat("DONE")

@@ -1,15 +1,9 @@
-inst/doc
+
 .Rapp.history
-VennDiagram*.log
 .nfs*
-Rplots.pdf
 *.tar*
 data/*
 feb*
 interpro.xml
 experiments/*/data
-inputs/
-test.py
-test2.py
 R_Basics.md
-input.arguments.md

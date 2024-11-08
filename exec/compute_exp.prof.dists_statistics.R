@@ -6,27 +6,26 @@ library(purrr)
 library(tibble)
 library(dotenv)
 
+# Set-up output directory, defined in the .env file 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-cat("USAGE: Rscript exec/compute_exp.prof.dists_statistics.R\n")
+cat("USAGE: Rscript exec/compute_exp.prof.dists_statistics.R")
 
-# Load functions:
+# functions sourced from:
 source("R/compute_funks.R")
-
-# would have to add the families also for distance calculation !?
-# load(file.path(output_data_dir, "gene_families.RData"))
 
 # Automatically sort the loaded gene groups data into regular and tissue datasets
 load(file.path(output_data_dir, "exp.prof.dists.RData"))
 loaded_objects <- ls()
-data_names <- loaded_objects[grepl("\\.filtered\\.dists$", loaded_objects)]
-data_names_tissue <- loaded_objects[grepl("\\.filtered\\.dists\\.tissue$", loaded_objects)]
+# This function validates loaded data, and returns a vector of valid names.
+valid_data_names <- validate_data(loaded_objects, "(.lst_dists$)")
+valid_data_names_tissue <- validate_data(loaded_objects, "(.lst_dists_tissue$)")
 
 # Track created dataframe names
 created_dfs <- character()
 
 # compute mean/median statistics
-for (name in data_names) {
+for (name in valid_data_names) {
     if (exists(name, envir = .GlobalEnv)) {
         data_object <- get(name)
         df_name <- paste0(name, "_stats")
@@ -36,7 +35,7 @@ for (name in data_names) {
 }
 
 # compute mean/median tissue-specific statistics
-for (name in data_names_tissue) {
+for (name in valid_data_names_tissue ) {
     if (exists(name, envir = .GlobalEnv)) {
         data_object <- get(name)
         df_name <- paste0(name, "_stats")

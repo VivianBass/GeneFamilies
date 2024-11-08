@@ -23,9 +23,6 @@
 - Refactor `compute_exp.prof.dists.R` and `compute_exp.prof.dists_statistics.R` to reduce redundancy, simplify code, and improve readability. Potentially create a reusable function.
 - Update descriptions in `roxygen2` documentation for clarity.
 - try with other exp
-- send Asis the weekly report per email
-- continue doing the Unit-test
-- maybe filter just by one column first
 
 ---
 

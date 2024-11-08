@@ -103,4 +103,3 @@ filter_v2 <- function(df, type = c("Ortholog", "Paralog"), expression_data) {
     return(df)
 }
 
-

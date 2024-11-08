@@ -13,40 +13,46 @@ is configured to save generated files in the designated output path within the t
 
 1. example: Rscript exec/load_gene_expression_data.R <RPKM_counts_table.tsv>
 
-    - input.args[[1]] <- "experiments/test_vivian_1/RPKM_expression.tsv"
+    input.args[[1]] <- "experiments/test_vivian_1/flybase_rpmk_exp.tsv"
 
 2. example: Rscript exec/load_gene_groups_data.R 
     <conserved_orthologs.tsv> <in_paralogs.tsv> <out_paralogs.tsv> <special_in_paralogs.tsv>  <special_out_paralogs.tsv>
 
-    - input.args[[1]] <- "experiments/test_vivian_1/conserved_orthologs_00.tsv"
-    - input.args[[2]] <- "experiments/test_vivian_1/in_paralogs_00.tsv"
-    - input.args[[3]] <- "experiments/test_vivian_1/out_paralogs_00.tsv"
-    - input.args[[4]] <- "experiments/test_vivian_1/special_in_paralogs_00.tsv"
-    - input.args[[5]] <- "experiments/test_vivian_1/special_out_paralogs_00.tsv"
+    input.args[[1]] <- "experiments/test_vivian_1/conserved_orthologs_00.tsv"
+    input.args[[2]] <- "experiments/test_vivian_1/in_paralogs_00.tsv"
+    input.args[[3]] <- "experiments/test_vivian_1/out_paralogs_00.tsv"
+    input.args[[4]] <- "experiments/test_vivian_1/special_in_paralogs_00.tsv"
+    input.args[[5]] <- "experiments/test_vivian_1/special_out_paralogs_00.tsv"
 
 3. example: Rscript exec/load_gene_families_data.R <families_file> 
 
-    - input.args[[1]] <- "experiments/test_vivian_1/Orthogroups.tsv"
+    input.args[[1]] <- "experiments/test_vivian_1/Orthogroups.tsv"
 
 
 ## Section-2 - Computing Distances & Statistics
-			                                      
-- 1.  `compute_exp.prof.dists.R` 	                        
-- 2.  `compute_exp.prof.dists_statistics.R`
 
+- for this section you will not need to provide any input arguments. just run the rscripts.
+			                                      
 ### 1. `compute_exp.prof.dists.R`
 
-
-
+Rscript exec/compute_exp.prof.dists.R
 
 ### 2. `compute_exp.prof.dists_statistics.R`
 
+USAGE: Rscript exec/compute_exp.prof.dists_statistics.R"
+
 ## Section-3 - Plotting Distributions
 
-- 1. `plot_exp.prof.dists_distribution.R`
-- 2. `plot_exp.prof.dists_distribution_tissue.R`
+- for this section you will not need to provide any input arguments. just run the rscripts.
 
 ### 1. `plot_exp.prof.dists_distribution.R`
+
+USAGE: Rscript exec/plot_exp.prof.dists_distribution.R
+
 ### 2. `plot_exp.prof.dists_distribution_tissue.R`
+
+USAGE: Rscript exec/plot_exp.prof.dists_distribution_tissue.R
+
+
 
 

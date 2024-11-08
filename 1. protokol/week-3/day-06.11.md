@@ -6,31 +6,22 @@
 
 **Tasks**:
 
+- Streamline `compute_exp.prof.dists.R` and `compute_exp.prof.dists_statistics.R` to reduce redundancy and improve readability.
+- Consider creating a reusable function for common tasks.
 
-- Refactor `compute_exp.prof.dists.R` and `compute_exp.prof.dists_statistics.R` to reduce redundancy, 
-  simplify code, and improve readability. Potentially create a reusable function.
+- Improve clarity of `roxygen2` descriptions and update overall documentation for consistency.
 
-- Update descriptions in `roxygen2` documentation for clarity. And uptdate the Documentation overall
+- Since the current expression profiles have limited data, try using alternative profiles.
+- Ensure they use the same FBgn-to-FBpp mapping from the server’s FASTA file.
+- Test different expression profiles to see if they yield a higher intersection and data volume.
 
-- as i had to low data from the current expression profils, try to use other expression profils
-  but with the same mappping as done with the fasta file from the server FBgn to FBpp mapping
-- try with different expression profils and see if the inteersection and data amount differs
-- also tzry to filter the genegroups dataframes just by 1 column first and see if difference
+- Try filtering `genegroups` dataframes by only one column to observe differences.
 
-- continue to do unit tests for each function , create different scenarious to test for 
-
-- send Asis the weekly report per email
-
-- would have to add the families also for distance calculation !?
-
-- did a v1 and a v2 filter to preprocess data , sothat it matches the provided expression profiles;
-- check if v1 filetered has the same results/lenght as v2 filtered
+- Applyed two filtering methods (`v1` and `v2`) to align data with expression profiles.
+- Verify if `v1` and `v2` yield the same results and length.
 
 
 **Doubts and Issues**:
-
-- expression profils, double genes etc.
-
 
 **Next Steps**:
 
