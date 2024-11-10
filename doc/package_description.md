@@ -41,30 +41,34 @@ Homology refers to shared ancestry or functional similarity among genes or struc
 - **Special Out-Paralogs**: Cross-species paralogs that retain conserved functions, closely resembling orthologs but from ancient duplications.
 
 
-# Algorythm, distinguishing between the groups 
-
+# Algorythm, distinguishing between gene groups 
+  
+- key parameters the algorythm evaluates or considers:
 - similratity score
 - overlapp
 
-- orthofinder phylogeny tree, 
+- phylogenic trees, newick trees (for example from Orthofinder)
 
-- dublication or speciatio o
+- dublication or speciation events
 
-- at which leaf to start with algo, leaf as nodes
-- basicall all vs all ?? dublication speciation, how orthofinder does tree?
-- how many pairwise comparisons overall, comparisons per leaf/node etc
-- distribution of gene pairs (genegrou , and overall gene pairs 
-- pair of genes can only belong to one group
+- Flybase syntenic relationchips
+
+- Cactus Bioinformatics tool
+
+- harmonic means on similarity scores
+
+
+- could we basically also apply all vs all ?? 
 - the protein genes can belong to multiple groups (from 5 groups + tandems)
-- newick trees , phylogenie 
-- harmonic mean son similarity scores, treshhold?
+- startting from a specific leaf/node
 
-The bioinformatics tool Cactus (sometimes referred to as "Kaktus") is a reference-free genome alignment software that constructs "cactus graphs" to align whole genomes.
+- distribution of gene pairs, and overall gene pairs 
 
-- Syntenic something flybase
+# Harmonic mean
 
-- jaccobi matrix
-
+The harmonic mean is a statistical measure used to average rates or ratios, giving more weight to smaller values, making it suitable for data where each point's contribution is part of a whole.
+In bioinformatics, it is applied in sequence alignment scoring, estimating effective population size, assessing microbial diversity, calculating the F1 score in machine learning, and averaging evolutionary or mutation rates.
+It is preferred over the arithmetic mean in contexts where low values significantly impact the overall result, providing a more balanced and realistic estimate.
 
 **Expression-Vector-Space Analysis Summary**
 
