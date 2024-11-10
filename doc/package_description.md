@@ -17,7 +17,7 @@ works for other data-sets as well.
   2, 16167. https://doi.org/10.1038/nplants.2016.167
 
 
-**Homology and Gene Relationships**
+## **Homology and Gene Relationships**
 
 Homology refers to shared ancestry or functional similarity among genes or structures, categorized as follows:
 
@@ -41,7 +41,7 @@ Homology refers to shared ancestry or functional similarity among genes or struc
 - **Special Out-Paralogs**: Cross-species paralogs that retain conserved functions, closely resembling orthologs but from ancient duplications.
 
 
-# Algorythm, distinguishing between gene groups 
+## Algorythm, distinguishing between gene groups 
   
 - key parameters the algorythm evaluates or considers:
 - similratity score
@@ -64,13 +64,13 @@ Homology refers to shared ancestry or functional similarity among genes or struc
 
 - distribution of gene pairs, and overall gene pairs 
 
-# Harmonic mean
+## Harmonic mean
 
 The harmonic mean is a statistical measure used to average rates or ratios, giving more weight to smaller values, making it suitable for data where each point's contribution is part of a whole.
 In bioinformatics, it is applied in sequence alignment scoring, estimating effective population size, assessing microbial diversity, calculating the F1 score in machine learning, and averaging evolutionary or mutation rates.
 It is preferred over the arithmetic mean in contexts where low values significantly impact the overall result, providing a more balanced and realistic estimate.
 
-**Expression-Vector-Space Analysis Summary**
+## **Expression-Vector-Space Analysis Summary**
 
 This analysis evaluates gene expression diversity across conditions (e.g., tissues, species, developmental stages) to uncover genetic mechanisms that shape biological structure. The two-factor dataset (ST-Exp) contains gene expression data with *species* and *tissue* as primary factors, requiring at least four family members per species for robust comparisons. Expression distances are calculated for gene types (orthologs, paralogs, etc.), with species-specific distribution plots and statistical tests to assess differences. An ANOVA-based conservation analysis further examines whether orthologs retain expression levels more consistently than paralogs, addressing the key question: *Is there a difference in expression diversity between orthologs and paralogs?*
 
