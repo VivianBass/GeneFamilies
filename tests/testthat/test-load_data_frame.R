@@ -1,8 +1,12 @@
 
-library(GeneFamilies)
-
-# test-load_data_frame.R
 library(testthat)
+library(GeneFamilies)
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(tibble)
+
+source("../../R/load_data_funks.R")
 
 test_that("load_data_frame loads data with correct structure", {
     # Create a temporary file with test data

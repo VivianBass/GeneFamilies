@@ -1,9 +1,12 @@
 
+library(testthat)
 library(GeneFamilies)
 library(dplyr)
+library(tidyr)
+library(purrr)
+library(tibble)
 
-# test-load_data_frame.R
-library(testthat)
+source("../../R/load_data_funks.R")
 
 # test-create_nested_list.R
 test_that("create_nested_list creates nested list for Orthologs", {

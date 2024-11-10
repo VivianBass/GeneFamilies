@@ -5,6 +5,12 @@
 **Function Under Test**: `load_data_frame()`
 **Function Location**: `R/load_data_funks.R`
 
+Test the file in the R terminal using the following command:
+```R
+sink("tests/test_results/test_results_load_data_frame.md")
+test_file("tests/testthat/test-load_data_frame.R")
+sink()
+```
 ---
 
 ### **Testing Scenarios**
@@ -51,9 +57,15 @@
 
 ---
 
-**Function Under Test**: `load_data_frame()`
+**Function Under Test**: `create_nested_list()`
 **Function Location**: `R/load_data_funks.R`
 
+Test the file in the R terminal using the following command:
+```R
+sink("tests/test_results/test_results_create_nested_list.md")
+test_file("tests/testthat/test-create_nested_list.R")
+sink()
+```
 ---
 
 ### **Testing Scenarios**
@@ -84,4 +96,43 @@
 
 9. **Error Handling: Invalid Header Type**
    - **Description**: Tests that `create_nested_list` throws an error if an invalid header type is provided, confirming that only valid types (like `"Ortholog"` or `"Paralog"`) are accepted.
+
+---
+
+**Function Under Test**: `filter_v1`
+**Function Location**: `R/load_data_funks.R`
+
+Test the file in the R terminal using the following command:
+```R
+sink("tests/test_results/test_results_filter_v1.md")
+test_file("tests/testthat/test-filter_v1.R")
+sink()
+```
+---
+
+### Testing Scenarios for `filter_v1`
+
+The `filter_v1` function filters rows from `df` based on matching gene identifiers in `expression_data`. The following test scenarios validate its functionality under typical and edge-case conditions:
+
+1. **Basic Filtering with Matching Genes**  
+   - **Objective**: Verify that only rows in `df` with genes present in `expression_data` are retained.
+   - **Expected Outcome**: The filtered data frame should contain only rows with genes found in both data frames.
+
+2. **No Matching Genes**  
+   - **Objective**: Confirm that if no genes in `df` are found in `expression_data`, an empty data frame is returned.
+   - **Expected Outcome**: A data frame with zero rows, indicating no matches.
+
+3. **All Genes Match**  
+   - **Objective**: Ensure that if all genes in `df` are present in `expression_data`, all rows in `df` are retained.
+   - **Expected Outcome**: The output should be identical to `df`, containing all original rows.
+
+4. **Empty `df` Input**  
+   - **Objective**: Test function handling when `df` is empty (no rows).
+   - **Expected Outcome**: Return an empty data frame, indicating correct handling of empty input.
+
+5. **Empty `expression_data` Input**  
+   - **Objective**: Validate that an empty `expression_data` results in no matches and thus an empty data frame.
+   - **Expected Outcome**: Return an empty data frame, as there are no genes to match against.
+
+
 
