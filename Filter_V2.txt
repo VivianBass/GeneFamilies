@@ -1,0 +1,30 @@
+
+# with filter v2
+
+for (name in names(input_files)) {
+    tryCatch({
+        filtered_name <- paste0(name, "_v")
+        if (exists(name, envir = .GlobalEnv)) {
+        
+            filtered_df <- filter_v2(df = get(name), 
+                type = input_files[[name]]$type,
+                expression_data = rna.seq.exp.profils
+            )
+            
+            assign(filtered_name, filtered_df)
+            filtered_objects[[filtered_name]] <- filtered_df
+            cat(sprintf("Object '%s' added successfully.\n", filtered_name))
+            
+            # Only create nested list if filtering was successful
+            if (nrow(filtered_df) > 0) {
+                filtered_lst_name <- paste0(filtered_name, ".lst")
+                nested_list <- create_nested_list(filtered_df, input_files[[name]]$type)
+                assign(filtered_lst_name, nested_list)
+                filtered_objects[[filtered_lst_name]] <- nested_list
+                cat(sprintf("Object '%s' added successfully.\n", filtered_lst_name))
+            }
+        }
+    }, error = function(e) {
+        cat(sprintf("Error processing %s: %s\n", name, e$message))
+    })
+}

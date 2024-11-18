@@ -28,6 +28,10 @@ data_names <- loaded_objects[grepl(".lst_dists_stats$", loaded_objects)]
 df_mean.dists <- data.frame()
 df_median.dists <- data.frame()
 
+load("experiments/test_diet_P/data/exp.prof.dists_statistics.RData")
+     "experiments/test_diet_P/data"
+
+
 # Process each dataset to extract and compile mean and median distance information
 for (data_name in data_names) {
     current_data <- get(data_name)
@@ -48,6 +52,31 @@ for (data_name in data_names) {
         Distance = unlist(current_data$Median)
     )
     df_median.dists <- bind_rows(df_median.dists, temp_median_df)
+}
+
+check_dataframes <- function(mean_df, median_df) {
+    if(nrow(mean_df) == 0) {
+        message("Mean distances dataframe is empty")
+        return(FALSE)
+    }
+    if(nrow(median_df) == 0) {
+        message("Median distances dataframe is empty")
+        return(FALSE)
+    }
+    if(length(unique(mean_df$Type)) < 2) {
+        message("Not enough types for comparison in mean distances")
+        return(FALSE)
+    }
+    if(length(unique(median_df$Type)) < 2) {
+        message("Not enough types for comparison in median distances")
+        return(FALSE)
+    }
+    return(TRUE)
+}
+
+
+if(!check_dataframes(df_mean.dists, df_median.dists)) {
+    stop("Data validation failed")
 }
 
 # -----------------------------------------------------------------------------

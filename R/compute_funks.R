@@ -13,28 +13,63 @@
 #' # Compute overall distances for specified genes across all tissues
 #' distances <- exp.prof.dists(gene.accessions = list("gene1", "gene2", "gene3"))
 #'
-exp.prof.dists <- function(gene.accessions, expression.profiles = rna.seq.exp.profils,
-                  expr.prof.gene.col = "FBpp_ID", 
-                  tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col)), 
-                  dist.method = "euclidean") {
+exp.prof.dists <- function(gene.accessions,
+                          expression.profiles = rna.seq.exp.profils,
+                          expr.prof.gene.col = "FBpp_ID",
+                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
+                          dist.method = "euclidean") {
     
-    # Get all genes and filter expression profiles
     all_genes <- unlist(gene.accessions)
-    exp.profs <- expression.profiles %>% 
-                 filter(!!sym(expr.prof.gene.col) %in% all_genes) %>% 
-                 column_to_rownames(expr.prof.gene.col)
     
-    if (nrow(exp.profs) > 1) {
+    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
+    
+    # Group by species before calculating distances
+    species_groups <- split(exp.profs, exp.profs$Species)
+    
+    distances <- lapply(species_groups, function(species_data) {
+        if (nrow(species_data) > 1) {
+            rownames(species_data) <- species_data[[expr.prof.gene.col]]
+            species_data <- species_data[, tissues]
+            
+            dist_matrix <- species_data %>%
+                as.matrix() %>%
+                dist(method = dist.method) %>%
+                as.vector()
+            
+            return(dist_matrix)
+        } else {
+            return(NA)
+        }
+    })
+    
+    return(distances)
+}
 
-        dist_matrix <- exp.profs %>% 
-                   select(all_of(tissues)) %>% 
-                   as.matrix() %>%
-                   dist(method = dist.method) %>%
-                   as.vector()
-
-        return(dist_matrix)
-
-    } else {NA}
+exp.prof.dists <- function(gene.accessions,
+                          expression.profiles = rna.seq.exp.profils,
+                          expr.prof.gene.col = "FBpp_ID",
+                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
+                          dist.method = "euclidean") {
+    
+    all_genes <- unlist(gene.accessions)
+    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
+    species_groups <- split(exp.profs, exp.profs$Species)
+    
+    distances <- lapply(species_groups, function(species_data) {
+        if (nrow(species_data) > 1) {
+            rownames(species_data) <- species_data[[expr.prof.gene.col]]
+            species_data <- species_data[, tissues]
+            
+            # Ensure numeric conversion
+            species_data <- sapply(species_data, as.numeric)
+            dist_matrix <- as.vector(dist(species_data, method = dist.method))
+            
+            return(dist_matrix)
+        }
+        return(NA)
+    })
+    
+    return(distances)
 }
 
 #' Compute Euclidean Distances Between Gene Expression Profiles by Tissue
@@ -51,29 +86,60 @@ exp.prof.dists <- function(gene.accessions, expression.profiles = rna.seq.exp.pr
 #' # Compute per-tissue distances for specified genes
 #' tissue_distances <- exp.prof.dists_tissue(gene.accessions = c("gene1", "gene2", "gene3"))
 #'
-exp.prof.dists_tissue <- function(gene.accessions, expression.profiles = rna.seq.exp.profils,
+exp.prof.dists_tissue <- function(gene.accessions, 
+                                 expression.profiles = rna.seq.exp.profils,
                                  expr.prof.gene.col = "FBpp_ID",
-                                 tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col)), 
+                                 tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
                                  dist.method = "euclidean") {
     
     all_genes <- unlist(gene.accessions)
-    exp.profs <- expression.profiles %>% 
-        filter(!!sym(expr.prof.gene.col) %in% all_genes) %>% 
-        column_to_rownames(expr.prof.gene.col)
+    
+    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
+    rownames(exp.profs) <- exp.profs[[expr.prof.gene.col]]
+    exp.profs <- exp.profs[, tissues]
     
     if (nrow(exp.profs) > 1) {
-
-        tissue_distances <- tissues %>% 
+        tissue_distances <- tissues %>%
             set_names() %>%
             map(~{
-                exp.profs %>% 
-                    select(all_of(.x)) %>% 
+                exp.profs %>%
+                    select(all_of(.x)) %>%
+                    as.matrix() %>%
                     dist(method = dist.method) %>%
                     as.vector()
             })
         
-        tissue_distances
-    } else {NA}
+        return(tissue_distances)
+    } else {
+        NA
+    }
+}
+
+exp.prof.dists_tissue <- function(gene.accessions,
+                                 expression.profiles = rna.seq.exp.profils,
+                                 expr.prof.gene.col = "FBpp_ID",
+                                 tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
+                                 dist.method = "euclidean") {
+    
+    all_genes <- unlist(gene.accessions)
+    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
+    rownames(exp.profs) <- exp.profs[[expr.prof.gene.col]]
+    exp.profs <- exp.profs[, tissues]
+    
+    if (nrow(exp.profs) > 1) {
+        tissue_distances <- tissues %>%
+            set_names() %>%
+            map(~{
+                tissue_data <- exp.profs %>%
+                    select(all_of(.x)) %>%
+                    sapply(as.numeric)
+                
+                as.vector(dist(tissue_data, method = dist.method))
+            })
+        
+        return(tissue_distances)
+    }
+    return(NA)
 }
 
 #' Calculate Statistics for Expression Profile Distances
@@ -102,6 +168,31 @@ calculate_exp.prof.dists.statistics <- function(data) {
   return(result)
 }
 
+calculate_exp.prof.dists.statistics <- function(data) {
+    result <- map_dfr(names(data), function(name) {
+        dist_matrix <- data[[name]]
+        if (!is.null(dist_matrix) && is.numeric(dist_matrix)) {
+            tibble(
+                Family = name,
+                Mean = mean(dist_matrix, na.rm = TRUE),
+                Median = median(dist_matrix, na.rm = TRUE)
+            )
+        } else {
+            tibble(
+                Family = name,
+                Mean = NA_real_,
+                Median = NA_real_
+            )
+        }
+    })
+    
+    result <- result %>%
+        filter_all(all_vars(!is.na(.) & !is.infinite(.)))
+    
+    return(result)
+}
+
+
 #' Calculate Statistics for Expression Profile Distances by Tissue
 #'
 #' Computes the mean and median of the expression profile distances for each gene cluster
@@ -128,6 +219,36 @@ calculate_exp.prof.dists.tissue.statistics <- function(data) {
     filter_all(all_vars(!is.na(.) & !is.infinite(.)))
   return(result)
 }
+
+
+
+
+calculate_exp.prof.dists.tissue.statistics <- function(data) {
+    result <- map_dfr(names(data), function(name) {
+        tissue_data <- data[[name]]
+        if (!is.null(tissue_data)) {
+            tibble(
+                Family = name,
+                Tissue = names(tissue_data),
+                Mean = map_dbl(tissue_data, ~if(is.numeric(.x)) mean(.x, na.rm = TRUE) else NA_real_),
+                Median = map_dbl(tissue_data, ~if(is.numeric(.x)) median(.x, na.rm = TRUE) else NA_real_)
+            )
+        } else {
+            tibble(
+                Family = name,
+                Tissue = NA_character_,
+                Mean = NA_real_,
+                Median = NA_real_
+            )
+        }
+    })
+    
+    result <- result %>%
+        filter_all(all_vars(!is.na(.) & !is.infinite(.)))
+    
+    return(result)
+}
+
 
 #' Validate and Filter Loaded Data Objects
 #'

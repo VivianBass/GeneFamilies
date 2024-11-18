@@ -1,4 +1,4 @@
-Certainly! Here’s a bare-bones protocol template for weekly reporting. This can serve as a repeatable blueprint:
+
 
 ### **Weekly Protocol (Date Range)**
 

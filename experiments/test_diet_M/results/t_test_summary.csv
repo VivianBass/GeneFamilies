@@ -1,0 +1,7 @@
+".y.","group1","group2","n1","n2","statistic","df","p","p.adj","p.adj.signif","significance","analysis"
+"Distance","con_orthologs_v","special_in_paralogs_v",16,109,0.649518601912845,20.2863355005584,0.262,0.546,"ns","ns","Median"
+"Distance","con_orthologs_v","special_out_paralogs_v",16,20,0.351256976839982,31.072268370345,0.364,0.546,"ns","ns","Median"
+"Distance","special_in_paralogs_v","special_out_paralogs_v",109,20,-0.265974040170004,28.974157382756,0.604,0.604,"ns","ns","Median"
+"Distance","con_orthologs_v","special_in_paralogs_v",16,109,0.395122604298688,20.9894535122833,0.348,0.498,"ns","ns","Mean"
+"Distance","con_orthologs_v","special_out_paralogs_v",16,20,0.33448100110301,31.0447585673001,0.37,0.498,"ns","ns","Mean"
+"Distance","special_in_paralogs_v","special_out_paralogs_v",109,20,0.00385852572109911,30.3548487824309,0.498,0.498,"ns","ns","Mean"

@@ -22,7 +22,7 @@ message("input.args[[5]]:  path/2/<special_out_paralogs.tsv>")
 input.args <- commandArgs(trailingOnly = TRUE)
 
 # required data and files loaded from:
-load(file.path(output_data_dir, "gene_expression_flybase.RData")) 
+load(file.path(output_data_dir, "rna.seq.exp.profils_P_M_.RData")) 
 
 # Functions load_data_frame() & create_nested_list() sourced from:
 source("R/load_data_funks.R")
