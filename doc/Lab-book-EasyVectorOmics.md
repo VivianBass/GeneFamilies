@@ -101,8 +101,6 @@ For quality filtering of FASTQ files, we used **Trimmomatic**, a tool designed t
 
 We analyzed data from two **Drosophila** species. **Drosophila sechellia (dsec)** and **Drosophila melanogaster (dmel)** across multiple tissue types. Each tissue was represented by **three biological replicates**, with the respective accession numbers listed below:
 
----
-
 #### Accession Numbers for RNA-Seq Data
 
 | **Species**               | **Tissue**     | **Replicate 1** | **Replicate 2** | **Replicate 3** |
@@ -116,7 +114,7 @@ We analyzed data from two **Drosophila** species. **Drosophila sechellia (dsec)*
 |                           | Fat Body       | DRR129487       | DRR129489       | DRR129491       |
 |                           | Muscle         | DRR129511       | DRR129513       | DRR129515       |
 
-
+<br>
 
 ## **Data Mining in R (DATR) exercises**
 
@@ -130,6 +128,7 @@ To resolve this, we decided to use raw data from the paper to ensure precise gen
 
 This RNA-seq workflow efficiently transforms raw sequencing reads into precise gene-level expression data, ensuring reliable results. It enables condition-specific comparisons, identifies differentially expressed genes, and provides insights into gene regulation.
 
+<br>
 
 ## Step 1: Create the Reference Transcriptome with GFFread
 
@@ -149,9 +148,11 @@ gffread /media/BioNAS/ag_hallab/DATR/material/reference.gff \
 # `-w`: Defines the output FASTA file for the transcriptome.
 ```
 
-### **What It Does**
+### **What It Does:**
 - Combines the genomic annotations (GFF) and the genomic sequence (FASTA) to extract the transcript sequences for each annotated gene.  
 - Outputs a FASTA file containing all transcript sequences for downstream analyses, such as alignment-free quantification, gene quantification, and differential expression analysis.  
+
+<br>
 
 ### ⚠️ **Important Note**
 
@@ -176,6 +177,8 @@ zcat /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<fast
 awk '/^>/ {print $1; next} {print}' cleaned.fasta > cleaned_final.fasta
 ```
 - Perform these steps for both species and ensure the cleaned files are saved in their respective directories.
+
+<br>
 
 ## Step 2: Quality Filtering with Trimmomatic
 
@@ -211,6 +214,7 @@ awk '/^>/ {print $1; next} {print}' cleaned.fasta > cleaned_final.fasta
 
 - Trimmomatic trims raw paired-end FASTQ reads by removing adapter sequences, low-quality bases, and contaminants, ensuring high-quality reads for downstream quantification.
 
+<br>
 
 ## Step 3: Quantify Gene Expression with Kallisto
 
@@ -243,7 +247,7 @@ kallisto quant -i <your_dir>/results/transcriptome.idx \
 # Output: TPM values and variability metrics for each transcript.
 ```
 
-### **What It Does**  
+### **What It Does:**  
 - Pseudoaligns trimmed reads to the indexed transcriptome.  
 - Estimates transcript abundances (TPM) and calculates variability using bootstraps.  
 - Outputs results to a folder specific to the condition (e.g., control, treated).  
@@ -281,7 +285,14 @@ kallisto quant -i <your_dir>/results/transcriptome.idx \
 
 
 
-
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
 
 
 
