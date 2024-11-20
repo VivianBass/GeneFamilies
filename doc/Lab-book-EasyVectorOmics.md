@@ -1,60 +1,108 @@
 
-# EasyVectorOmics Analysis - Lab-book
+# EasyVectorOmics Analysis - Lab Book
 
-In this project the goal is to reproduce the vector space analyses as done in
-the _Cardamine hirsuta_ genome project [1]. The R-Code required to do so shall
-be isolated and made usabel with _any_ data. Next, this code shall be used to
-analyse public open access data of model species to evaluate whether the method
-works for other data-sets as well. https://doi.org/10.1038/nplants.2016.167
+## **Project Overview**
+
+The goal of this project is to reproduce the vector space analyses conducted in the _Cardamine hirsuta_ genome project. The R code used for the analysis will be refined and made applicable to any dataset. This code will then be used to analyze publicly available data from model species to evaluate the generalizability of the method to other datasets. [DOI: https://doi.org/10.1038/nplants.2016.167](https://doi.org/10.1038/nplants.2016.167)
 
 
-# References
+## **Current Work**
 
-Watanabe, Kaori, Yasutetsu Kanaoka, Shoko Mizutani, Hironobu Uchiyama, Shunsuke Yajima, Masayoshi Watada, Tadashi Uemura, and Yukako Hattori. "Interspecies Comparative Analyses Reveal Distinct Carbohydrate-Responsive Systems among Drosophila Species." Cell Reports 28, no. 10 (2019): 2594-2607.e7. [https://doi.org/10.1016/j.celrep.2019.08.011](https://www.cell.com/cell-reports/fulltext/S2211-1247(19)31064-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2211124719310642%3Fshowall%3Dtrue)
+1. **Defining Expression Vector Spaces**
+   - To construct a viable expression vector space, we require data from at least three, preferably four, species. 
+   - Additionally, we need expression measurements from at least four different tissues, as these tissues serve as the axes of the expression vector space.
 
-`Interspecies Comparative Analyses Reveal Distinct Carbohydrate-Responsive Systems among Drosophila Species`
-
-This paper investigates dietary adaptability in *Drosophila* species, comparing generalists like *D. melanogaster* and *D. simulans* to specialists such as *D. sechellia*. Generalists can adapt to diets with varied nutrient balances due to carbohydrate-responsive gene regulation via TGF-β/Activin signaling, maintaining metabolic balance. Specialists lack this regulation, struggling with carbohydrate-rich diets, leading to metabolite accumulation and reduced adaptation. The findings highlight how gene-environment interactions shape nutritional flexibility, contributing to evolutionary differences between generalist and specialist species.
-
-
-# ---------------------------------------------------------------------------------
-
-
-# Data
+2. **Recreating Results from the Paper**
+   - We are currently replicating the results with data from the study:  
+     **"Interspecies Comparative Analyses Reveal Distinct Carbohydrate-Responsive Systems among Drosophila Species"**  
+     [DOI: https://doi.org/10.1016/j.celrep.2019.08.011](https://doi.org/10.1016/j.celrep.2019.08.011)
 
 
-- species under investigation: *D. melanogaster* and *D. simulans* to specialists such as *D. sechellia*
-- Conditions: 3 Diets (M, P, ...)
-- tissues: Muscle, Fat_body, whole body, ....
+## **Study Overview**
 
-DATA AND CODE AVAILABILITY
+This paper investigates dietary adaptability in *Drosophila* species, comparing generalists such as *D. melanogaster* and *D. simulans* to specialists like *D. sechellia*. Key findings include:
 
-All the RNA-sequencing data have been deposited and are available in the `DDBJ Sequence Read Archive.` 
-BioProject accession number: PRJDB4481
-The accession numbers for the data are DDBJ: DRA004295, DRA006831, and DRA007810 
+- **Generalists** (*D. melanogaster* and *D. simulans*) possess carbohydrate-responsive gene regulation through the TGF-β/Activin signaling pathway, enabling adaptation to diets with varying nutrient balances and maintaining metabolic balance.
 
+- **Specialists** (*D. sechellia*) lack such regulation, resulting in poor adaptation to carbohydrate-rich diets, metabolite accumulation, and reduced dietary flexibility. 
 
+These findings underscore the role of gene-environment interactions in shaping nutritional adaptability and evolutionary differences between generalist and specialist species.
 
 
+## **Data Used in Analysis**
+
+- **Species Under Investigation**  
+  - Generalists: *D. melanogaster* (Drosophila) (dmel)
+  - Specialists: *D. sechellia* (Drosophila) (dsec)
+
+- **Conditions**  
+  - Diets: M (medium), P (protein-rich), C (carbohydrate-rich)
+
+- **Tissues:**  
+  - Muscle  
+  - Fat Body  
+  - Whole Body  
+  - Gut  
+
+## **References**
+
+1. Watanabe, Kaori, Yasutetsu Kanaoka, Shoko Mizutani, Hironobu Uchiyama, Shunsuke Yajima, Masayoshi Watada, Tadashi Uemura, and Yukako Hattori.  
+   _"Interspecies Comparative Analyses Reveal Distinct Carbohydrate-Responsive Systems among Drosophila Species."_  
+   *Cell Reports* 28, no. 10 (2019): 2594–2607.e7.  
+   [DOI: https://doi.org/10.1016/j.celrep.2019.08.011](https://doi.org/10.1016/j.celrep.2019.08.011)
+
+## Data Availability
+
+All RNA-sequencing data have been deposited in the **DDBJ Sequence Read Archive** under BioProject accession number **PRJDB4481**. 
+The specific accession numbers for the datasets are:
+
+- **DRA004295**
+- **DRA006831**
+- **DRA007810**
+
+### Supplementary Materials
+
+Additional data, including spreadsheets and expression profiles, can be downloaded from the publication's supporting information page:  
+[Cell Reports - Supporting Materials](https://www.cell.com/cell-reports/fulltext/S2211-1247(19)31064-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS2211124719310642%3Fshowall%3Dtrue)
+
+### Reference Transcriptomes from FlyBase
+
+To create reference transcriptomes, we use **GFFread**, a tool that requires both GFF and FASTA files.
+
+For **Drosophila melanogaster**, the files required for reference transcriptome generation are sourced from **FlyBase release FB2024_05** (current as of November 19, 2024). These include:
+
+- **GFF File**:  
+  [dmel-all-r6.60.gff.gz](https://ftp.flybase.net/releases/FB2024_05/dmel_r6.60/gff/dmel-all-r6.60.gff.gz)
+
+- **FASTA File**:  
+  [dmel-all-chromosome-r6.60.fasta.gz](https://ftp.flybase.net/releases/FB2024_05/dmel_r6.60/fasta/dmel-all-chromosome-r6.60.fasta.gz)
+
+These files are stored on the server at:  
+`/media/BioNAS/ag_hallab/EasyVectorOmics/material/references/dmel`
+
+For **Drosophila sechellia**, the corresponding files for reference transcriptome generation are also available on FlyBase. 
+
+...
+
+### Quality Filtering
+
+For quality filtering of FASTQ files, we utilize **Trimmomatic**. The datasets can be accessed through the following link:  
+[NCBI FASTQ Quality Filtering - Trimmomatic](https://www.ncbi.nlm.nih.gov/Traces/study/?page=2&query_key=3&WebEnv=MCID_673684b340e26547c60a0f01&o=organism_s%3Aa%253Bacc_s%3Bacc_s%3Aa)
 
 
-### **Data Mining in R (DATR) exercises**
+## **Data Mining in R (DATR) exercises**
 
-This workflow processes RNA-seq data to quantify gene expression, 
-enabling the comparison of gene activity across different conditions. 
-It ensures high-quality data and accurate expression quantification, 
+In this data mining exercise, as outlined in **doc/DATR_6_Uebung.pdf**, we will perform bioinformatic analyses of gene expression data using powerful tools in the field of transcriptomics. The goal is to gain hands-on experience with processing, quantification, and analysis of RNA-Seq data to understand gene expression levels across different conditions.
 
-- **Efficiency:** Streamlines RNA-seq data analysis with alignment-free quantification, saving time and computational resources.  
-- **Accuracy:** Transforms raw sequencing reads into precise gene-level expression data, ensuring reliable results.  
-- **Relevance:** Facilitates the identification of differentially expressed genes, aiding in the understanding of condition-specific gene regulation.
+We will work with tools like **Trimmomatic**, **gffread**, **Kallisto** which are commonly used in modern bioinformatics pipelines. By the end of this exercise, we will have practical skills in filtering raw sequencing data, creating reference transcriptomes, quantifying gene expression, and performing downstream statistical analysis.
 
+Previously, we relied on gene expression data extracted from spreadsheets linked in the paper. However, we faced issues accurately mapping gene expression data to the respective species, as the expression profiles only referenced **dmel** gene names. This led to boxplots that represented only **dmel** genes and excluded other species present in the profiles. Although we attempted to map genes using symbols provided in the spreadsheets, this approach yielded incomplete results, as not all genes in the expression profiles could be mapped.
 
-### Data 
+To resolve this, we decided to use raw data from the paper to ensure precise gene mapping and represent all genes from all species present in the expression profiles. Therefore, we are utilizing the RNA-seq workflow to efficiently transform raw sequencing reads into accurate gene-level expression data.
 
-https://www.ncbi.nlm.nih.gov/Traces/study/?page=2&query_key=3&WebEnv=MCID_673684b340e26547c60a0f01&o=organism_s%3Aa%253Bacc_s%3Bacc_s%3Aa
+This RNA-seq workflow efficiently transforms raw sequencing reads into precise gene-level expression data, ensuring reliable results. It enables condition-specific comparisons, identifies differentially expressed genes, and provides insights into gene regulation.
 
-
-#### -----------------------------------------------------------------------------------------
+---
 
 ### Step 1: Create the Reference Transcriptome with GFFread
 
@@ -77,22 +125,13 @@ To create the `reference Transcriptome`, you need:
     # `-w`: Defines the output FASTA file for the transcriptome.
 ```
 
-- dmel reference Transcriptome
-for melanogaster we will use gff and fasta file from flybase, release FB2024_05, the current release by November 19 2024
-https://ftp.flybase.net/releases/FB2024_05/dmel_r6.60/gff/dmel-all-r6.60.gff.gz
-https://ftp.flybase.net/releases/FB2024_05/dmel_r6.60/fasta/dmel-all-chromosome-r6.60.fasta.gz
- 
-they are stored in the server in /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/dmel
-
-
-- dsec reference Transcriptome
-
+#### **What It Does:**
 
 
 
 - which information do the gff and fasta gz exactly contain ?
 
-#### -----------------------------------------------------------------------------------------
+---
 
 ### Step 2: Quality Filtering with Trimmomatic
 
@@ -123,14 +162,13 @@ they are stored in the server in /media/BioNAS/ag_hallab/EasyVectorOmics/materia
     MINLEN:70
 ```
 
-### **What It Does:**
+#### **What It Does:**
 1. Removes adapter sequences using the specified adapter file.  
 2. Filters low-quality reads and bases.  
 3. Ensures both reads in a pair are retained if possible.  
 4. Outputs high-quality, trimmed reads for further analysis, discarding reads shorter than 70 bases.
 
-
-#### -----------------------------------------------------------------------------------------
+---
 
 ### Step 3: Quantify Gene Expression with Kallisto
 
@@ -152,6 +190,9 @@ kallisto index -i <your_dir>/results/transcriptome.idx <your_dir>/results/<gffre
 # `<gffread_output.fa>`: Input transcriptome in FASTA format.
 ```
 
+#### **What It Does:**
+
+
 ### **2. Quantify Gene Expression** 
 
 - Kallisto quantifies transcript abundances from paired-end reads.
@@ -171,10 +212,12 @@ kallisto quant -i <your_dir>/results/transcriptome.idx \
 # `<SRR9929273_1T.fq.gz>` and `<SRR9929273_2T.fq.gz>`: Paired-end trimmed FASTQ files.  
 ```
 
+#### **What It Does:**
+
 ### **Repeat**  
 Execute the `kallisto quant` command for each condition and replicate to analyze all samples.
 
-#### -----------------------------------------------------------------------------------------
+
 
 
 
