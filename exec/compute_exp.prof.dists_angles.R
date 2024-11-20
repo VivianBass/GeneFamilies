@@ -98,7 +98,6 @@ special_out_paralogs.expr.angle.diag.df <- special_out_paralogs.expr.angle.diag.
 
 # --------------------------------------------------------------------------------
 
-
 # Function to calculate angles for a gene group
 calculate_angles <- function(genes, rna.seq.exp.profils, tissues) {
   genes.expr <- intersect(unlist(genes), rna.seq.exp.profils$FBpp_ID)
