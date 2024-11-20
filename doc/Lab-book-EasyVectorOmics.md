@@ -134,13 +134,13 @@ gffread /media/BioNAS/ag_hallab/DATR/material/reference.gff \
 
 ### ⚠️ **Important Note**
 
-- Ensure the GFF file is unzipped before running the `gffread` command, as compressed files are not supported. Use the following command to unzip:  
+- Ensure the GFF file is unzipped before running the `gffread` command, as compressed files are not supported. 
 
 ```bash
 gunzip /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<gfffile.gff.gz>
 ```
 
-- Prepare FASTA Files: Clean and adjust FASTA files for both Drosophila melanogaster (dmel) and Drosophila sechellia (dsec) to ensure compatibility: 
+- Clean and adjust FASTA files for both Drosophila melanogaster (dmel) and Drosophila sechellia (dsec) to ensure compatibility: 
 
 1. **Remove Line Breaks**:
 
@@ -154,7 +154,7 @@ zcat /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<fast
 ```bash
 awk '/^>/ {print $1; next} {print}' cleaned.fasta > cleaned_final.fasta
 ```
-- Perform these steps for both species and ensure the cleaned files are saved in their respective directories for consistent processing in the RNA-Seq workflow.
+- Perform these steps for both species and ensure the cleaned files are saved in their respective directories.
 
 ## Step 2: Quality Filtering with Trimmomatic
 
@@ -204,10 +204,8 @@ kallisto index -i <your_dir>/results/transcriptome.idx <your_dir>/results/<gffre
 # Output: An indexed transcriptome file used for pseudoalignment.
 ```
 
-#### **What It Does:**  
+### **What It Does:**  
 - Creates an index file (`transcriptome.idx`) from the reference transcriptome.
-
----
 
 ### **2. Quantify Gene Expression**
 
