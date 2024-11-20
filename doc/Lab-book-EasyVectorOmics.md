@@ -80,9 +80,16 @@ For **Drosophila melanogaster**, the files required for reference transcriptome 
 These files are stored on the server at:  
 `/media/BioNAS/ag_hallab/EasyVectorOmics/material/references/dmel`
 
-For **Drosophila sechellia**, the corresponding files for reference transcriptome generation are also available on FlyBase. 
+For **Drosophila sechellia**, the corresponding files for reference transcriptome generation are sourced from **FlyBase release FB2018_05**. These include:
 
-...
+- **GFF File**:  
+  [dsec-all-r1.3.gff.gz](https://ftp.flybase.net/releases/FB2018_05/dsec_r1.3/gff/dsec-all-r1.3.gff.gz)
+
+- **FASTA File**:  
+  [dsec-all-chromosome-r1.3.fasta.gz](https://ftp.flybase.net/releases/FB2018_05/dsec_r1.3/fasta/dsec-all-chromosome-r1.3.fasta.gz)
+
+These files are stored on the server at:  
+`/media/BioNAS/ag_hallab/EasyVectorOmics/material/references/dsec`
 
 ### Quality Filtering
 
@@ -102,103 +109,107 @@ To resolve this, we decided to use raw data from the paper to ensure precise gen
 
 This RNA-seq workflow efficiently transforms raw sequencing reads into precise gene-level expression data, ensuring reliable results. It enables condition-specific comparisons, identifies differentially expressed genes, and provides insights into gene regulation.
 
----
 
-### Step 1: Create the Reference Transcriptome with GFFread
+## Step 1: Create the Reference Transcriptome with GFFread
 
-- Extract annotated transcript sequences for pseudoalignment.
+A **reference transcriptome** is a collection of all transcript sequences (mRNA, RNA, etc.) for a given organism, derived from the genomic sequence and annotated gene structures. It provides a comprehensive map of known transcripts, essential for RNA-seq analysis to quantify gene expression and identify differentially expressed genes.
 
-To create the `reference Transcriptome`, you need:
+To create the **reference transcriptome**, you need:
 
 1. **Genomic Sequence (FASTA format)**: Contains nucleotide sequences of the entire genome.  
-2. **Genomic Annotations (GFF format)**: Metadata about gene structures, specifying positions of exons, introns, CDS, and genes. 
-
-- `gffread` combines the annotations (GFF) with the sequence (FASTA) to extract transcript sequences, 
-   producing a FASTA file of all annotated transcripts.
+2. **Genomic Annotations (GFF format)**: Metadata about gene structures, specifying positions of exons, introns, coding sequences (CDS), and genes.
 
 ```bash
-    gffread /media/BioNAS/ag_hallab/DATR/material/reference.gff \
-    -g /media/BioNAS/ag_hallab/DATR/material/reference.fsa \
-    -w /media/BioNAS/ag_hallab/EasyVectorOmics/Tests_AK/results/output_transcriptome.fa
+gffread /media/BioNAS/ag_hallab/DATR/material/reference.gff \
+-g /media/BioNAS/ag_hallab/DATR/material/reference.fsa \
+-w /media/BioNAS/ag_hallab/EasyVectorOmics/Tests_AK/results/output_transcriptome.fa
 
-    # `-g`: Specifies the genome FASTA file.  
-    # `-w`: Defines the output FASTA file for the transcriptome.
+# `-g`: Specifies the genome FASTA file.
+# `-w`: Defines the output FASTA file for the transcriptome.
 ```
 
-#### **What It Does:**
+### **What It Does**
+- Combines the genomic annotations (GFF) and the genomic sequence (FASTA) to extract the transcript sequences for each annotated gene.  
+- Outputs a FASTA file containing all transcript sequences for downstream analyses, such as alignment-free quantification, gene quantification, and differential expression analysis.  
 
+### ⚠️ **Important Note**
 
+- Ensure the GFF file is unzipped before running the `gffread` command, as compressed files are not supported. Use the following command to unzip:  
 
-- which information do the gff and fasta gz exactly contain ?
+```bash
+gunzip /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<gfffile.gff.gz>
+```
 
----
+- Prepare FASTA Files: Clean and adjust FASTA files for both Drosophila melanogaster (dmel) and Drosophila sechellia (dsec) to ensure compatibility: 
 
-### Step 2: Quality Filtering with Trimmomatic
+1. **Remove Line Breaks**:
 
-- Use Trimmomatic to Filter the quality of the raw reads (`FASTQ files`)
-- Trims raw paired-end FASTQ reads using quality thresholds and adapter files.
-- removes adapter sequences, low-quality bases, and contaminants from raw paired-end reads (FASTQ files).  
-- Adapter sequences are short, synthetic DNA sequences added to the ends of DNA fragments during library preparation for sequencing.
-- Output: High-quality trimmed reads ready for quantification.
+```bash
+zcat /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<fastafile.fasta.gz> | awk 'NF' > cleaned.fasta
+```
+
+2. **Adjust Headers**:  
+- Simplify headers to retain only the chromosome names. 
+
+```bash
+awk '/^>/ {print $1; next} {print}' cleaned.fasta > cleaned_final.fasta
+```
+- Perform these steps for both species and ensure the cleaned files are saved in their respective directories for consistent processing in the RNA-Seq workflow.
+
+## Step 2: Quality Filtering with Trimmomatic
+
+- **Trimmomatic** is used to filter the quality of raw paired-end reads (`FASTQ` files), improving data quality before downstream analysis.
+
+- **FASTQ Files** are text-based files that store raw sequencing data. They contain nucleotide sequences (reads) along with quality scores for each base, indicating the confidence of the sequencing results.
 
 ```bash
     # This runs Trimmomatic (`trimmomatic-0.39.jar`) using Java.
     # The tool is located in the specified path `/usr/local/bin/trimmomatic/`
-    # PE Indicates **Paired-End mode**, meaning both forward (`_1.fastq`) and reverse (`_2.fastq`) reads are processed.
+    # PE indicates **Paired-End mode**, meaning both forward (`_1.fastq`) and reverse (`_2.fastq`) reads are processed.
     # Allocates 4 threads for parallel processing to speed up the trimming process.
     java -jar /usr/local/bin/trimmomatic/trimmomatic-0.39.jar PE -threads 4 \
-    # These are the raw paired-end input FASTQ files: `_1.fastq`: Forward reads. and `_2.fastq`: Reverse reads.
+    # Raw paired-end input FASTQ files: `_1.fastq` is the forward read, `_2.fastq` is the reverse read.
     /media/BioNAS/ag_hallab/DATR/material/control/SRR9929273_1.fastq \
     /media/BioNAS/ag_hallab/DATR/material/control/SRR9929273_2.fastq \
-    # Trimmomatic produces separate output files: one for Forward reads after trimming and one for Reverse reads after trimming.
-    # `/dev/null`: Specifies where discarded or unpaired reads are sent (not stored).
-    # Output files: Trimmed reads are stored in compressed FASTQ format (`*.fq.gz`).
+    # Trimmomatic produces separate output files for forward and reverse reads after trimming.
+    # `/dev/null` is used for discarded or unpaired reads (not saved).
+    # Output files: Trimmed reads stored in compressed FASTQ format (`*.fq.gz`).
     <your_dir>/material/control/SRR9929273_1T.fq.gz /dev/null \
     <your_dir>/material/control/SRR9929273_2T.fq.gz /dev/null \
-    # **ILLUMINACLIP**: Removes adapter sequences using the `TruSeq3-PE.fa` adapter file.
-    # **`keepBothReads`**: Ensures both paired-end reads are retained, even if one is trimmed due to low quality.
+    # **ILLUMINACLIP**: Removes adapter sequences using the specified adapter file.
+    # `keepBothReads`: Retains both paired-end reads, even if one is trimmed due to low quality.
     ILLUMINACLIP:/usr/local/bin/trimmomatic/adapters/TruSeq3-PE.fa:2:30:10:2:keepBothReads \
     # Discards reads shorter than 70 bases after trimming.
     MINLEN:70
 ```
+### **What It Does:**
+- **Removes adapter sequences** (using the specified adapter file, TruSeq3-PE.fa).
+- **Filters low-quality reads** and bases below the defined quality threshold.
+- **Retains paired-end reads** if possible, even if one is trimmed due to low quality.
+- **Outputs high-quality trimmed reads**, discarding any shorter than 70 bases, in compressed FASTQ format, ready for further analysis.
 
-#### **What It Does:**
-1. Removes adapter sequences using the specified adapter file.  
-2. Filters low-quality reads and bases.  
-3. Ensures both reads in a pair are retained if possible.  
-4. Outputs high-quality, trimmed reads for further analysis, discarding reads shorter than 70 bases.
+- Trimmomatic trims raw paired-end FASTQ reads by removing adapter sequences, low-quality bases, and contaminants, ensuring high-quality reads for downstream quantification.
 
----
 
-### Step 3: Quantify Gene Expression with Kallisto
+## Step 3: Quantify Gene Expression with Kallisto
 
-Kallisto is an alignment-free tool for RNA-seq data analysis. 
-It quantifies gene expression by pseudoaligning reads to a reference transcriptome, 
-enabling fast and accurate abundance estimation.  
-Estimate transcript abundance without traditional alignment. 
+- Kallisto is an efficient, alignment-free tool for RNA-seq analysis. It quantifies gene expression by pseudoaligning reads to a reference transcriptome, enabling fast and accurate transcript abundance estimation.
 
-### **1. Index the reference Transcriptome**  
+### **1. Index the Reference Transcriptome**
 
-- Kallisto requires an indexed reference transcriptome to process RNA-seq reads.
-- **Reference transcriptome:** Generated using GFFread (FASTA format). (Step-1)
-- Create a transcriptome index from the reference FASTA.
- 
 ```bash
 kallisto index -i <your_dir>/results/transcriptome.idx <your_dir>/results/<gffread_output.fa>
 
-# `kallisto index -i`: Creates a transcriptome index file.
-# `<gffread_output.fa>`: Input transcriptome in FASTA format.
+# Input: FASTA file generated using GFFread (Step 1).
+# Output: An indexed transcriptome file used for pseudoalignment.
 ```
 
-#### **What It Does:**
+#### **What It Does:**  
+- Creates an index file (`transcriptome.idx`) from the reference transcriptome.
 
+---
 
-### **2. Quantify Gene Expression** 
-
-- Kallisto quantifies transcript abundances from paired-end reads.
-- **Trimmed FASTQ files:** Preprocessed reads from RNA-seq experiments. (Step-2)
-- Quantify expression (TPM) for each transcript using pseudoalignment
-- Output: Abundance estimates for each condition.
+### **2. Quantify Gene Expression**
 
 ```bash
 kallisto quant -i <your_dir>/results/transcriptome.idx \
@@ -206,16 +217,28 @@ kallisto quant -i <your_dir>/results/transcriptome.idx \
 <your_dir>/material/control/SRR9929273_1T.fq.gz \
 <your_dir>/material/control/SRR9929273_2T.fq.gz
 
-# `kallisto quant -i`: Uses the pre-built index for pseudoalignment.  
-# `-o results/<condition>`: Saves results in a folder named after the condition.  
-# `-b 100`: Generates 100 bootstraps to estimate abundance variability.  
-# `<SRR9929273_1T.fq.gz>` and `<SRR9929273_2T.fq.gz>`: Paired-end trimmed FASTQ files.  
+# `-i`: Specifies the indexed transcriptome file created in the previous step.
+# `-o`: Defines the output folder for results, named based on the condition (e.g., control, treated).
+# `-b 100`: Runs 100 bootstraps to estimate variability in abundance estimates.
+# Input: Paired-end trimmed FASTQ files (`_1T.fq.gz` and `_2T.fq.gz`) from Step 2.
+# Output: TPM values and variability metrics for each transcript.
 ```
 
-#### **What It Does:**
+### **What It Does**  
+- Pseudoaligns trimmed reads to the indexed transcriptome.  
+- Estimates transcript abundances (TPM) and calculates variability using bootstraps.  
+- Outputs results to a folder specific to the condition (e.g., control, treated).  
 
-### **Repeat**  
-Execute the `kallisto quant` command for each condition and replicate to analyze all samples.
+**Note**: Run `kallisto quant` for all conditions and replicates to analyze the complete dataset.
+
+
+
+
+
+
+
+
+
 
 
 
