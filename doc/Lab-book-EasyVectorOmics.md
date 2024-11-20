@@ -91,10 +91,31 @@ For **Drosophila sechellia**, the corresponding files for reference transcriptom
 These files are stored on the server at:  
 `/media/BioNAS/ag_hallab/EasyVectorOmics/material/references/dsec`
 
+
 ### Quality Filtering
 
-For quality filtering of FASTQ files, we utilize **Trimmomatic**. The datasets can be accessed through the following link:  
+For quality filtering of FASTQ files, we used **Trimmomatic**, a tool designed to trim low-quality bases and adapter sequences from RNA-Seq data. The datasets used in this analysis are publicly available and can be accessed through the following link:  
 [NCBI FASTQ Quality Filtering - Trimmomatic](https://www.ncbi.nlm.nih.gov/Traces/study/?page=2&query_key=3&WebEnv=MCID_673684b340e26547c60a0f01&o=organism_s%3Aa%253Bacc_s%3Bacc_s%3Aa)
+
+**BioProject**: [PRJDB4481](https://www.ncbi.nlm.nih.gov/bioproject/PRJDB4481)
+
+We analyzed data from two **Drosophila** species. **Drosophila sechellia (dsec)** and **Drosophila melanogaster (dmel)** across multiple tissue types. Each tissue was represented by **three biological replicates**, with the respective accession numbers listed below:
+
+---
+
+#### Accession Numbers for RNA-Seq Data
+
+| **Species**               | **Tissue**     | **Replicate 1** | **Replicate 2** | **Replicate 3** |
+|---------------------------|----------------|-----------------|-----------------|-----------------|
+| **D. sechellia**          | Whole Body     | DRR051498       | DRR051500       | DRR051502       |
+|                           | Gut            | DRR129481       | DRR129483       | DRR129485       |
+|                           | Fat Body       | DRR129493       | DRR129495       | DRR129497       |
+|                           | Muscle         | DRR129535       | DRR129537       | DRR129539       |
+| **D. melanogaster**       | Whole Body     | DRR051486       | DRR051488       | DRR051490       |
+|                           | Gut            | DRR129475       | DRR129477       | DRR129479       |
+|                           | Fat Body       | DRR129487       | DRR129489       | DRR129491       |
+|                           | Muscle         | DRR129511       | DRR129513       | DRR129515       |
+
 
 
 ## **Data Mining in R (DATR) exercises**
@@ -228,14 +249,6 @@ kallisto quant -i <your_dir>/results/transcriptome.idx \
 - Outputs results to a folder specific to the condition (e.g., control, treated).  
 
 **Note**: Run `kallisto quant` for all conditions and replicates to analyze the complete dataset.
-
-
-
-
-
-
-
-
 
 
 
