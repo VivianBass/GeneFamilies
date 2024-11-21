@@ -32,10 +32,7 @@
 
 **Next Steps**:
 
-- Debug R scripts for angle calculations and plots.  
-- Implement and test t-tests and Wilcoxon tests in the analysis. 
-- Perform unit tests for each function.   
-- Finalize and validate unit tests for all scripts.  
+
 
 ---
 

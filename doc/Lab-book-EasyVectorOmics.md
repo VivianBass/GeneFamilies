@@ -255,6 +255,72 @@ kallisto quant -i <your_dir>/results/transcriptome.idx \
 **Note**: Run `kallisto quant` for all conditions and replicates to analyze the complete dataset.
 
 
+## Step 4: Extract TPM Values
+
+### **Description**  
+Kallisto provides TPM (Transcripts Per Million) values directly in the output file `abundance.tsv`. 
+These values represent transcript-level quantification. For gene-level analysis, TPM values must be aggregated across all transcripts belonging to the same gene.
+-> basically we take the outpu file from kallisto and extract the TPM values and aggregate them to the gene level
+
+This step focuses on extracting and processing TPM values from Kallisto output to calculate overall gene expression levels.
+
+---
+
+### **Code**
+
+```R
+# Load required libraries
+library(dplyr)
+
+# Function to aggregate TPM values at the gene level
+aggregate_TPM <- function(kallisto_dir, mapping_file, output_file = "gene_level_tpm.txt") {
+  
+  # Step 1: Load transcript-to-gene mapping file
+  # Mapping file should have two columns: Transcript_ID and Gene_ID
+  mapping <- read.table(mapping_file, header = TRUE, sep = "\t")
+  
+  # Step 2: Load Kallisto output
+  abundance <- read.table(file.path(kallisto_dir, "abundance.tsv"), header = TRUE, sep = "\t")
+  
+  # Step 3: Merge TPM values with transcript-to-gene mapping
+  abundance <- merge(abundance, mapping, by.x = "target_id", by.y = "Transcript_ID")
+  
+  # Step 4: Aggregate TPM values at the gene level
+  gene_tpm <- abundance %>%
+    group_by(Gene_ID) %>%
+    summarize(TPM = sum(TPM, na.rm = TRUE))
+  
+  # Step 5: Save the aggregated results
+  write.table(gene_tpm, file = output_file, sep = "\t", row.names = FALSE, quote = FALSE)
+  
+  return(gene_tpm) # Return the gene-level TPM values
+}
+
+# Example: Generate gene-level TPM values
+aggregate_TPM("path/to/kallisto/output", "path/to/transcript_to_gene_map.txt", "results/gene_level_tpm.txt")
+```
+
+---
+
+### **What It Does**  
+1. **Loads Mapping File:**  
+   - A transcript-to-gene mapping file links each transcript to its corresponding gene.  
+
+2. **Reads Kallisto Output:**  
+   - Parses the `abundance.tsv` file, which contains transcript-level TPM values.  
+
+3. **Aggregates TPM Values:**  
+   - Sums TPM values for all transcripts belonging to the same gene to calculate gene-level TPM.  
+
+4. **Saves Results:**  
+   - Outputs a file (`gene_level_tpm.txt`) with gene-level TPM values for downstream analysis.
+
+
+
+
+
+
+# ---------------------------------------------------------------------
 
 
 
@@ -266,122 +332,59 @@ kallisto quant -i <your_dir>/results/transcriptome.idx \
  
 
  
+## Step 1: Create the Reference Transcriptome with GFFread
+## Step 2: Quality Filtering with Trimmomatic
+## Step 3: Quantify Gene Expression with Kallisto
+## Step 4: Extract TPM values
 
 
 
 
 
 
+### ⚠️ **Important Note**
 
-
-
-
-
-
-
-
-
-
-
-
-
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-<br>
-
-
-
-
-sbatch Tests_AK/methods/kallisto.sh
+- Ensure the GFF file is unzipped before running the `gffread` command, as compressed files are not supported. 
 
 ```bash
-
-#!/bin/bash
-# SBATCH --job-name=kallisto
-# SBATCH --output=kallisto_%j.out
-	
-echo "starting script"
-
-kallisto index -i <your_dir>/results/transcriptome.idx <your_dir>/results/<gffread_output.fa>
-
-kallisto quant -i <your_dir>/results/transcriptome.idx \
--o results/<condition> -b 100 \
-<your_dir>/material/control/SRR9929273_1T.fq.gz \
-<your_dir>/material/control/SRR9929273_2T.fq.gz
-
-echo "script finished!"
-
+gunzip /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<gfffile.gff.gz>
 ```
 
+- Clean and adjust FASTA files for both Drosophila melanogaster (dmel) and Drosophila sechellia (dsec) to ensure compatibility: 
 
-
-
-
-
-
-
-
-
-
-
-
-
-/media/BioNAS/ag_hallab/EasyVectorOmics/material/dietM
-
-
-
+1. **Remove Line Breaks**:
 
 ```bash
-#!/bin/bash
-
-# Base dir where dietM is stored
-base_dir="/media/BioNAS/ag_hallab/EasyVectorOmics/material/dietM"
-
-# Dir to adapters 
-adapter_file="/usr/local/bin/trimmomatic/adapters/TruSeq3-SE.fa"
-
-# Loop dmel and dsec
-for species in dsec ; do
-    species_dir="$base_dir/$species"
-
-    # Check if dir exists
-    if [ -d "$species_dir" ]; then
-        # Loop for tissues
-        for tissue in fat muscle whole_body gut; do
-            tissue_dir="$species_dir/$tissue"
-
-            # Check if tissue dir exists
-            if [ -d "$tissue_dir" ]; then
-                # Create "trimmed" directory inside tissue dir
-                output_dir="$tissue_dir/trimmed"
-                mkdir -p "$output_dir"
-
-                # Check all fastq files
-                for fastq in "$tissue_dir"/*.fastq.gz; do
-                    # Get filename whitout extension
-                    base_name=$(basename "$fastq" .fastq.gz)
-
-                    # Execute trimmomatic for every file
-                    java -jar /usr/local/bin/trimmomatic/trimmomatic-0.39.jar SE -threads 4 \
-                    "$fastq" \
-                    "$output_dir/${base_name}_trimmed.fastq" \
-                    ILLUMINACLIP:$adapter_file:2:30:10:2 \
-                    LEADING:3 TRAILING:3 SLIDINGWINDOW:4:20 MINLEN:70
-                done
-            else
-                echo "Error: $tissue_dir doesn't exist."
-            fi
-        done
-    else
-        echo "Error: $species_dir doesn't exist."
-    fi
-done
+zcat /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<fastafile.fasta.gz> | awk 'NF' > cleaned.fasta
 ```
 
+2. **Adjust Headers**:  
+- Simplify headers to retain only the chromosome names. 
+
+```bash
+awk '/^>/ {print $1; next} {print}' cleaned.fasta > cleaned_final.fasta
+```
+- Perform these steps for both species and ensure the cleaned files are saved in their respective directories.
 
 
+
+We ran kallisto with 
+kallisto index -i dmel_transcriptome.idx dmel_transcriptome.fa
+ 
+But we detected some transcriptome duplicates, so we deleted everything after the first blank with
+awk '/^>/{print $1; next} {print}' dmel_transcriptome.fa > dmel_transcriptome_clean.fa
+
+and then we checked for duplicates:
+grep "^>" dmel_transcriptome_clean.fa | sort | uniq -d
+
+we got 2 duplicated transcriptomes, so we deleted the duplicates using:
+awk '/^>/{if(seen[$0]++) next} {print}' dmel_transcriptome_clean.fa > dmel_transcriptome_deduplicated.fa
+
+ 
+Then we could execute
+kallisto index -i dmel_transcriptome.idx dmel_transcriptome_deduplicated.fa
+
+we did that only for dmel because we didnt have problems with dsec for kallisto index
+
+also please add in the documentation that we had to compress every trimmomatic result because the result files are so big
+ 
