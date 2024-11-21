@@ -34,6 +34,9 @@ doing the same code for each gene group for angles calculation
 
 - Perform unit tests for each function.   
 - Finalize and validate unit tests for all scripts and Functions.  
+- created doc\unit_tests_angles_functions.md to document test sceneraios for angles_funks functions
+
+
 
 
 - improve Lab-Book descriptions for the 4 steps, and precisly document how we did the 4 steps
