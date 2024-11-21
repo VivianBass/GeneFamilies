@@ -1,36 +1,38 @@
 require(GeneFamilies)
-options(mc.cores = getMcCores())  
-library(dotenv)  
+options(mc.cores = getMcCores())
+library(parallel) 
 
-# Load necessary libraries for data manipulation, plotting, and statistical analysis
-library(ggplot2)
-library(ggsignif)
-library(gridExtra)
-library(rstatix)
-library(ggpubr)
+message("USAGE: Rscript exec/plot_exp.prof.dists_distribution.R")
+
+library(dotenv)  
+# Define directories for output data and results using environment variables
+output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
+results_dir <- Sys.getenv("RESULTS_DIR")
+
+# Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(tibble)
 
-# Define directories for output data and results using environment variables
-output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
-results_dir <- Sys.getenv("RESULTS_DIR")
+# Load necessary libraries for data manipulation, plotting, and statistical analysis
+library(ggplot2)
+library(ggsignif)
+library(ggpubr)
+library(gridExtra)
+library(rstatix)
 
-message("USAGE: Rscript exec/plot_exp.prof.dists_distribution.R")
+# ------------------------------------------------------------------------
 
-# Load expression profile distance statistics
+# Load expression profile distance statistics, for each gene group (5 in total)
 load(file.path(output_data_dir, "exp.prof.dists_statistics.RData"))
 loaded_objects <- ls()
 data_names <- loaded_objects[grepl(".lst_dists_stats$", loaded_objects)]
 
 # Initialize empty data frames to store the mean and median distances for each dataset
+# Header Type and Distance, in long format, Type containing the gene-groups
 df_mean.dists <- data.frame()
 df_median.dists <- data.frame()
-
-load("experiments/test_diet_P/data/exp.prof.dists_statistics.RData")
-     "experiments/test_diet_P/data"
-
 
 # Process each dataset to extract and compile mean and median distance information
 for (data_name in data_names) {
@@ -54,30 +56,9 @@ for (data_name in data_names) {
     df_median.dists <- bind_rows(df_median.dists, temp_median_df)
 }
 
-check_dataframes <- function(mean_df, median_df) {
-    if(nrow(mean_df) == 0) {
-        message("Mean distances dataframe is empty")
-        return(FALSE)
-    }
-    if(nrow(median_df) == 0) {
-        message("Median distances dataframe is empty")
-        return(FALSE)
-    }
-    if(length(unique(mean_df$Type)) < 2) {
-        message("Not enough types for comparison in mean distances")
-        return(FALSE)
-    }
-    if(length(unique(median_df$Type)) < 2) {
-        message("Not enough types for comparison in median distances")
-        return(FALSE)
-    }
-    return(TRUE)
-}
-
-
-if(!check_dataframes(df_mean.dists, df_median.dists)) {
-    stop("Data validation failed")
-}
+# Save both dataframes to the output directory
+save(df_mean.dists, df_median.dists, 
+     file = file.path(output_data_dir, "exp.prof.dists_mean_median.RData"))
 
 # -----------------------------------------------------------------------------
 
@@ -88,62 +69,6 @@ significance_level <- function(p) {
   else if (p < 0.05) return("*")
   else return("ns")  
 }
-
-# Check if there is enough data to perform t-tests on both mean and median distances
-# Ensure each group has more than one observation for valid t-testing
-valid_groups <- bind_rows(
-    df_mean.dists %>% mutate(source = "mean"),
-    df_median.dists %>% mutate(source = "median")
-) %>%
-    group_by(Type, source) %>%
-    summarise(n = n(), .groups = 'drop') %>%
-    filter(n > 1) %>%
-    split(.$source) %>%
-    map(~pull(.x, Type))
-
-# Perform t-tests with error handling to account for potential issues
-t_test_results <- tryCatch({
-
-    # Perform t-test on median distances if there are enough groups
-    if (length(valid_groups$median) >= 2) {
-        t_test_median <- df_median.dists %>%
-            filter(Type %in% valid_groups$median) %>%
-            t_test(Distance ~ Type, alternative = "greater") %>%
-            adjust_pvalue(method = "BH") %>%
-            mutate(significance = sapply(p, significance_level),
-                   analysis = "Median")
-    } else {
-        message("Not enough valid groups for median t-test")
-    }
-    
-    # Perform t-test on mean distances if there are enough groups
-    if (length(valid_groups$mean) >= 2) {
-        t_test_mean <- df_mean.dists %>%
-            filter(Type %in% valid_groups$mean) %>%
-            t_test(Distance ~ Type, alternative = "greater") %>%
-            adjust_pvalue(method = "BH") %>%
-            mutate(significance = sapply(p, significance_level),
-                   analysis = "Mean")
-    } else {
-        message("Not enough valid groups for mean t-test")
-    }
-    
-    # Save results if both t-tests were completed successfully
-    if (exists("t_test_median") && exists("t_test_mean")) {
-        t_test_summary <- bind_rows(t_test_median, t_test_mean)
-        write.csv(t_test_summary, file.path(results_dir, "t_test_summary.csv"), row.names = FALSE)
-        message("T-test summary exported to CSV")
-    }
-    
-    # Return results as a list for further reference
-    list(median = if(exists("t_test_median")) t_test_median else NULL,
-         mean = if(exists("t_test_mean")) t_test_mean else NULL,
-         summary = if(exists("t_test_summary")) t_test_summary else NULL)
-}, error = function(e) {
-    message("Error in t-tests: ", e$message)
-    return(NULL)
-})
-
 # -----------------------------------------------------------------------------
 
 # Define combinations of types for pairwise significance annotations in boxplots

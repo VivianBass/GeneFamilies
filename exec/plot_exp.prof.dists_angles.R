@@ -1,27 +1,31 @@
-
 require(GeneFamilies)
 options(mc.cores = getMcCores())
+library(parallel)
 
 message("USAGE: Rscript exec/plot_exp.prof.dists_angles.R")
 
-library(parallel)
-library(RColorBrewer)
+library(dotenv)
+# Define directories for output data and results using environment variables
+output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
+results_dir <- Sys.getenv("RESULTS_DIR")
+
+# Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(tibble)
-library(dotenv)
 
-# Set-up output directory, defined in the .env file 
-output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
-results_dir <- Sys.getenv("RESULTS_DIR")
 
-# load gene-groups angles datasets
-load(file.path(output_data_dir, "exp.prof.dists_angles.RData"))
+library(RColorBrewer)
+
 
 # functions sourced from:
 source("R/angles_funks.R")
 
+# ------------------------------------------------------------------------
+
+# load gene-groups angles datasets
+load(file.path(output_data_dir, "exp.prof.dists_angles.RData"))
 
 # Create list of dataframes to validate
 df_list <- list(

@@ -16,11 +16,10 @@ are available or empty, this was important for the plotting process of tissue ve
 doing the same code for each gene group for angles calculation 
 
 
-- Implement Wilcoxon tests in the analysis. 
-- Perform unit tests for each function.   
-- Finalize and validate unit tests for all scripts and Functions.  
-- improve Lab-Book descriptions for the 4 steps, and precisly document how we did the 4 steps
-- check if the distances are calculated for each gene group separately
+- Implemented Wilcoxon tests in the analysis. 
+- also included wilcox tests and created 2 seperate rscripts just for t-tests and wilcox tests
+- exec\generate_t-test_wilcox_test_tissue.R
+- exec\generate_t-test_wilcox_test.R
 
 
 - Questions i need to clarify 
@@ -29,8 +28,16 @@ doing the same code for each gene group for angles calculation
 - # would need to merge all 5 gene groups angles dataframes
 # 5 different types ?? or just ortholog and paralogs ??
 # merge paralog.expr.angle.diag.df and orths.expr.angle.diag.df and plot results:
+- check if the distances are calculated for each gene group separately
 - 
 
+
+- Perform unit tests for each function.   
+- Finalize and validate unit tests for all scripts and Functions.  
+
+
+- improve Lab-Book descriptions for the 4 steps, and precisly document how we did the 4 steps
+- check if the distances are calculated for each gene group separately
 
 
 **Doubts and Issues**:
