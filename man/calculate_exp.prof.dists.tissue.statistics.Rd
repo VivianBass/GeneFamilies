@@ -7,17 +7,27 @@
 calculate_exp.prof.dists.tissue.statistics(data)
 }
 \arguments{
-\item{data}{A nested list where each element represents a gene cluster, and each cluster
-contains a list of tissues with associated expression profile distances.}
+\item{data}{A nested list where each element represents a gene cluster. Each cluster contains a list of
+tissues with associated expression profile distances. The structure should be such that each cluster (gene family)
+contains named tissues as its sublist, and each tissue contains numeric distances.}
 }
 \value{
-A tibble where each row represents a gene cluster, and columns include \code{Cluster} and
-\code{Tissue-specific} mean and median values.
+A tibble where each row corresponds to a gene cluster, and the columns include:
+\itemize{
+\item \code{Family}: The gene cluster name.
+\item \code{Tissue}: The name of the tissue.
+\item \code{Mean}: The mean of the expression profile distances for that tissue.
+\item \code{Median}: The median of the expression profile distances for that tissue.
+The result contains one row for each tissue in each gene cluster, with statistics for each tissue.
+}
 }
 \description{
-Computes the mean and median of the expression profile distances for each gene cluster
-per tissue within a given dataset, transforming the output to have tissues in headers.
+Computes the mean and median of the expression profile distances for each gene cluster,
+per tissue within a given dataset. The output is structured such that tissues are represented in the columns,
+with mean and median statistics for each tissue.
 }
 \examples{
+# Calculate the mean and median of expression profile distances for each gene cluster per tissue
 result <- calculate_exp.prof.dists.tissue.statistics(my_data)
+
 }

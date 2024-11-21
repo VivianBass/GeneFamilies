@@ -45,7 +45,7 @@ calculate_angles <- function(genes, rna.seq.exp.profils, tissues) {
   genes.expr <- intersect(unlist(genes), rna.seq.exp.profils$FBpp_ID)
   
   if(length(genes.expr) == 0) {
-    warning(paste("No matching genes found for group:", group))
+    warning("No matching genes found")
     return(data.frame())
   }
 
@@ -60,6 +60,7 @@ calculate_angles <- function(genes, rna.seq.exp.profils, tissues) {
   expr.angle.diag.df %>%
     filter(!is.na(angle.diag) & angle.diag != "NA" & angle.diag != "")
 }
+
 
 
 #' Validate Data Frames and Retain Original Names
@@ -91,6 +92,7 @@ calculate_angles <- function(genes, rna.seq.exp.profils, tissues) {
 #' @export
 validate_angle_dataframes <- function(df_list) {
     valid_dfs <- list()
+    
     for (name in names(df_list)) {
         df <- df_list[[name]]
         if (!is.null(df) && nrow(df) > 0) {
@@ -99,5 +101,10 @@ validate_angle_dataframes <- function(df_list) {
             message(sprintf("Warning: %s dataframe is empty or null", name))
         }
     }
+    
+    if (length(valid_dfs) == 0) {
+        return(structure(list(), class = "list"))
+    }
+    
     return(valid_dfs)
 }

@@ -1,50 +1,21 @@
 
 #' Compute Euclidean Distances Between Gene Expression Profiles
 #'
-#' @description Calculates pairwise Euclidean distances across gene expression profiles for a given set of genes, aggregated across all specified tissues.
+#' @description Calculates pairwise Euclidean distances across gene expression profiles for a given set of genes, aggregated across all specified tissues. The distances are computed within each species, providing a measure of similarity in gene expression profiles.
 #'
 #' @param gene.accessions A list of gene accession identifiers for which distances should be computed.
-#' @param expression.profiles A data frame or tibble containing gene expression data, with gene IDs in one column and expression values in other columns. Default is `rna.seq.exp.profils`.
+#' @param expression.profiles A data frame or tibble containing gene expression data. This should include a column for gene IDs and additional columns for expression values. Default is `rna.seq.exp.profils`.
 #' @param expr.prof.gene.col The column name in `expression.profiles` containing gene IDs. Default is `"FBpp_ID"`.
-#' @param tissues A character vector of column names in `expression.profiles` that represent tissue-specific expression values. By default, includes all columns except `expr.prof.gene.col`.
-#' @param dist.method Distance calculation method. Default is `"euclidean"`.
-#' @return A vector representing the distance matrix, or `NA` if there are fewer than two expression profiles.
+#' @param tissues A character vector of column names in `expression.profiles` that represent tissue-specific expression values. By default, includes all columns except `expr.prof.gene.col`, `"Parent_FBgn"`, and `"Species"`.
+#' @param dist.method Distance calculation method. Default is `"euclidean"`. Other methods (e.g., `"manhattan"`, `"maximum"`, etc.) can be specified.
+#'
+#' @return A list of vectors, each representing the pairwise Euclidean distances between gene expression profiles for a species. Each vector contains the distances between the specified genes' expression profiles across the selected tissues. If there are fewer than two expression profiles for a species, `NA` is returned for that species.
+#'
 #' @examples
 #' # Compute overall distances for specified genes across all tissues
 #' distances <- exp.prof.dists(gene.accessions = list("gene1", "gene2", "gene3"))
 #'
-exp.prof.dists <- function(gene.accessions,
-                          expression.profiles = rna.seq.exp.profils,
-                          expr.prof.gene.col = "FBpp_ID",
-                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
-                          dist.method = "euclidean") {
-    
-    all_genes <- unlist(gene.accessions)
-    
-    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
-    
-    # Group by species before calculating distances
-    species_groups <- split(exp.profs, exp.profs$Species)
-    
-    distances <- lapply(species_groups, function(species_data) {
-        if (nrow(species_data) > 1) {
-            rownames(species_data) <- species_data[[expr.prof.gene.col]]
-            species_data <- species_data[, tissues]
-            
-            dist_matrix <- species_data %>%
-                as.matrix() %>%
-                dist(method = dist.method) %>%
-                as.vector()
-            
-            return(dist_matrix)
-        } else {
-            return(NA)
-        }
-    })
-    
-    return(distances)
-}
-
+#' @export
 exp.prof.dists <- function(gene.accessions,
                           expression.profiles = rna.seq.exp.profils,
                           expr.prof.gene.col = "FBpp_ID",
@@ -74,47 +45,21 @@ exp.prof.dists <- function(gene.accessions,
 
 #' Compute Euclidean Distances Between Gene Expression Profiles by Tissue
 #'
-#' @description Computes pairwise Euclidean distances between expression profiles of specified genes, optionally by each tissue. Useful for analyzing gene similarity within individual conditions.
+#' @description Computes pairwise Euclidean distances between expression profiles of specified genes, optionally by each tissue. This function is useful for analyzing gene similarity within individual tissues or conditions.
 #'
 #' @param gene.accessions A vector of gene accession identifiers for which distances should be computed.
-#' @param expression.profiles A data frame or tibble containing gene expression data, with gene IDs in one column and expression values in other columns. Default is `rna.seq.exp.profils`.
+#' @param expression.profiles A data frame or tibble containing gene expression data. This should include a column for gene IDs and additional columns for expression values. Default is `rna.seq.exp.profils`.
 #' @param expr.prof.gene.col The column name in `expression.profiles` containing gene IDs. Default is `"FBpp_ID"`.
-#' @param tissues A character vector of column names in `expression.profiles` that represent tissue-specific expression values. By default, includes all columns except `expr.prof.gene.col`.
-#' @param dist.method Distance calculation method. Default is `"euclidean"`.
-#' @return A list of distance vectors, one per tissue, or `NA` if there are fewer than two expression profiles.
+#' @param tissues A character vector of column names in `expression.profiles` that represent tissue-specific expression values. By default, includes all columns except `expr.prof.gene.col`, `"Parent_FBgn"`, and `"Species"`.
+#' @param dist.method Distance calculation method. Default is `"euclidean"`. Other methods can be specified if desired.
+#'
+#' @return A list of distance vectors, one per tissue. Each vector contains the pairwise Euclidean distances between the specified genes' expression profiles for that tissue. If there are fewer than two expression profiles for a tissue, `NA` is returned.
+#'
 #' @examples
 #' # Compute per-tissue distances for specified genes
 #' tissue_distances <- exp.prof.dists_tissue(gene.accessions = c("gene1", "gene2", "gene3"))
 #'
-exp.prof.dists_tissue <- function(gene.accessions, 
-                                 expression.profiles = rna.seq.exp.profils,
-                                 expr.prof.gene.col = "FBpp_ID",
-                                 tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
-                                 dist.method = "euclidean") {
-    
-    all_genes <- unlist(gene.accessions)
-    
-    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
-    rownames(exp.profs) <- exp.profs[[expr.prof.gene.col]]
-    exp.profs <- exp.profs[, tissues]
-    
-    if (nrow(exp.profs) > 1) {
-        tissue_distances <- tissues %>%
-            set_names() %>%
-            map(~{
-                exp.profs %>%
-                    select(all_of(.x)) %>%
-                    as.matrix() %>%
-                    dist(method = dist.method) %>%
-                    as.vector()
-            })
-        
-        return(tissue_distances)
-    } else {
-        NA
-    }
-}
-
+#' @export
 exp.prof.dists_tissue <- function(gene.accessions,
                                  expression.profiles = rna.seq.exp.profils,
                                  expr.prof.gene.col = "FBpp_ID",
@@ -144,38 +89,44 @@ exp.prof.dists_tissue <- function(gene.accessions,
 
 #' Calculate Statistics for Expression Profile Distances
 #'
-#' Computes the mean and median of the expression profile distances for each gene family
-#' within a given dataset.
+#' @description 
+#' Computes the mean and median of expression profile distances for each gene family
+#' within a given dataset of distance matrices. The function handles multiple gene families
+#' and returns summary statistics for each.
 #'
-#' @param data A list of matrices where each element represents a gene family's expression profile distance matrix.
+#' @param data A list where each element is a matrix representing the expression profile
+#'   distance matrix for a gene family. Each matrix should contain numeric values.
 #'
-#' @return A tibble with columns: `Family`, `Mean`, and `Median`, containing the mean and median
-#' values of the distances for each family.
+#' @return A tibble with three columns:
+#'   \item{Family}{The name of the gene family (from the names of the list elements).}
+#'   \item{Mean}{The mean of the distances for the gene family.}
+#'   \item{Median}{The median of the distances for the gene family.}
+#'   The function returns a tibble with these statistics, excluding any entries with `NA` or infinite values.
+#'
 #' @examples
+#' # Calculate the mean and median of expression profile distances for each gene family
 #' result <- calculate_exp.prof.dists.statistics(my_data)
+#'
+#' @importFrom dplyr filter_all
+#' @importFrom purrr map_dfr
+#' @export
 calculate_exp.prof.dists.statistics <- function(data) {
-  result <- map_dfr(names(data), function(name) {
-    dist_matrix <- as.matrix(data[[name]])
-    tibble(
-      Family = name,
-      Mean = mean(dist_matrix, na.rm = TRUE),
-      Median = median(dist_matrix, na.rm = TRUE)
-    )
-  })
-  result <- result %>%
-    filter_all(all_vars(!is.na(.) & !is.infinite(.)))
-  
-  return(result)
-}
-
-calculate_exp.prof.dists.statistics <- function(data) {
+    # Handle empty input case
+    if (length(data) == 0) {
+        return(tibble(Family = character(), Mean = numeric(), Median = numeric()))
+    }
+    
     result <- map_dfr(names(data), function(name) {
         dist_matrix <- data[[name]]
         if (!is.null(dist_matrix) && is.numeric(dist_matrix)) {
+            # Convert matrix to vector and remove Inf values before calculating stats
+            values <- as.vector(dist_matrix)
+            values <- values[is.finite(values)]
+            
             tibble(
                 Family = name,
-                Mean = mean(dist_matrix, na.rm = TRUE),
-                Median = median(dist_matrix, na.rm = TRUE)
+                Mean = if(length(values) > 0) mean(values, na.rm = TRUE) else NA_real_,
+                Median = if(length(values) > 0) median(values, na.rm = TRUE) else NA_real_
             )
         } else {
             tibble(
@@ -184,54 +135,54 @@ calculate_exp.prof.dists.statistics <- function(data) {
                 Median = NA_real_
             )
         }
-    })
-    
-    result <- result %>%
-        filter_all(all_vars(!is.na(.) & !is.infinite(.)))
+    }) 
+    # Filter out rows with NA or Inf values
+    result <- result[!is.na(result$Mean) & !is.na(result$Median), ]
     
     return(result)
 }
 
-
 #' Calculate Statistics for Expression Profile Distances by Tissue
 #'
-#' Computes the mean and median of the expression profile distances for each gene cluster
-#' per tissue within a given dataset, transforming the output to have tissues in headers.
+#' @description
+#' Computes the mean and median of the expression profile distances for each gene cluster, 
+#' per tissue within a given dataset. The output is structured such that tissues are represented in the columns, 
+#' with mean and median statistics for each tissue.
 #'
-#' @param data A nested list where each element represents a gene cluster, and each cluster
-#' contains a list of tissues with associated expression profile distances.
+#' @param data A nested list where each element represents a gene cluster. Each cluster contains a list of 
+#'   tissues with associated expression profile distances. The structure should be such that each cluster (gene family) 
+#'   contains named tissues as its sublist, and each tissue contains numeric distances.
 #'
-#' @return A tibble where each row represents a gene cluster, and columns include `Cluster` and 
-#' `Tissue-specific` mean and median values.
+#' @return A tibble where each row corresponds to a gene cluster, and the columns include:
+#'   - `Family`: The gene cluster name.
+#'   - `Tissue`: The name of the tissue.
+#'   - `Mean`: The mean of the expression profile distances for that tissue.
+#'   - `Median`: The median of the expression profile distances for that tissue.
+#'   The result contains one row for each tissue in each gene cluster, with statistics for each tissue.
+#'
 #' @examples
+#' # Calculate the mean and median of expression profile distances for each gene cluster per tissue
 #' result <- calculate_exp.prof.dists.tissue.statistics(my_data)
+#'
+#' @export
 calculate_exp.prof.dists.tissue.statistics <- function(data) {
-  result <- map_dfr(names(data), function(name) {
-    tissue_data <- data[[name]]
-    tibble(
-      Family = name,
-      Tissue = names(tissue_data),
-      Mean = sapply(tissue_data, mean, na.rm = TRUE),
-      Median = sapply(tissue_data, median, na.rm = TRUE)
-    )
-  })
-  result <- result %>%
-    filter_all(all_vars(!is.na(.) & !is.infinite(.)))
-  return(result)
-}
+    if (length(data) == 0) {
+        return(tibble(
+            Family = character(),
+            Tissue = character(),
+            Mean = numeric(),
+            Median = numeric()
+        ))
+    }
 
-
-
-
-calculate_exp.prof.dists.tissue.statistics <- function(data) {
     result <- map_dfr(names(data), function(name) {
         tissue_data <- data[[name]]
         if (!is.null(tissue_data)) {
             tibble(
                 Family = name,
                 Tissue = names(tissue_data),
-                Mean = map_dbl(tissue_data, ~if(is.numeric(.x)) mean(.x, na.rm = TRUE) else NA_real_),
-                Median = map_dbl(tissue_data, ~if(is.numeric(.x)) median(.x, na.rm = TRUE) else NA_real_)
+                Mean = map_dbl(tissue_data, ~if(is.numeric(.x)) mean(.x[!is.infinite(.x)], na.rm = TRUE) else NA_real_),
+                Median = map_dbl(tissue_data, ~if(is.numeric(.x)) median(.x[!is.infinite(.x)], na.rm = TRUE) else NA_real_)
             )
         } else {
             tibble(
@@ -242,13 +193,12 @@ calculate_exp.prof.dists.tissue.statistics <- function(data) {
             )
         }
     })
-    
+
     result <- result %>%
-        filter_all(all_vars(!is.na(.) & !is.infinite(.)))
-    
+        filter(if_all(c(Mean, Median), ~!is.na(.) & !is.infinite(.)))
+
     return(result)
 }
-
 
 #' Validate and Filter Loaded Data Objects
 #'
@@ -267,21 +217,26 @@ calculate_exp.prof.dists.tissue.statistics <- function(data) {
 #' 
 #' @export
 validate_data <- function(loaded_objects, pattern) {
-
     data_names <- loaded_objects[grepl(pattern, loaded_objects)]
     valid_names <- character()
+    
     for (name in data_names) {
-        data_object <- get(name)
+        data_object <- get(name, envir = parent.frame())
         
         if (!is.list(data_object) && !is.vector(data_object)) {
             message(sprintf("Excluding %s - invalid data type", name))
             next
         }
+        
         if (length(data_object) == 0 || all(is.na(unlist(data_object)))) {
             message(sprintf("Excluding %s - empty or NA-only data", name))
             next
         }
+        
         valid_names <- c(valid_names, name)
     }
+    
     return(valid_names)
 }
+
+

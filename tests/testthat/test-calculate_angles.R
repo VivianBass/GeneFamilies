@@ -1,11 +1,9 @@
-
 library(testthat)
 library(GeneFamilies)
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(tibble)
-
 
 source("../../R/angles_funks.R")
 

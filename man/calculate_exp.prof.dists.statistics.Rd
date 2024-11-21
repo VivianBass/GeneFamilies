@@ -7,16 +7,23 @@
 calculate_exp.prof.dists.statistics(data)
 }
 \arguments{
-\item{data}{A list of matrices where each element represents a gene family's expression profile distance matrix.}
+\item{data}{A list where each element is a matrix representing the expression profile
+distance matrix for a gene family. Each matrix should contain numeric values.}
 }
 \value{
-A tibble with columns: \code{Family}, \code{Mean}, and \code{Median}, containing the mean and median
-values of the distances for each family.
+A tibble with three columns:
+\item{Family}{The name of the gene family (from the names of the list elements).}
+\item{Mean}{The mean of the distances for the gene family.}
+\item{Median}{The median of the distances for the gene family.}
+The function returns a tibble with these statistics, excluding any entries with \code{NA} or infinite values.
 }
 \description{
-Computes the mean and median of the expression profile distances for each gene family
-within a given dataset.
+Computes the mean and median of expression profile distances for each gene family
+within a given dataset of distance matrices. The function handles multiple gene families
+and returns summary statistics for each.
 }
 \examples{
+# Calculate the mean and median of expression profile distances for each gene family
 result <- calculate_exp.prof.dists.statistics(my_data)
+
 }

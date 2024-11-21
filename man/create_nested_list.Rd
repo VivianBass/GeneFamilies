@@ -7,22 +7,39 @@
 create_nested_list(df, header_type)
 }
 \arguments{
-\item{df}{A data frame with gene family data, including columns for family, gene,
-species, and ortholog/paralog information.}
+\item{df}{A data frame containing gene family data. The data should include
+columns for \code{Family}, \code{Gene}, \code{Gene_species}, and either \code{Ortholog} or \code{Paralog}
+information, depending on the \code{header_type}.}
 
-\item{header_type}{A string specifying the type of header format to use, either
-\code{"Ortholog"} or \code{"Paralog"}.}
+\item{header_type}{A string specifying the type of information to use for the list.
+It can either be \code{"Ortholog"} or \code{"Paralog"}, indicating which gene column to use.}
 }
 \value{
-A nested list organized by family, gene, and species, containing either
-ortholog or paralog data based on the specified \code{header_type}.
+A nested list, where each family is represented as a list of genes,
+with each gene further nested by species, containing either ortholog or paralog
+data depending on the \code{header_type}.
 }
 \description{
-Creates a nested list from a data frame of gene family information.
-The output structure depends on the \code{header_type} argument, which specifies
-whether the data contains ortholog or paralog information.
+Creates a nested list from a data frame containing gene family information.
+The structure of the output list depends on the \code{header_type} argument, which
+determines whether the data contains ortholog or paralog information.
+}
+\details{
+This function expects a data frame where the columns represent gene family data.
+The columns are checked against the required ones for either ortholog or paralog information,
+and an error is raised if any are missing. The resulting list is organized by family,
+and each family contains nested gene and species-level information.
 }
 \examples{
-# Create a nested list from a data frame with ortholog information
+# Example: Create a nested list from a data frame with ortholog information
+df <- data.frame(
+  Family = c("Fam1", "Fam1", "Fam2"),
+  Gene = c("GeneA", "GeneB", "GeneC"),
+  Gene_species = c("Species1", "Species2", "Species1"),
+  Ortholog = c("Ortholog1", "Ortholog2", "Ortholog3"),
+  Ortholog_species = c("Species1", "Species2", "Species3")
+)
 nested_list <- create_nested_list(df, header_type = "Ortholog")
+print(nested_list)
+
 }

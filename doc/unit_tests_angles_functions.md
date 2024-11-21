@@ -1,8 +1,11 @@
 
-# Testing scenarios for loading functions 
+# Testing scenarios for angles functions 
 
-**Function Under Test**: `calculate_angles()`
-**Function Location**: `R/angles_funks.R`
+#### **Function Under Test**: `calculate_angles()`
+#### **Function Location**: `R/angles_funks.R`
+#### **used in rscript**: `exec/compute_exp.prof.dists_angles.R`
+
+The `calculate_angles` function calculates diagnostic angles for a given set of genes using RNA-seq expression profiles. It begins by identifying genes that are present both in the provided list of gene groups and in the RNA-seq data frame. For each matching gene, it computes diagnostic angles based on the specified tissue columns, using the `cosDiag` function normalized by \(\sqrt{2}\). The function then returns a data frame containing the gene identifiers (`FBpp_ID`) and their corresponding diagnostic angles (`angle.diag`), while filtering out any invalid or missing values. If no matching genes are found, it issues a warning and returns an empty data frame.
 
 Test the file in the R terminal using the following command:
 ```R
@@ -10,7 +13,6 @@ sink("tests/test_results/test_results_calculate_angles.md")
 test_file("tests/testthat/test-calculate_angles.R")
 sink()
 ```
-
 ---
 
 ### **Test Scenarios**
@@ -57,8 +59,28 @@ sink()
 
 ---
 
-**Function Under Test**: `validate_angle_dataframes()`
-**Function Location**: `R/angles_funks.R`
+#### **Function Under Test**: `validate_angle_dataframes()`
+#### **Function Location**: `R/angles_funks.R`
+#### **used in rscript**: `exec/plot_exp.prof.dists_angles.R`
+
+The `validate_angle_dataframes` function filters a named list of data frames, returning only those that are non-null and have at least one row. It preserves the original names of the valid data frames in the output list. If a data frame is null or empty, the function displays a warning message indicating the issue.
+
+### Example Usage:  
+
+**load gene-groups angles datasets**
+load(file.path(output_data_dir, "exp.prof.dists_angles.RData"))
+
+**Create list of dataframes to validate**
+df_list <- list(
+    con_orthologs = con_orthologs.expr.angle.diag.df,
+    in_paralogs = in_paralogs.expr.angle.diag.df,
+    out_paralogs = out_paralogs.expr.angle.diag.df,
+    special_in_paralogs = special_in_paralogs.expr.angle.diag.df,
+    special_out_paralogs = special_out_paralogs.expr.angle.diag.df
+)
+**Create p.lst with only valid dataframes while preserving names**
+p.lst <- validate_angle_dataframes(df_list)
+
 
 Test the file in the R terminal using the following command:
 ```R

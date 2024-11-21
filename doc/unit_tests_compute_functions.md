@@ -1,9 +1,11 @@
 
+# Testing scenarios for compute functions 
 
-# Testing scenarios for loading functions 
+#### **Function Under Test**: `exp.prof.dists()`
+#### **Function Location**: `R/compute_funks.R`
+#### **used in rscript**: `exec/compute_exp.prof.dists.R`
 
-**Function Under Test**: `exp.prof.dists()`
-**Function Location**: `R/compute_funks.R`
+The `exp.prof.dists` function calculates pairwise Euclidean distances between gene expression profiles for a specified list of genes. It filters the `expression.profiles` data to include only the specified genes, then computes the distances across the selected tissue columns. The function splits the data by species and calculates the distance matrix for each species group. It returns a vector of distance values or `NA` if there are fewer than two expression profiles for a species.
 
 Test the file in the R terminal using the following command:
 ```R
@@ -38,8 +40,11 @@ sink()
 
 ---
 
-**Function Under Test**: `exp.prof.dists_tissue()`
-**Function Location**: `R/compute_funks.R`
+#### **Function Under Test**: `exp.prof.dists_tissue()`
+#### **Function Location**: `R/compute_funks.R`
+#### **used in rscript**: `exec/compute_exp.prof.dists.R`
+
+The `exp.prof.dists_tissue` function computes pairwise Euclidean distances between gene expression profiles for a list of specified genes, calculated separately for each tissue. It filters the expression data to include only the specified genes and the relevant tissue columns, then calculates the distance for each tissue individually. The function returns a list of distance vectors, one for each tissue, or `NA` if there are fewer than two expression profiles.
 
 Test the file in the R terminal using the following command:
 ```R
@@ -72,12 +77,13 @@ sink()
    - **Objective**: Validate that the function can use a non-default distance calculation method, such as `"manhattan"`.
    - **Expected Outcome**: A list of vectors with distances calculated using the specified method.
 
-
-
 ---
 
-**Function Under Test**: `calculate_exp.prof.dists.statistics()`
-**Function Location**: `R/compute_funks.R`
+#### **Function Under Test**: `calculate_exp.prof.dists.statistics()`
+#### **Function Location**: `R/compute_funks.R`
+#### **used in rscript**: `exec/compute_exp.prof.dists_statistics.R`
+
+The `calculate_exp.prof.dists.statistics` function computes the mean and median of expression profile distances for each gene family. It takes a list of matrices, where each matrix represents the distance matrix for a gene family's expression profiles. The function calculates the mean and median distances for each family, handling missing or infinite values by excluding them from the calculations. It returns a tibble with the gene family's name, along with the mean and median values of the distances.
 
 Test the file in the R terminal using the following command:
 ```R
@@ -113,8 +119,13 @@ sink()
 
 ---
 
-**Function Under Test**: `calculate_exp.prof.dists.tissue.statistics()`
-**Function Location**: `R/compute_funks.R`
+#### **Function Under Test**: `calculate_exp.prof.dists.tissue.statistics()`
+#### **Function Location**: `R/compute_funks.R`
+#### **used in rscript**: `exec/compute_exp.prof.dists_statistics.R`
+
+The `calculate_exp.prof.dists.tissue.statistics` function calculates the mean and median of expression profile distances for each gene cluster, separated by tissue type. 
+It takes a nested list where each gene cluster contains expression profile distances for multiple tissues. For each gene cluster, the function computes the mean and median of the distances for each tissue, and returns the results in a tibble. Each row in the tibble corresponds to a specific gene cluster and tissue, with columns for the gene cluster name (`Family`), the tissue name (`Tissue`), the mean of the distances (`Mean`), and the median of the distances (`Median`).
+
 
 Test the file in the R terminal using the following command:
 ```R
@@ -147,11 +158,18 @@ sink()
    - **Objective**: Validate the function’s ability to handle tissues with a single distance value, where mean and median are the same.
    - **Expected Outcome**: `Mean` and `Median` values should equal the single value for each tissue.
 
-
 ---
 
-**Function Under Test**: `validate_data()`
-**Function Location**: `R/compute_funks.R`
+#### **Function Under Test**: `validate_data()`
+#### **Function Location**: `R/compute_funks.R`
+#### **used in rscript**: `exec/compute_exp.prof.dists_statistics.R`
+
+The `validate_data` function filters and validates object names from a list (`loaded_objects`) based on a regular expression or predefined naming `pattern`. It retrieves matching objects using `get(name)` and excludes those that:  
+
+1. Are not lists or vectors.  
+2. Are empty or contain only `NA` values.  
+
+The function returns a vector of valid object names and logs messages for excluded objects, specifying the reason for exclusion. basically catching objects that have the matching name according to pattern and also verifing the objects are not empty  
 
 Test the file in the R terminal using the following command:
 ```R
@@ -159,32 +177,30 @@ sink("tests/test_results/test_results_validate_data.md")
 test_file("tests/testthat/test-validate_data.R")
 sink()
 ```
-
 ---
 
-### Test Scenarios
+### Test Scenarios  
 
-1. **"Correctly identifies valid lists and vectors"**  
-   - **Objective**: Ensure that the function includes only valid lists and vectors.
-   - **Expected Outcome**: `test_list_valid` and `test_vector_valid` should be included in `valid_data_names`.
+1. **Identifies Valid Lists and Vectors**  
+   - **Objective**: Verify that the function includes only valid lists and vectors that match the pattern.  
+   - **Expected Outcome**: `test_list_valid` and `test_vector_valid` should be included in `valid_data_names`.  
 
-2. **"Excludes objects with only NA values"**  
-   - **Objective**: Confirm that the function excludes lists or vectors containing only `NA` values.
-   - **Expected Outcome**: `test_list_na` and `test_vector_na` should be excluded from `valid_data_names`.
+2. **Excludes Objects Containing Only NA Values**  
+   - **Objective**: Ensure that lists or vectors consisting entirely of `NA` values are excluded.  
+   - **Expected Outcome**: `test_list_na` and `test_vector_na` should not appear in `valid_data_names`.  
 
-3. **"Excludes empty lists"**  
-   - **Objective**: Verify that empty lists are excluded from the results.
-   - **Expected Outcome**: `test_empty_list` should not appear in `valid_data_names`.
+3. **Excludes Empty Lists**  
+   - **Objective**: Confirm that the function excludes lists that are empty.  
+   - **Expected Outcome**: `test_empty_list` should not be present in `valid_data_names`.  
 
-4. **"Excludes invalid data types"**  
-   - **Objective**: Ensure that objects that aren’t lists or vectors (like data frames) are excluded.
-   - **Expected Outcome**: `test_invalid_type` should not appear in `valid_data_names`.
+4. **Excludes Invalid Data Types**  
+   - **Objective**: Ensure that objects that are neither lists nor vectors (e.g., data frames) are excluded.  
+   - **Expected Outcome**: `test_invalid_type` should not be included in `valid_data_names`.  
 
-5. **"Returns empty vector if no objects match pattern"**  
-   - **Objective**: Test that the function correctly returns an empty vector when no object names match the specified pattern.
-   - **Expected Outcome**: `valid_data_names` should be an empty character vector.
+5. **Handles Patterns with No Matches**  
+   - **Objective**: Verify that the function returns an empty character vector when no object names match the specified pattern.  
+   - **Expected Outcome**: `valid_data_names` should be an empty character vector.  
 
-6. **"Returns empty vector if no valid objects"**  
-   - **Objective**: Test that the function returns an empty vector if all matched objects are invalid, empty, or contain only `NA`.
-   - **Expected Outcome**: `valid_data_names` should be an empty character vector when matching only invalid or empty objects.
-
+6. **Handles Scenarios with No Valid Objects**  
+   - **Objective**: Ensure that the function returns an empty vector if all objects matching the pattern are invalid, empty, or consist only of `NA`.  
+   - **Expected Outcome**: `valid_data_names` should be an empty character vector.  

@@ -8,26 +8,27 @@
   gene.accessions,
   expression.profiles = rna.seq.exp.profils,
   expr.prof.gene.col = "FBpp_ID",
-  tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col)),
+  tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn",
+    "Species")),
   dist.method = "euclidean"
 )
 }
 \arguments{
 \item{gene.accessions}{A vector of gene accession identifiers for which distances should be computed.}
 
-\item{expression.profiles}{A data frame or tibble containing gene expression data, with gene IDs in one column and expression values in other columns. Default is \code{rna.seq.exp.profils}.}
+\item{expression.profiles}{A data frame or tibble containing gene expression data. This should include a column for gene IDs and additional columns for expression values. Default is \code{rna.seq.exp.profils}.}
 
 \item{expr.prof.gene.col}{The column name in \code{expression.profiles} containing gene IDs. Default is \code{"FBpp_ID"}.}
 
-\item{tissues}{A character vector of column names in \code{expression.profiles} that represent tissue-specific expression values. By default, includes all columns except \code{expr.prof.gene.col}.}
+\item{tissues}{A character vector of column names in \code{expression.profiles} that represent tissue-specific expression values. By default, includes all columns except \code{expr.prof.gene.col}, \code{"Parent_FBgn"}, and \code{"Species"}.}
 
-\item{dist.method}{Distance calculation method. Default is \code{"euclidean"}.}
+\item{dist.method}{Distance calculation method. Default is \code{"euclidean"}. Other methods can be specified if desired.}
 }
 \value{
-A list of distance vectors, one per tissue, or \code{NA} if there are fewer than two expression profiles.
+A list of distance vectors, one per tissue. Each vector contains the pairwise Euclidean distances between the specified genes' expression profiles for that tissue. If there are fewer than two expression profiles for a tissue, \code{NA} is returned.
 }
 \description{
-Computes pairwise Euclidean distances between expression profiles of specified genes, optionally by each tissue. Useful for analyzing gene similarity within individual conditions.
+Computes pairwise Euclidean distances between expression profiles of specified genes, optionally by each tissue. This function is useful for analyzing gene similarity within individual tissues or conditions.
 }
 \examples{
 # Compute per-tissue distances for specified genes

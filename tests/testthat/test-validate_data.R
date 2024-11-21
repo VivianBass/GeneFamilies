@@ -6,22 +6,21 @@ library(tidyr)
 library(purrr)
 library(tibble)
 
-source("../../R/compute_funks.R")
+# Change this line in your test script
+source("../../R/compute_funks.R")  
 
-# Define test objects in the global environment for testing purposes
-test_list_valid <- list(1, 2, 3)
-test_vector_valid <- c(1, 2, 3)
-test_list_na <- list(NA, NA, NA)
-test_vector_na <- c(NA, NA, NA)
-test_empty_list <- list()
-test_invalid_type <- data.frame(a = 1:3)
+# Define test objects in the global environment
+assign("test_list_valid", list(1, 2, 3), envir = .GlobalEnv)
+assign("test_vector_valid", c(1, 2, 3), envir = .GlobalEnv)
+assign("test_list_na", list(NA, NA, NA), envir = .GlobalEnv)
+assign("test_vector_na", c(NA, NA, NA), envir = .GlobalEnv)
+assign("test_empty_list", list(), envir = .GlobalEnv)
+assign("test_invalid_type", data.frame(a = 1:3), envir = .GlobalEnv)
+
 
 # List of loaded objects' names as character vector for test purposes
 loaded_objects <- c("test_list_valid", "test_vector_valid", "test_list_na", 
                     "test_vector_na", "test_empty_list", "test_invalid_type")
-
-# Source the function if necessary
-source("path/to/your/validate_data_function.R")
 
 # Define pattern to match test object names ending in "_valid" or "_na"
 pattern <- "_valid$|_na$"

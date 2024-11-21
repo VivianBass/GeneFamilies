@@ -46,8 +46,13 @@ test_that("Handles a list with only null or empty data frames", {
     df1 = NULL,
     df2 = data.frame()
   )
-  expect_message(result <- validate_angle_dataframes(df_list), "Warning: df1 dataframe is empty or null")
-  expect_message(result, "Warning: df2 dataframe is empty or null")
+  
+  messages <- testthat::capture_messages({
+    result <- validate_angle_dataframes(df_list)
+  })
+  
+  expect_true(any(grepl("Warning: df1 dataframe is empty or null", messages)))
+  expect_true(any(grepl("Warning: df2 dataframe is empty or null", messages)))
   expect_equal(length(result), 0)
 })
 
@@ -58,11 +63,18 @@ test_that("Processes a list with mixed valid and invalid entries", {
     df3 = data.frame(),
     df4 = data.frame(x = 1:2, y = 3:4)
   )
-  expect_message(result <- validate_angle_dataframes(df_list), "Warning: df2 dataframe is empty or null")
-  expect_message(result, "Warning: df3 dataframe is empty or null")
+  
+  messages <- testthat::capture_messages({
+    result <- validate_angle_dataframes(df_list)
+  })
+  
+  expect_true(any(grepl("Warning: df2 dataframe is empty or null", messages)))
+  expect_true(any(grepl("Warning: df3 dataframe is empty or null", messages)))
   expect_equal(length(result), 2)
   expect_named(result, c("df1", "df4"))
 })
+
+
 
 test_that("Handles an empty input list", {
   df_list <- list()

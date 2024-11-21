@@ -9,7 +9,7 @@ library(dotenv)
 # Set-up output directory, defined in the .env file 
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
-cat("USAGE: Rscript exec/compute_exp.prof.dists_statistics.R")
+message("USAGE: Rscript exec/compute_exp.prof.dists_statistics.R")
 
 # functions sourced from:
 source("R/compute_funks.R")

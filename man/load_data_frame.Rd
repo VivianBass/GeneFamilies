@@ -2,23 +2,43 @@
 % Please edit documentation in R/load_data_funks.R
 \name{load_data_frame}
 \alias{load_data_frame}
-\title{Load Data Frame with Specific Header Type}
+\title{Load Data Frame with Validation for Specific Column Patterns}
 \usage{
 load_data_frame(file_path)
 }
 \arguments{
-\item{file_path}{A string specifying the path to the file to be read.}
+\item{file_path}{A string specifying the path to the file to be read. The file must be tab-separated and
+contain a header row.}
 }
 \value{
-A data frame with five columns, each read as character strings.
+A data frame with validated column headers corresponding to either ortholog or paralog data.
+If the file does not meet the expected structure, the function raises an error.
 }
 \description{
-Loads a data frame from a file path with a predefined header format.
-This function reads a tab-separated file, with each column as a character vector.
-Typical usage involves files containing gene family data with columns for family,
-gene, species, and ortholog or paralog information.
+This function loads a tab-separated data frame from a given file path, validating its headers
+to ensure the file contains expected columns for either ortholog or paralog data. It reads all columns
+as character vectors and extracts relevant columns based on the file type.
+}
+\details{
+The function first validates the presence of required columns in the file header:
+\itemize{
+\item Base columns: \code{"Family"}, \code{"Gene"}, \code{"Gene_species"}.
+\item Additional columns for either:
+\itemize{
+\item Ortholog data: \code{"Ortholog"}, \code{"Ortholog_species"}.
+\item Paralog data: \code{"Paralog"}, \code{"Paralog_species"}.
+If neither pattern is found, or the number of columns does not match the headers, an error is raised.
+For valid files, only the relevant columns are returned.
+}
+}
 }
 \examples{
-# Load a data frame from a file with a specific format
+\dontrun{
+# Load a data frame with ortholog or paralog data
 df <- load_data_frame("path/to/file.txt")
+}
+
+}
+\seealso{
+\code{\link[=read.table]{read.table()}} for file reading.
 }

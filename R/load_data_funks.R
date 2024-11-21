@@ -1,48 +1,148 @@
 
-#' Load Data Frame with Specific Header Type
+#' Load Data Frame with Validation for Specific Column Patterns
 #'
-#' @description Loads a data frame from a file path with a predefined header format.
-#' This function reads a tab-separated file, with each column as a character vector.
-#' Typical usage involves files containing gene family data with columns for family,
-#' gene, species, and ortholog or paralog information.
+#' @description This function loads a tab-separated data frame from a given file path, validating its headers 
+#' to ensure the file contains expected columns for either ortholog or paralog data. It reads all columns 
+#' as character vectors and extracts relevant columns based on the file type.
 #'
-#' @param file_path A string specifying the path to the file to be read.
-#' @return A data frame with five columns, each read as character strings.
+#' @param file_path A string specifying the path to the file to be read. The file must be tab-separated and 
+#' contain a header row.
+#'
+#' @return A data frame with validated column headers corresponding to either ortholog or paralog data. 
+#' If the file does not meet the expected structure, the function raises an error. 
+#' 
+#' @details
+#' The function first validates the presence of required columns in the file header:
+#'   - Base columns: `"Family"`, `"Gene"`, `"Gene_species"`.
+#'   - Additional columns for either:
+#'     - Ortholog data: `"Ortholog"`, `"Ortholog_species"`.
+#'     - Paralog data: `"Paralog"`, `"Paralog_species"`.
+#' If neither pattern is found, or the number of columns does not match the headers, an error is raised. 
+#' For valid files, only the relevant columns are returned.
+#'
 #' @examples
-#' # Load a data frame from a file with a specific format
+#' \dontrun{
+#' # Load a data frame with ortholog or paralog data
 #' df <- load_data_frame("path/to/file.txt")
+#' }
+#' 
+#' @seealso [read.table()] for file reading.
+#'
+#' @importFrom utils read.table
+#' @export
 load_data_frame <- function(file_path) {
-    read.table(file_path, header = TRUE, sep = "\t", 
-               comment.char = "", quote = "", na.strings = "", 
-               colClasses = rep("character", 5))
+    if (!file.exists(file_path)) {
+        stop("cannot open file")
+    }
+    
+    # Try reading headers first
+    tryCatch({
+        headers <- read.table(file_path, header = TRUE, nrows = 0, sep = "\t",
+                            comment.char = "", quote = "", na.strings = "")
+        
+        # Define valid column patterns
+        base_cols <- c("Family", "Gene", "Gene_species")
+        type_cols <- list(
+            ortholog = c("Ortholog", "Ortholog_species"),
+            paralog = c("Paralog", "Paralog_species")
+        )
+        
+        # Check if headers match either ortholog or paralog pattern
+        has_ortholog <- all(c(base_cols, type_cols$ortholog) %in% names(headers))
+        has_paralog <- all(c(base_cols, type_cols$paralog) %in% names(headers))
+        
+        if (!has_ortholog && !has_paralog) {
+            stop("incorrect column names")
+        }
+        
+        # Set expected columns based on file type
+        expected_cols <- c(base_cols, if(has_ortholog) type_cols$ortholog else type_cols$paralog)
+        
+        # Read full data
+        df <- read.table(file_path, header = TRUE, sep = "\t",
+                        comment.char = "", quote = "", na.strings = "",
+                        colClasses = "character")
+        
+        if (ncol(df) < 5) {
+            stop("more columns than column names")
+        }
+        
+        df <- df[, expected_cols]
+        return(df)
+        
+    }, error = function(e) {
+        if (grepl("line 1 did not have", e$message)) {
+            stop("more columns than column names")
+        }
+        stop(e$message)
+    })
 }
 
 #' Create Nested List from Data Frame
 #'
-#' @description Creates a nested list from a data frame of gene family information.
-#' The output structure depends on the `header_type` argument, which specifies
-#' whether the data contains ortholog or paralog information.
+#' @description 
+#' Creates a nested list from a data frame containing gene family information.
+#' The structure of the output list depends on the `header_type` argument, which 
+#' determines whether the data contains ortholog or paralog information.
 #'
-#' @param df A data frame with gene family data, including columns for family, gene, 
-#'   species, and ortholog/paralog information.
-#' @param header_type A string specifying the type of header format to use, either 
-#'   `"Ortholog"` or `"Paralog"`.
-#' @return A nested list organized by family, gene, and species, containing either 
-#'   ortholog or paralog data based on the specified `header_type`.
+#' @param df A data frame containing gene family data. The data should include 
+#'   columns for `Family`, `Gene`, `Gene_species`, and either `Ortholog` or `Paralog`
+#'   information, depending on the `header_type`.
+#' @param header_type A string specifying the type of information to use for the list. 
+#'   It can either be `"Ortholog"` or `"Paralog"`, indicating which gene column to use.
+#'
+#' @return A nested list, where each family is represented as a list of genes, 
+#'   with each gene further nested by species, containing either ortholog or paralog 
+#'   data depending on the `header_type`. 
+#'
+#' @details 
+#' This function expects a data frame where the columns represent gene family data.
+#' The columns are checked against the required ones for either ortholog or paralog information, 
+#' and an error is raised if any are missing. The resulting list is organized by family, 
+#' and each family contains nested gene and species-level information.
+#'
 #' @examples
-#' # Create a nested list from a data frame with ortholog information
+#' # Example: Create a nested list from a data frame with ortholog information
+#' df <- data.frame(
+#'   Family = c("Fam1", "Fam1", "Fam2"),
+#'   Gene = c("GeneA", "GeneB", "GeneC"),
+#'   Gene_species = c("Species1", "Species2", "Species1"),
+#'   Ortholog = c("Ortholog1", "Ortholog2", "Ortholog3"),
+#'   Ortholog_species = c("Species1", "Species2", "Species3")
+#' )
 #' nested_list <- create_nested_list(df, header_type = "Ortholog")
+#' print(nested_list)
+#'
+#' @export
 create_nested_list <- function(df, header_type) {
+    # Handle empty dataframe
+    if (nrow(df) == 0) {
+        return(list())
+    }
+    
+    # Set up column names based on header type
     if (header_type == "Ortholog") {
         gene_col <- "Ortholog"
         species_col <- "Ortholog_species"
+        required_cols <- c("Family", "Gene", "Gene_species", "Ortholog", "Ortholog_species")
     } else if (header_type == "Paralog") {
         gene_col <- "Paralog"
         species_col <- "Paralog_species"
+        required_cols <- c("Family", "Gene", "Gene_species", "Paralog", "Paralog_species")
     } else {
         stop("Invalid header type provided.")
     }
-
+    
+    # Check for required columns
+    if (!all(required_cols %in% names(df))) {
+        stop("Required columns are missing.")
+    }
+    
+    # Convert all columns to character type
+    df <- df %>%
+        mutate(across(everything(), as.character))
+    
+    # Process the data
     df %>%
         group_by(Family, Gene_species, Gene, !!sym(species_col)) %>%
         summarise(!!sym(gene_col) := list(!!sym(gene_col)), .groups = "drop") %>%
@@ -52,8 +152,6 @@ create_nested_list <- function(df, header_type) {
         summarise(gene_info = list(setNames(nested_info, paste0("(", Gene_species, ", ", Gene, ")"))), .groups = "drop") %>%
         deframe()
 }
-
-
 
 #' Filter Genes Based on Expression Data
 #'
@@ -73,7 +171,6 @@ filter_v1 <- function(df, expression_data) {
     
     return(df)
 }
-
 
 #' Filter Gene Pairs Based on Expression Data and Pair Type
 #'

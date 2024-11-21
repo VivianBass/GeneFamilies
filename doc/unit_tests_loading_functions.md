@@ -1,9 +1,11 @@
 
-
 # Testing scenarios for loading functions 
 
-**Function Under Test**: `load_data_frame()`
-**Function Location**: `R/load_data_funks.R`
+#### **Function Under Test**: `load_data_frame()`
+#### **Function Location**: `R/load_data_funks.R`
+#### **used in rscript**: `exec/load_gene_groups_data.R`
+
+The `load_data_frame` function reads a tab-separated file from a specified file path and loads its content into a data frame. The file is expected to have five columns, all of which are read as character strings. The function ensures the file has a header row and avoids interpreting special characters, quotes, or empty fields as data.
 
 Test the file in the R terminal using the following command:
 ```R
@@ -57,8 +59,11 @@ sink()
 
 ---
 
-**Function Under Test**: `create_nested_list()`
-**Function Location**: `R/load_data_funks.R`
+#### **Function Under Test**: `create_nested_list()`
+#### **Function Location**: `R/load_data_funks.R`
+#### **used in rscript**: `exec/load_gene_groups_data.R`
+
+The `create_nested_list` function transforms a data frame containing gene family information into a hierarchical nested list based on the specified `header_type` ("Ortholog" or "Paralog"). It groups the data by family, gene, and species, then organizes the corresponding ortholog or paralog information into a structured list. Each gene is associated with its species-specific data, and the final output is a list of families, each containing nested gene-specific information.
 
 Test the file in the R terminal using the following command:
 ```R
@@ -99,8 +104,11 @@ sink()
 
 ---
 
-**Function Under Test**: `filter_v1`
-**Function Location**: `R/load_data_funks.R`
+#### **Function Under Test**: `filter_v1`
+#### **Function Location**: `R/load_data_funks.R`
+#### **used in rscript**: `exec/load_gene_groups_data.R`
+
+The `filter_v1` function filters a data frame of gene data by retaining only those rows where the gene listed in the `"Gene"` column has a corresponding entry in the `expression_data` data frame (which contains gene identifiers in the `"FBpp_ID"` column). The function returns a new data frame containing only the genes with available expression data, removing any rows for genes not present in the expression dataset.
 
 Test the file in the R terminal using the following command:
 ```R
