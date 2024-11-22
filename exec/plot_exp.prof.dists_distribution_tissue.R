@@ -34,25 +34,29 @@ df_mean.dists_tissue <- data.frame()
 df_median.dists_tissue <- data.frame()
 
 # Process each tissue dataset to extract and organize mean and median distances by tissue and type
+# Initialize empty data frames
+df_mean.dists_tissue <- data.frame()
+df_median.dists_tissue <- data.frame()
+
+# Process each tissue dataset
 for (data_name in data_names_tissue) {
-    current_data <- get(data_name)  # Retrieve the data object by name
+    current_data <- get(data_name)  
+    type_name <- sub(".lst_dists_tissue_stats", "", data_name)  
     
-    type_name <- sub(".lst_dists_tissue_stats", "", data_name)  # Remove suffix to get the type name
+    # Extract data and arrange columns with Type in second position
+    temp_mean_df <- current_data %>%
+        select(Family, Tissue, Mean) %>%
+        rename(Distance = Mean) %>%
+        mutate(Type = type_name) %>%
+        select(Family, Type, Tissue, Distance)
     
-    # Create a temporary data frame for mean distances and add it to the main data frame
-    temp_mean_df <- tibble(
-        Type = type_name,
-        Tissue = names(current_data$Mean),
-        Distance = unlist(current_data$Mean)
-    )
+    temp_median_df <- current_data %>%
+        select(Family, Tissue, Median) %>%
+        rename(Distance = Median) %>%
+        mutate(Type = type_name) %>%
+        select(Family, Type, Tissue, Distance)
+    
     df_mean.dists_tissue <- bind_rows(df_mean.dists_tissue, temp_mean_df)
-    
-    # Create a temporary data frame for median distances and add it to the main data frame
-    temp_median_df <- tibble(
-        Type = type_name,
-        Tissue = names(current_data$Median),
-        Distance = unlist(current_data$Median)
-    )
     df_median.dists_tissue <- bind_rows(df_median.dists_tissue, temp_median_df)
 }
 
@@ -71,7 +75,7 @@ significance_level <- function(p) {
 }
 
 # ---------------------------------------------------------------------------
-
+df_mean.dists_tissue
 # Generate boxplots for mean expression distances by tissue type
 output_pdf <- file.path(results_dir, "tissues_mean_boxplot_combined.pdf")
 tissue_types <- unique(df_mean.dists_tissue$Tissue)

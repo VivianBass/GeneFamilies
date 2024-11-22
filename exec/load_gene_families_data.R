@@ -1,13 +1,17 @@
 require(GeneFamilies)
 options(mc.cores = getMcCores())
-library(dotenv)
+library(parallel)
 
+library(dotenv)
+# Define directories for output data and results using environment variables
+output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
+results_dir <- Sys.getenv("RESULTS_DIR")
+
+# Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
+library(purrr)
 library(tibble)
-
-# Set up output directory, defined in the .env file 
-output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
 # Display usage information
 message("USAGE: Rscript exec/load_genefamilies_data.R <families_file>")

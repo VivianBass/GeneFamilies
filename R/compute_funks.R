@@ -111,34 +111,24 @@ exp.prof.dists_tissue <- function(gene.accessions,
 #' @importFrom purrr map_dfr
 #' @export
 calculate_exp.prof.dists.statistics <- function(data) {
-    # Handle empty input case
     if (length(data) == 0) {
         return(tibble(Family = character(), Mean = numeric(), Median = numeric()))
     }
     
     result <- map_dfr(names(data), function(name) {
         dist_matrix <- data[[name]]
-        if (!is.null(dist_matrix) && is.numeric(dist_matrix)) {
-            # Convert matrix to vector and remove Inf values before calculating stats
-            values <- as.vector(dist_matrix)
-            values <- values[is.finite(values)]
-            
-            tibble(
-                Family = name,
-                Mean = if(length(values) > 0) mean(values, na.rm = TRUE) else NA_real_,
-                Median = if(length(values) > 0) median(values, na.rm = TRUE) else NA_real_
-            )
-        } else {
-            tibble(
-                Family = name,
-                Mean = NA_real_,
-                Median = NA_real_
-            )
-        }
-    }) 
-    # Filter out rows with NA or Inf values
-    result <- result[!is.na(result$Mean) & !is.na(result$Median), ]
+        # Flatten nested species lists and combine all numeric values
+        values <- unlist(dist_matrix)
+        values <- values[is.finite(values)]
+        
+        tibble(
+            Family = name,
+            Mean = if(length(values) > 0) mean(values, na.rm = TRUE) else NA_real_,
+            Median = if(length(values) > 0) median(values, na.rm = TRUE) else NA_real_
+        )
+    })
     
+    result <- result[!is.na(result$Mean) & !is.na(result$Median), ]
     return(result)
 }
 
@@ -178,19 +168,17 @@ calculate_exp.prof.dists.tissue.statistics <- function(data) {
     result <- map_dfr(names(data), function(name) {
         tissue_data <- data[[name]]
         if (!is.null(tissue_data)) {
-            tibble(
-                Family = name,
-                Tissue = names(tissue_data),
-                Mean = map_dbl(tissue_data, ~if(is.numeric(.x)) mean(.x[!is.infinite(.x)], na.rm = TRUE) else NA_real_),
-                Median = map_dbl(tissue_data, ~if(is.numeric(.x)) median(.x[!is.infinite(.x)], na.rm = TRUE) else NA_real_)
-            )
-        } else {
-            tibble(
-                Family = name,
-                Tissue = NA_character_,
-                Mean = NA_real_,
-                Median = NA_real_
-            )
+            map_dfr(names(tissue_data), function(tissue) {
+                values <- unlist(tissue_data[[tissue]])
+                values <- values[is.finite(values)]
+                
+                tibble(
+                    Family = name,
+                    Tissue = tissue,
+                    Mean = if(length(values) > 0) mean(values, na.rm = TRUE) else NA_real_,
+                    Median = if(length(values) > 0) median(values, na.rm = TRUE) else NA_real_
+                )
+            })
         }
     })
 

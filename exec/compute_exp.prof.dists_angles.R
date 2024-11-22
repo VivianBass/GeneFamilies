@@ -2,8 +2,6 @@ require(GeneFamilies)
 options(mc.cores = getMcCores())
 library(parallel)
 
-message("USAGE: Rscript exec/compute_exp.prof.dists_angles.R")
-
 library(dotenv)
 # Define directories for output data and results using environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
@@ -14,6 +12,8 @@ library(dplyr)
 library(tidyr)
 library(purrr)
 library(tibble)
+
+message("USAGE: Rscript exec/compute_exp.prof.dists_angles.R")
                     
 # functions sourced from:
 source("R/angles_funks.R")
@@ -27,9 +27,9 @@ loaded_objects <- ls()
 gene_groups <- loaded_objects[grepl("_v\\.lst$", loaded_objects)]
 
 # select your rna.seq.exp.profil data set and filter invalid Data, rows with NA etc
-load(file.path(output_data_dir, "rna.seq.exp.profils_P_M_.RData"))
+load(file.path(output_data_dir, "gene_expression.RData"))
 
-rna.seq.exp.profils <- rna.seq.exp.profils_M %>%
+rna.seq.exp.profils <- rna.seq.exp.profils %>%
     distinct(Parent_FBgn, .keep_all = TRUE) %>%
     filter(!is.na(FBpp_ID) & FBpp_ID != "NA" & FBpp_ID != "")
 

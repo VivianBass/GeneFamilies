@@ -2,8 +2,6 @@ require(GeneFamilies)
 options(mc.cores = getMcCores())
 library(parallel) 
 
-message("USAGE: Rscript exec/plot_exp.prof.dists_distribution.R")
-
 library(dotenv)  
 # Define directories for output data and results using environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
@@ -21,6 +19,8 @@ library(ggsignif)
 library(ggpubr)
 library(gridExtra)
 library(rstatix)
+
+message("USAGE: Rscript exec/plot_exp.prof.dists_distribution.R")
 
 # ------------------------------------------------------------------------
 

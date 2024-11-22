@@ -1,17 +1,20 @@
 require(GeneFamilies)
 options(mc.cores = getMcCores())
+library(parallel)
 
-cat("USAGE: Rscript exec/compute_exp.prof.dists.R")
+library(dotenv)
+# Define directories for output data and results using environment variables
+output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
+results_dir <- Sys.getenv("RESULTS_DIR")
 
+# Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(tibble)
-library(dotenv)
 
-# Set-up output directory, defined in the .env file 
-output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
-                    
+message("USAGE: Rscript exec/compute_exp.prof.dists.R")
+             
 # functions sourced from:
 source("R/compute_funks.R")
 
@@ -21,18 +24,22 @@ loaded_objects <- ls()
 gene_groups <- loaded_objects[grepl("_v\\.lst$", loaded_objects)]
 
 # select your rna.seq.exp.profil data set and filter invalid Data, rows with NA etc
-load(file.path(output_data_dir, "rna.seq.exp.profils_P_M_.RData"))
+load(file.path(output_data_dir, "gene_expression.RData"))
 
-rna.seq.exp.profils <- rna.seq.exp.profils_P %>%
-  distinct(Parent_FBgn, .keep_all = TRUE) %>%
-  filter(!is.na(FBpp_ID) & FBpp_ID != "NA" & FBpp_ID != "")
+rna.seq.exp.profils <- rna.seq.exp.profils %>%
+    distinct(Parent_FBgn, .keep_all = TRUE) %>%
+    filter(!is.na(FBpp_ID) & FBpp_ID != "NA" & FBpp_ID != "")
 
 tissues <- setdiff(colnames(rna.seq.exp.profils), c("FBpp_ID", "Parent_FBgn", "Species"))
 
+# filter rna.seq.exp.profils for invalid or na values etc
 rna.seq.exp.profils <- rna.seq.exp.profils %>%
-  filter(rowSums(across(all_of(tissues), 
-  ~(. == "Invalid Number" | is.na(.) | . == "NA" | . == "" | . == "NaN" |
-  . == "missing"))) != length(tissues))
+    filter(rowSums(across(all_of(tissues), 
+    ~(. == "Invalid Number" | is.na(.) | . == "NA" | . == "" | . == "NaN" |
+    . == "missing"))) != length(tissues))
+
+# Initialize created_objects vector before the loops
+created_objects <- c()
 
 # compute euclidean distances
 for (group in gene_groups) {
@@ -55,4 +62,7 @@ for (group in gene_groups) {
 }
 
 save(list = created_objects, file = file.path(output_data_dir, "exp.prof.dists.RData"))
-cat("DONE")
+message("DONE")
+
+
+

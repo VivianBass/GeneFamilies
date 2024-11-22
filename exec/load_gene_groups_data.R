@@ -1,13 +1,17 @@
 require(GeneFamilies)
 options(mc.cores = getMcCores())
+library(parallel)
+
+library(dotenv)
+# Define directories for output data and results using environment variables
+output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
+results_dir <- Sys.getenv("RESULTS_DIR")
+
+# Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(tibble)
-library(dotenv)
-
-# Set up output directory, defined in the .env file 
-output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 
 message("USAGE: Rscript exec/load_gene_groups_data.R input.args ...")
 message("PURPOSE: This R script loads five different gene groups as stated in the messages below") 
@@ -22,7 +26,7 @@ message("input.args[[5]]:  path/2/<special_out_paralogs.tsv>")
 input.args <- commandArgs(trailingOnly = TRUE)
 
 # required data and files loaded from:
-load(file.path(output_data_dir, "rna.seq.exp.profils_P_M_.RData")) 
+load(file.path(output_data_dir, "gene_expression.RData")) 
 
 # Functions load_data_frame() & create_nested_list() sourced from:
 source("R/load_data_funks.R")
@@ -56,6 +60,7 @@ save(list = created_objects, file = file.path(output_data_dir, "gene_groups_unfi
 
 
 # Filtering process: using either filter_v1() or filter_v2() functions to filter out genes
+# Important filter is using FBpp_ID column for matching and filtering in exppression profiles
 # that are not present in rna.seq.exp.profiles and therefore lack expression values.
 # Removing these genes helps reduce congestion in subsequent computations.
 # Both filters use the intersect() method to retain only relevant genes.
