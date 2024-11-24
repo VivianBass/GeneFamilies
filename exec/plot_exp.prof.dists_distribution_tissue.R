@@ -13,13 +13,11 @@ results_dir <- Sys.getenv("RESULTS_DIR")
 library(dplyr)
 library(tidyr)
 library(purrr)
-library(tibble)
 
 # Librarys necessary for plotting
 library(ggplot2)
 library(ggsignif)
 library(gridExtra)
-library(rstatix)
 library(ggpubr)
 
 # ------------------------------------------------------------------------
@@ -29,12 +27,8 @@ load(file.path(output_data_dir, "exp.prof.dists_statistics.RData"))
 loaded_objects <- ls()
 data_names_tissue <- loaded_objects[grepl("_tissue_stats$", loaded_objects)]
 
-# Initialize empty data frames to hold tissue-specific mean and median distance data
-df_mean.dists_tissue <- data.frame()
-df_median.dists_tissue <- data.frame()
-
 # Process each tissue dataset to extract and organize mean and median distances by tissue and type
-# Initialize empty data frames
+# Initialize empty data frames to hold tissue-specific mean and median distance data
 df_mean.dists_tissue <- data.frame()
 df_median.dists_tissue <- data.frame()
 
@@ -66,25 +60,17 @@ save(df_mean.dists_tissue, df_median.dists_tissue,
 
 # ---------------------------------------------------------------------------
 
-# Function to assign significance level based on p-value
-significance_level <- function(p) {
-  if (p < 0.001) return("***")
-  else if (p < 0.01) return("**")
-  else if (p < 0.05) return("*")
-  else return("ns")  
-}
-
-# ---------------------------------------------------------------------------
-df_mean.dists_tissue
 # Generate boxplots for mean expression distances by tissue type
 output_pdf <- file.path(results_dir, "tissues_mean_boxplot_combined.pdf")
 tissue_types <- unique(df_mean.dists_tissue$Tissue)
 
-pdf(output_pdf, width = 12, height = 8)
+# Create empty list to store plots
+plot_list <- list()
 
+# Generate plot for each tissue
 for (tissue in tissue_types) {
   df_tissue <- subset(df_mean.dists_tissue, Tissue == tissue)
-  
+ 
   boxplot_tissue <- ggplot(df_tissue, aes(x = Type, y = Distance, fill = Type)) +
     geom_boxplot(outlier.shape = NA) +
     geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
@@ -98,31 +84,44 @@ for (tissue in tissue_types) {
       axis.text.x = element_text(size = 10),  
       plot.margin = margin(r = 30)
     )
-  
+ 
   # Add significance annotations only if there are multiple types
   types <- unique(df_tissue$Type)
   if (length(types) >= 2) {
     type_combinations <- combn(types, 2, simplify = FALSE)
     boxplot_tissue <- boxplot_tissue +
-      geom_signif(comparisons = type_combinations, map_signif_level = TRUE)
+      geom_signif(
+        comparisons = type_combinations,
+        test = "t.test",
+        map_signif_level = TRUE,
+        step_increase = 0.05,
+        tip_length = 0.005,
+        color = "black",
+        size = 0.4,
+        textsize = 3
+      )
   }
   
-  print(boxplot_tissue)  # Output the plot to the PDF
+  # Add plot to list
+  plot_list[[tissue]] <- boxplot_tissue
 }
 
-dev.off()
-
+# Save all plots with minimal page numbers
+ggsave(output_pdf, marrangeGrob(plot_list, nrow=1, ncol=1, top=""), width = 12, height = 8)
 
 # ---------------------------------------------------------------------------
 
 # Generate boxplots for median expression distances by tissue type
 output_pdf <- file.path(results_dir, "tissues_median_boxplot_combined.pdf")
 tissue_types <- unique(df_median.dists_tissue$Tissue)
-pdf(output_pdf, width = 12, height = 8)
 
+# Create empty list to store plots
+plot_list <- list()
+
+# Generate plot for each tissue
 for (tissue in tissue_types) {
   df_tissue <- subset(df_median.dists_tissue, Tissue == tissue)
-  
+ 
   boxplot_tissue <- ggplot(df_tissue, aes(x = Type, y = Distance, fill = Type)) +
     geom_boxplot(outlier.shape = NA) +
     geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
@@ -136,15 +135,27 @@ for (tissue in tissue_types) {
       axis.text.x = element_text(size = 10),  
       plot.margin = margin(r = 30)
     )
-  
+ 
   # Add significance annotations only if there are multiple types
   types <- unique(df_tissue$Type)
   if (length(types) >= 2) {
     type_combinations <- combn(types, 2, simplify = FALSE)
     boxplot_tissue <- boxplot_tissue +
-      geom_signif(comparisons = type_combinations, map_signif_level = TRUE)
+      geom_signif(
+        comparisons = type_combinations,
+        test = "wilcox.test",
+        map_signif_level = TRUE,
+        step_increase = 0.05,
+        tip_length = 0.005,
+        color = "black",
+        size = 0.4,
+        textsize = 3
+      )
   }
   
-  print(boxplot_tissue)  # Output the plot to the PDF
+  # Add plot to list
+  plot_list[[tissue]] <- boxplot_tissue
 }
-dev.off()
+
+# Save all plots with minimal page numbers
+ggsave(output_pdf, marrangeGrob(plot_list, nrow=1, ncol=1, top=""), width = 12, height = 8)

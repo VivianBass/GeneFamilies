@@ -26,6 +26,7 @@
 - Clarification on plots:  
   - What specific plots are required?  
   - Should gene families be included in the distribution plots, beyond gene group distributions?  
+- so t test for means and wilcox for medians ?? (when exactly to use t-test and when wilcox ?)
 
 ---
 

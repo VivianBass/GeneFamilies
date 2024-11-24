@@ -227,4 +227,72 @@ validate_data <- function(loaded_objects, pattern) {
     return(valid_names)
 }
 
+#' Perform Tissue-Specific Statistical Tests
+#'
+#' Conducts t-tests and Wilcoxon tests for comparing gene distances between types within tissues. 
+#' Results are adjusted for multiple comparisons using the Benjamini-Hochberg method.
+#'
+#' @param data A dataframe containing distance data with columns `Tissue`, `Type`, and `Distance`.
+#' @param valid_groups A named list of dataframes with valid `Tissue` and `Type` combinations for analysis.
+#' @param analysis_type A string indicating the analysis type ("mean" or "median").
+#' @return A list containing t-test and Wilcoxon test results as dataframes, or `NULL` if no valid groups are available.
+#' @examples
+#' perform_tissue_tests(data, valid_groups, "mean")
+perform_tests <- function(data, valid_groups, analysis_type) {
+    if (length(valid_groups[[analysis_type]]) >= 2) {
+        t_test_result <- data %>%
+            filter(Type %in% valid_groups[[analysis_type]]) %>%
+            t_test(Distance ~ Type, alternative = "greater") %>%
+            adjust_pvalue(method = "BH") %>%
+            mutate(analysis = analysis_type,
+                   test_type = "t-test")
+                   
+        wilcox_result <- data %>%
+            filter(Type %in% valid_groups[[analysis_type]]) %>%
+            wilcox_test(Distance ~ Type, alternative = "greater") %>%
+            adjust_pvalue(method = "BH") %>%
+            mutate(analysis = analysis_type,
+                   test_type = "wilcox")
+        
+        return(list(t_test = t_test_result, wilcox = wilcox_result))
+    }
+    return(NULL)
+}
 
+#' Perform Tissue-Specific Statistical Tests
+#'
+#' Conducts t-tests and Wilcoxon tests for comparing gene distances between types within tissues. 
+#' Results are adjusted for multiple comparisons using the Benjamini-Hochberg method.
+#'
+#' @param data A dataframe containing distance data with columns `Tissue`, `Type`, and `Distance`.
+#' @param valid_groups A named list of dataframes with valid `Tissue` and `Type` combinations for analysis.
+#' @param analysis_type A string indicating the analysis type ("mean" or "median").
+#' @return A list containing t-test and Wilcoxon test results as dataframes, or `NULL` if no valid groups are available.
+#' @examples
+#' perform_tissue_tests(data, valid_groups, "mean")
+perform_tissue_tests <- function(data, valid_groups, analysis_type) {
+    if (nrow(valid_groups[[analysis_type]]) >= 2) {
+        t_test_result <- data %>%
+            semi_join(valid_groups[[analysis_type]], by = c("Tissue", "Type")) %>%
+            group_by(Tissue) %>%
+            filter(!is.na(Distance)) %>%
+            filter(n_distinct(Type) >= 2) %>%
+            t_test(Distance ~ Type, alternative = "greater") %>%
+            adjust_pvalue(method = "BH") %>%
+            mutate(analysis = analysis_type,
+                   test_type = "t-test")
+                   
+        wilcox_result <- data %>%
+            semi_join(valid_groups[[analysis_type]], by = c("Tissue", "Type")) %>%
+            group_by(Tissue) %>%
+            filter(!is.na(Distance)) %>%
+            filter(n_distinct(Type) >= 2) %>%
+            wilcox_test(Distance ~ Type, alternative = "greater") %>%
+            adjust_pvalue(method = "BH") %>%
+            mutate(analysis = analysis_type,
+                   test_type = "wilcox")
+        
+        return(list(t_test = t_test_result, wilcox = wilcox_result))
+    }
+    return(NULL)
+}

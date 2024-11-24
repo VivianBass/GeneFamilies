@@ -4,30 +4,32 @@ library(parallel)
 
 message("USAGE: Rscript exec/plot_exp.prof.dists_angles.R")
 
+# Load environment variables to define directories for output data and results
 library(dotenv)
-# Define directories for output data and results using environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
 
-# Librarys for handling Dataframes, Lists etc. more efficiently
+# Libraries for efficient data handling
 library(dplyr)
 library(tidyr)
 library(purrr)
-library(tibble)
 
-
+# Libraries for data visualization
 library(RColorBrewer)
+library(ggplot2)
+library(ggsignif)
+library(gridExtra)
+library(ggpubr)
 
-
-# functions sourced from:
+# Source custom functions
 source("R/angles_funks.R")
 
 # ------------------------------------------------------------------------
 
-# load gene-groups angles datasets
+# Load gene-groups angles datasets
 load(file.path(output_data_dir, "exp.prof.dists_angles.RData"))
 
-# Create list of dataframes to validate
+# Create a list of dataframes to validate
 df_list <- list(
     con_orthologs = con_orthologs.expr.angle.diag.df,
     in_paralogs = in_paralogs.expr.angle.diag.df,
@@ -36,9 +38,10 @@ df_list <- list(
     special_out_paralogs = special_out_paralogs.expr.angle.diag.df
 )
 
-# Create p.lst with only valid dataframes while preserving names
+# Validate and filter dataframes
 p.lst <- validate_angle_dataframes(df_list)
 
+# Combine validated data into a single dataframe
 p.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
     data.frame(
         gene.type = gene.type,
@@ -47,40 +50,60 @@ p.df <- Reduce(rbind, mclapply(names(p.lst), function(gene.type) {
     )
 }))
 
-# Get actual unique values from data
-actual_levels <- unique(p.df$gene.type)
-
+# Filter out rows with NaN values in angle.diag
 plot.df <- p.df[!is.nan(p.df$angle.diag), ]
-plot.df$gene.type <- factor(plot.df$gene.type, levels = actual_levels)
 
-pdf(file.path(results_dir, "expressionAngleToDiagonalBoxplot.pdf"))
-colors <- brewer.pal(length(p.lst), "Dark2")
-pushed.colors <- append(colors[3], colors[1:2])
-boxplot(angle.diag ~ gene.type, data = plot.df, 
-        xlab = "Type of Gene", 
-        ylab = "relative tissue specificity", 
-        border = pushed.colors, 
-        col = addAlpha(pushed.colors))
-dev.off()
+# Set the factor levels for gene types
+plot.df$gene.type <- factor(plot.df$gene.type, levels = unique(plot.df$gene.type))
 
+# Define color palette
+colors <- brewer.pal(length(unique(plot.df$gene.type)), "Pastel1")
 
-# Calculate relative versatility
+# --------------------------------------------------------------------------
+
+# Create the first plot for "Expression Angle to Diagonal"
+ggplot_angle <- ggplot(plot.df, aes(x = gene.type, y = angle.diag, fill = gene.type)) +
+  geom_boxplot(outlier.shape = NA) +
+  labs(title = "Expression Angle To Diagonal",
+       y = "Relative Tissue Specificity",
+       x = "Gene Type") +
+  theme_pubr(border = TRUE) +
+  scale_y_continuous(breaks = seq(0, max(plot.df$angle.diag, na.rm = TRUE), by = 0.1)) +
+  scale_fill_manual(values = colors) +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", margin = margin(t = 20, b = 20), hjust = 0.5),
+    axis.title.x = element_text(size = 10, margin = margin(t = 20, b = 20), hjust = 0.5),
+    axis.title.y = element_text(size = 10, margin = margin(t = 20, r = 20, b = 20, l = 20)),
+    axis.text.x = element_text(size = 10),
+    plot.margin = margin(r = 30)
+  )
+
+# Save the plot as a PDF
+ggsave(file.path(results_dir, "expressionAngleToDiagonalBoxplot.pdf"),
+       ggplot_angle, width = 10, height = 8)
+
+# --------------------------------------------------------------------------
+
+# Calculate relative versatility and add as a new column
 plot.df$rel.vers <- 1 - plot.df$angle.diag
 
-# Use actual gene types from data
-actual_levels <- unique(plot.df$gene.type)
-plot.df$gene.type <- factor(plot.df$gene.type, levels = actual_levels)
+# Create the second plot for "Relative Expression Versatility"
+ggplot_vers <- ggplot(plot.df, aes(x = gene.type, y = rel.vers, fill = gene.type)) +
+  geom_boxplot(outlier.shape = NA) +
+  labs(title = "Relative Expression Versatility",
+       y = "Relative Tissue Versatility",
+       x = "Gene Type") +
+  theme_pubr(border = TRUE) +
+  scale_y_continuous(breaks = seq(0, max(plot.df$rel.vers, na.rm = TRUE), by = 0.1)) +
+  scale_fill_manual(values = colors) +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", margin = margin(t = 20, b = 20), hjust = 0.5),
+    axis.title.x = element_text(size = 10, margin = margin(t = 20, b = 20), hjust = 0.5),
+    axis.title.y = element_text(size = 10, margin = margin(t = 20, r = 20, b = 20, l = 20)),
+    axis.text.x = element_text(size = 10),
+    plot.margin = margin(r = 30)
+  )
 
-pdf(file.path(results_dir, "relativeExpressionVersatilityBoxplot.pdf"))
-colors <- brewer.pal(length(p.lst), "Dark2")
-pushed.colors <- append(colors[3], colors[1:2])
-boxplot(rel.vers ~ gene.type, data = plot.df, 
-        xlab = "Type of Gene", 
-        ylab = "relative tissue versatility",
-        border = pushed.colors, 
-        col = addAlpha(pushed.colors), 
-        outline = FALSE)
-dev.off()
-
-
-
+# Save the plot as a PDF
+ggsave(file.path(results_dir, "relativeExpressionVersatilityBoxplot.pdf"),
+       ggplot_vers, width = 10, height = 8)

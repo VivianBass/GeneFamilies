@@ -13,19 +13,19 @@ results_dir <- Sys.getenv("RESULTS_DIR")
 library(dplyr)
 library(tidyr)
 library(purrr)
-library(tibble)
 
 # Librarys for calculating t-tests and wilcox tests
 library(rstatix)
 
+# Functions sourced from:
+source("R/compute_funks.R")
+
 # ------------------------------------------------------------------------
 
-# load the 2 dataframes for mean and median distances geneerated in 
-# exec/plot_exp.prof.dists_distribution.R 
+# load the 2 dataframes for mean and median distances
 load(file.path(output_data_dir, "exp.prof.dists_mean_median.RData"))
 
-# Check if there is enough data to perform t-tests on both mean and median distances
-# Ensure each group has more than one observation for valid t-testing
+# Check if there is enough data to perform t-tests
 valid_groups <- bind_rows(
     df_mean.dists %>% mutate(source = "mean"),
     df_median.dists %>% mutate(source = "median")
@@ -38,77 +38,30 @@ valid_groups <- bind_rows(
 
 # ------------------------------------------------------------------------
 
-# Function to label significance levels based on p-values
-significance_level <- function(p) {
-  if (p < 0.001) return("***")
-  else if (p < 0.01) return("**")
-  else if (p < 0.05) return("*")
-  else return("ns")  
-}
-
-# ------------------------------------------------------------------------
-
-# Perform both t-tests and Wilcoxon tests with error handling
+# Perform tests with error handling
 test_results <- tryCatch({
+    median_results <- perform_tests(df_median.dists, valid_groups, "median")
+    mean_results <- perform_tests(df_mean.dists, valid_groups, "mean")
     
-    # Median tests
-    if (length(valid_groups$median) >= 2) {
-        t_test_median <- df_median.dists %>%
-            filter(Type %in% valid_groups$median) %>%
-            t_test(Distance ~ Type, alternative = "greater") %>%
-            adjust_pvalue(method = "BH") %>%
-            mutate(significance = sapply(p, significance_level),
-                   analysis = "Median",
-                   test_type = "t-test")
-                   
-        wilcox_median <- df_median.dists %>%
-            filter(Type %in% valid_groups$median) %>%
-            wilcox_test(Distance ~ Type, alternative = "greater") %>%
-            adjust_pvalue(method = "BH") %>%
-            mutate(significance = sapply(p, significance_level),
-                   analysis = "Median",
-                   test_type = "wilcox")
-    }
-    
-    # Mean tests
-    if (length(valid_groups$mean) >= 2) {
-        t_test_mean <- df_mean.dists %>%
-            filter(Type %in% valid_groups$mean) %>%
-            t_test(Distance ~ Type, alternative = "greater") %>%
-            adjust_pvalue(method = "BH") %>%
-            mutate(significance = sapply(p, significance_level),
-                   analysis = "Mean",
-                   test_type = "t-test")
-                   
-        wilcox_mean <- df_mean.dists %>%
-            filter(Type %in% valid_groups$mean) %>%
-            wilcox_test(Distance ~ Type, alternative = "greater") %>%
-            adjust_pvalue(method = "BH") %>%
-            mutate(significance = sapply(p, significance_level),
-                   analysis = "Mean",
-                   test_type = "wilcox")
-    }
-    
-    # Combine and save all test results
-    if (exists("t_test_median") && exists("t_test_mean") && 
-        exists("wilcox_median") && exists("wilcox_mean")) {
+    if (!is.null(median_results) && !is.null(mean_results)) {
         test_summary <- bind_rows(
-            t_test_median, t_test_mean,
-            wilcox_median, wilcox_mean
+            median_results$t_test, mean_results$t_test,
+            median_results$wilcox, mean_results$wilcox
         )
-        write.csv(test_summary, file.path(results_dir, "statistical_tests_summary.csv"), row.names = FALSE)
+        write.csv(test_summary, 
+                 file.path(results_dir, "statistical_tests_summary.csv"), 
+                 row.names = FALSE)
         message("Statistical tests summary exported to CSV")
     }
     
-    # Return results
     list(
         t_test = list(
-            median = if(exists("t_test_median")) t_test_median else NULL,
-            mean = if(exists("t_test_mean")) t_test_mean else NULL
+            median = if(!is.null(median_results)) median_results$t_test else NULL,
+            mean = if(!is.null(mean_results)) mean_results$t_test else NULL
         ),
         wilcox = list(
-            median = if(exists("wilcox_median")) wilcox_median else NULL,
-            mean = if(exists("wilcox_mean")) wilcox_mean else NULL
+            median = if(!is.null(median_results)) median_results$wilcox else NULL,
+            mean = if(!is.null(mean_results)) mean_results$wilcox else NULL
         ),
         summary = if(exists("test_summary")) test_summary else NULL
     )
