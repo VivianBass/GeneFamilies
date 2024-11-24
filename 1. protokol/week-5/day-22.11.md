@@ -29,6 +29,8 @@
 - so t test for means and wilcox for medians ?? (when exactly to use t-test and when wilcox ?)
 - should we destinguish between the species dmel , dsec in plotting ?
 
+- suggest: we would need a script for loading fasta file, creating mapping table, extracting Information etc.
+
 ---
 
 **Next Steps**:  
