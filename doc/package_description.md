@@ -16,40 +16,6 @@ works for other data-sets as well.
   offers insight into the evolution of morphological diversity. Nature Plants,
   2, 16167. https://doi.org/10.1038/nplants.2016.167
 
-
-## **Homology and Gene Relationships**
-
-Homology refers to shared ancestry or functional similarity among genes or structures, categorized as follows:
-
-1. **Historical Homology**: Traits inherited from a common ancestor, like a family heirloom.
-2. **Proximal-Cause Homology**: Traits shaped by similar developmental mechanisms, akin to different recipes using shared ingredients.
-3. **Factorial Homology**: Homology with layered relationships across biological levels, like a patchwork quilt.
-4. **Context-Dependent Homology**: Definition varies by context (morphology, genetics), similar to words with multiple meanings.
-5. **Continuity of Evolution**: Homology as a spectrum, where traits gradually evolve.
-
-**Gene Types**:
-
-- **Orthologs**: Genes in different species from a common ancestor, maintaining similar functions (e.g., human and mouse hemoglobin).
-- **Paralogs**: Genes duplicated within a lineage, allowing for new functions. Includes:
-  - **In-Paralogs**: Duplication within one species post-speciation (like specialized siblings).
-  - **Out-Paralogs**: Duplication pre-speciation, resulting in related genes across species (like distant cousins).
-  - **Special In/Out-Paralogs**: Unique to one species (in-paralogs) or cross-species (out-paralogs) with conserved functions, resembling orthologs due to evolutionary pressure.
-
-**Key Differences**:
-- **Orthologs**: Directly related genes across species, maintaining similar roles.
-- **Paralogs**: Duplicated genes within or across species, often diverging in function. 
-- **Special Out-Paralogs**: Cross-species paralogs that retain conserved functions, closely resembling orthologs but from ancient duplications.
-
-## Syntenic relationships in Drosophila
-
-Syntenic relationships in genetics refer to the conservation of gene content and order across chromosomes of different species. In *Drosophila*, these relationships help researchers understand how certain chromosomal arms (or segments) contain similar groups of genes across species, even if they are arranged differently.
-
-## Harmonic mean
-
-The harmonic mean is a statistical measure used to average rates or ratios, giving more weight to smaller values, making it suitable for data where each point's contribution is part of a whole.
-In bioinformatics, it is applied in sequence alignment scoring, estimating effective population size, assessing microbial diversity, calculating the F1 score in machine learning, and averaging evolutionary or mutation rates.
-It is preferred over the arithmetic mean in contexts where low values significantly impact the overall result, providing a more balanced and realistic estimate.
-
 ## **Expression-Vector-Space Analysis Summary**
 
 This analysis evaluates gene expression diversity across conditions (e.g., tissues, species, developmental stages) to uncover genetic mechanisms that shape biological structure. The two-factor dataset (ST-Exp) contains gene expression data with *species* and *tissue* as primary factors, requiring at least four family members per species for robust comparisons. Expression distances are calculated for gene types (orthologs, paralogs, etc.), with species-specific distribution plots and statistical tests to assess differences. An ANOVA-based conservation analysis further examines whether orthologs retain expression levels more consistently than paralogs, addressing the key question: *Is there a difference in expression diversity between orthologs and paralogs?*
@@ -58,15 +24,19 @@ In the new EasyVectorOmics we will need from the user:
 
 The steps and data required to carry out the original analysis are devided into 3 Sections 
 
-- `1. Loading Data`                                                             (Section-1) 
-- `2. Computing Distances, Statistics, T-tests`                                 (Section-2) 
-- `3. Plotting Distributions`                                                   (Section-3) 
+- `1. Loading Data`                                                            
+- `2. Computing Distances, Statistics`                                  
+- `3. Plotting Distributions, T-tests`                                                   
 
 ## Section 1 - Data Loading
 
-1. **`load_gene_expression_data.R`**  
-2. **`load_gene_groups_data.R`**  
-3. **`load_gene_families_data.R`**  
+<br>
+
+- 1. **`load_gene_expression_data.R`**  
+- 2. **`load_gene_groups_data.R`**  
+- 3. **`load_gene_families_data.R`**  
+
+<br>
 
 ### Tools for Identifying Gene Families and Homologs
 
@@ -75,9 +45,24 @@ The steps and data required to carry out the original analysis are devided into 
 - **Markov Clustering (MCL)**: 
   Groups genes into clusters (gene families) using similarity matrices from BLAST results.
 
+<br>
+
 ### 1. `load_gene_expression_data.R`
 
 Loads expression data for gene groups, typically in DNA FASTA format. Expression levels (e.g., RNA counts, RPKM) reflect gene activity: higher counts indicate active genes (ON), while lower counts indicate inactive genes (OFF). Profiles are multi-dimensional vectors representing gene activity across tissues. Normalization methods (e.g., TPM, FPKM) adjust for technical variations, ensuring accurate comparisons between samples.
+
+USAGE: Rscript exec/load_gene_expression_data.R <RPKM_counts_table.tsv>
+
+#### `<RPKM_counts_table.tsv>`
+
+| id    | tissue  | expression |
+|-------|---------|------------|
+| gene1 | tissue1 | ####       |
+| gene2 | tissue1 | ####       |
+| gene1 | tissue2 | ####       |
+| gene2 | tissue2 | ####       |
+
+<br>
 
 ### 2. `load_gene_groups_data.R`
 
@@ -94,21 +79,72 @@ Loads ortholog and paralog relationships across species, with files categorized 
 - **Special Out Paralogs**: 
   Cross-species paralogs with a conserved ortholog relationship, suggesting retained functional ties.
 
-**File Naming Convention**:
-- Orthologs Header: `Family | Gene | Gene_species | Ortholog | Ortholog_species`
-- Paralogs Header:  `Family | Gene | Gene_species | Paralog  | Paralog_species`
+
+USAGE: Rscript exec/load_gene_groups_data.R <conserved_orthologs.tsv> 
+<in_paralogs.tsv> <out_paralogs.tsv> <special_in_paralogs.tsv> <special_out_paralogs.tsv>
+
+#### `con_orthologs.tsv`
+
+| Family      | Gene         | Gene_species | Ortholog     | Ortholog_species |
+|-------------|--------------|--------------|--------------|------------------|
+| OG0000000   | FBpp0117097  | dana         | FBpp0172663  | dmoj             |
+
+#### `in_paralogs.tsv`
+
+| Family      | Gene         | Gene_species | Paralog      | Paralog_species  |
+|-------------|--------------|--------------|--------------|------------------|
+| OG0000000   | FBpp0117097  | dana         | FBpp0172663  | dmoj             |
+
+#### `special_in_paralogs.tsv`
+
+| Family      | Gene         | Gene_species | Paralog      | Paralog_species  |
+|-------------|--------------|--------------|--------------|------------------|
+| OG0000000   | FBpp0117097  | dana         | FBpp0172663  | dmoj             |
+
+#### `out_paralogs.tsv`
+
+| Family      | Gene         | Gene_species | Paralog      | Paralog_species  |
+|-------------|--------------|--------------|--------------|------------------|
+| OG0000000   | FBpp0117097  | dana         | FBpp0172663  | dmoj             |
+
+#### `special_out_paralogs.tsv`
+
+| Family      | Gene         | Gene_species | Paralog      | Paralog_species  |
+|-------------|--------------|--------------|--------------|------------------|
+| OG0000000   | FBpp0117097  | dana         | FBpp0172663  | dmoj             |
+
+<br>
 
 ### 3. `load_gene_families_data.R`
 
 Loads gene family clusters created by MCL. Each family clusters related genes based on sequence similarity, organizing them by shared evolutionary lineage.
 
+USAGE: Rscript exec/load_gene_families_data.R <families_file> 
+
+#### `<families_file>`
+
+| Family   | species1          	 | species2            | species3            |
+|----------|---------------------|---------------------|---------------------|
+| family_1 | gene1, gene2, gene3 | gene4, gene5, gene6 | gene7, gene8, gene9 |
+
+<br>
 
 ## Section-2 - Computing Distances, Statistics, T-tests 
-			                                      
-- 1.  `compute_exp.prof.dists.R` 	                        
-- 2.  `compute_exp.prof.dists_statistics.R`
 
-### 1. `compute_exp.prof.dists.R` 
+- **no input.args required**
+<br>
+		                                      
+- 1. `compute_exp.prof.dists.R` 	                        
+- 2. `compute_exp.prof.dists_statistics.R`
+- 3. `compute_exp.prof.dists_angles.R`
+
+<br>
+
+### 1. `compute_exp.prof.dists.R`
+
+USAGE: Rscript exec/compute_exp.prof.dists.R
+
+<br>
 
 **Euclidean Distances for Gene Expression Analysis**:
 
@@ -125,8 +161,13 @@ The resulting comparison matrix shows distances for all gene pairs within the cl
 Small distances indicate similar gene expression (similar activity), 
 while larger distances suggest divergent activity levels.
 
+<br>
 
 ### 2. `compute_exp.prof.dists_statistics.R`
+
+USAGE: Rscript exec/compute_exp.prof.dists_statistics.R"
+
+<br>
 
 **Statistical Analysis of Expression Profile Distances**:
 
@@ -138,16 +179,56 @@ including mean, median, max, and max-minus-min.
 For each gene family and subset (Orthologs, Paralogs), the mean and median Euclidean distances 
 are calculated to assess similarities in gene expression levels.
 
+<br>
+
+### 3. `compute_exp.prof.dists_angles.R`
+
+USAGE: Rscript exec/compute_exp.prof.dists_angles.R
+
+<br>
+
 
 ## Section-3 - Plotting Distributions
 
+- **no input.args required**
+<br>
+
 - 1. `plot_exp.prof.dists_distribution.R`
 - 2. `plot_exp.prof.dists_distribution_tissue.R`
+- 3. `plot_exp.prof.dists_angles.R`
+- 4. `generate_t-test_wilcox_test.R`
+- 5. `generate_t-test_wilcox_test_tissue.R`
+
+<br>
+
+### 1. `plot_exp.prof.dists_distribution.R`
+
+USAGE: Rscript exec/plot_exp.prof.dists_distribution.R
+
+### 2. `plot_exp.prof.dists_distribution_tissue.R`
+
+USAGE: Rscript exec/plot_exp.prof.dists_distribution_tissue.R
+
+### 3. `plot_exp.prof.dists_angles.R`
+
+USAGE: Rscript exec/plot_exp.prof.dists_angles.R
+
+### 4. `generate_t-test_wilcox_test.R`
+
+USAGE: Rscript exec/generate_t-test_wilcox_test.R
+
+### 5. `generate_t-test_wilcox_test_tissue.R`
+
+USAGE: Rscript exec/generate_t-test_wilcox_test_tissue.R
 
 
+<br>
+<br>
+<br>
+<br>
 
 
-- **Scientific Plots Overview**:
+**Scientific Plots Overview**:
 
 **Boxplots of Expression Distances**:
 **First Plot**: ...
