@@ -30,53 +30,44 @@
 #'
 #' @importFrom utils read.table
 #' @export
-load_data_frame <- function(file_path) {
+load_data_frame <- function(file_path, file_type = NULL) {
     if (!file.exists(file_path)) {
         stop("cannot open file")
     }
     
-    # Try reading headers first
-    tryCatch({
-        headers <- read.table(file_path, header = TRUE, nrows = 0, sep = "\t",
-                            comment.char = "", quote = "", na.strings = "")
-        
-        # Define valid column patterns
-        base_cols <- c("Family", "Gene", "Gene_species")
-        type_cols <- list(
-            ortholog = c("Ortholog", "Ortholog_species"),
-            paralog = c("Paralog", "Paralog_species")
-        )
-        
-        # Check if headers match either ortholog or paralog pattern
-        has_ortholog <- all(c(base_cols, type_cols$ortholog) %in% names(headers))
-        has_paralog <- all(c(base_cols, type_cols$paralog) %in% names(headers))
-        
-        if (!has_ortholog && !has_paralog) {
-            stop("incorrect column names")
-        }
-        
-        # Set expected columns based on file type
-        expected_cols <- c(base_cols, if(has_ortholog) type_cols$ortholog else type_cols$paralog)
-        
-        # Read full data
-        df <- read.table(file_path, header = TRUE, sep = "\t",
-                        comment.char = "", quote = "", na.strings = "",
-                        colClasses = "character")
-        
-        if (ncol(df) < 5) {
-            stop("more columns than column names")
-        }
-        
-        df <- df[, expected_cols]
-        return(df)
-        
+    # Define expected column patterns
+    expected_names <- list(
+        Ortholog = c("Family", "Gene", "Gene_species", "Ortholog", "Ortholog_species"),
+        Paralog = c("Family", "Gene", "Gene_species", "Paralog", "Paralog_species")
+    )
+    
+    # Read data with explicit column names
+    df <- tryCatch({
+        read.table(file_path, 
+                  header = FALSE,
+                  skip = 1,
+                  sep = "\t",
+                  comment.char = "", 
+                  quote = "",
+                  col.names = expected_names[[file_type]],
+                  colClasses = "character",
+                  stringsAsFactors = FALSE)
     }, error = function(e) {
-        if (grepl("line 1 did not have", e$message)) {
-            stop("more columns than column names")
-        }
-        stop(e$message)
+        # If that fails, try reading with headers
+        df <- read.table(file_path, 
+                        header = TRUE,
+                        sep = "\t",
+                        comment.char = "", 
+                        quote = "",
+                        colClasses = "character",
+                        stringsAsFactors = FALSE)
+        names(df) <- expected_names[[file_type]]
+        return(df)
     })
+    
+    return(as.data.frame(df))
 }
+
 
 #' Create Nested List from Data Frame
 #'

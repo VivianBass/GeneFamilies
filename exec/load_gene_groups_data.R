@@ -45,12 +45,10 @@ created_objects <- character()
 
 # load data frames and create nested lists
 for (name in names(input_files)) {
-    # load data frame
     df_name <- name
-    assign(df_name, load_data_frame(input_files[[name]]$path))
+    assign(df_name, load_data_frame(input_files[[name]]$path, input_files[[name]]$type))
     created_objects <- c(created_objects, df_name)
     
-    # create nested list
     lst_name <- paste0(name, ".lst")
     assign(lst_name, create_nested_list(get(df_name), input_files[[name]]$type))
     created_objects <- c(created_objects, lst_name)
