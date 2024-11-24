@@ -1,27 +1,35 @@
 
-**Date**:  22.11.2024
-**Git Branch**: `Gene-Families-tests-Andre`
+**Date**:  22.11.2024  
+**Git Branch**: `Gene-Families-tests-Andre`  
 
 ---
 
-**Tasks**:
+**Tasks**:  
 
+- **New Data Integration**:  
+  - Incorporated new data from raw reads (`gffread`, `Trimmomatic`, `kallisto` workflow, etc.).  
+  - Recreated results using the new data and provisional TSVs (expressions for *D. melanogaster* and *D. sechellia*).  
+  - Set up a new experiment directory and regenerated results and plots.  
 
-- intersection with dsec genes
-- unique genes from tsv (maybe)
-- recreate results with tsv (its not final tsv for expressions), expressions for dmel and dsec
-- improve Lab Book 
-- server working , see the scripts and how the files look like 
-- some plots asis wanted look in issues
+- **Statistical Validation**:  
+  - Verified t-test results and their alignment with significance levels in the plots.  
+  - Resolved issues with t-tests and Wilcoxon tests.  
 
-
-**Doubts and Issues**:
-
-- have to ensure the t-test results are working fine and matching the significance levels in the plots
-
-**Next Steps**:
-
+- **Gene Group Analysis**:  
+  - Confirmed distance calculations for each gene group are calculated separately.  
 
 ---
 
-**Code:**
+**Doubts and Issues**:  
+
+- Validation of calculations: Are angles, distances, etc., computed correctly?  
+- Clarification on plots:  
+  - What specific plots are required?  
+  - Should gene families be included in the distribution plots, beyond gene group distributions?  
+
+---
+
+**Next Steps**:  
+
+- Refine Lab Book descriptions for the workflow’s four steps and provide detailed documentation for each step.  
+
