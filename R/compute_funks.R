@@ -244,20 +244,68 @@ perform_tests <- function(data, valid_groups, analysis_type) {
             filter(Type %in% valid_groups[[analysis_type]]) %>%
             t_test(Distance ~ Type, alternative = "greater") %>%
             adjust_pvalue(method = "BH") %>%
-            mutate(analysis = analysis_type,
-                   test_type = "t-test")
-                   
+            mutate(analysis = analysis_type, 
+                   test_type = "t-test",
+                   p.adj.signif = case_when(
+                       p.adj >= 0.05 ~ "ns",
+                       p.adj < 0.001 ~ "***",
+                       p.adj < 0.01 ~ "**",
+                       p.adj < 0.05 ~ "*"
+                   ))
+        
         wilcox_result <- data %>%
             filter(Type %in% valid_groups[[analysis_type]]) %>%
             wilcox_test(Distance ~ Type, alternative = "greater") %>%
             adjust_pvalue(method = "BH") %>%
-            mutate(analysis = analysis_type,
-                   test_type = "wilcox")
+            mutate(analysis = analysis_type, 
+                   test_type = "wilcox",
+                   p.adj.signif = case_when(
+                       p.adj >= 0.05 ~ "ns",
+                       p.adj < 0.001 ~ "***",
+                       p.adj < 0.01 ~ "**",
+                       p.adj < 0.05 ~ "*"
+                   ))
         
         return(list(t_test = t_test_result, wilcox = wilcox_result))
     }
     return(NULL)
 }
+
+
+
+
+perform_standard_tests <- function(data, valid_groups, analysis_type) {
+    if (length(valid_groups[[analysis_type]]) >= 2) {
+        t_test_result <- data %>%
+            filter(Type %in% valid_groups[[analysis_type]]) %>%
+            t_test(Distance ~ Type) %>%
+            mutate(analysis = analysis_type,
+                   test_type = "t-test",
+                   p.adj.signif = case_when(
+                       p >= 0.05 ~ "ns",
+                       p < 0.001 ~ "***",
+                       p < 0.01 ~ "**",
+                       p < 0.05 ~ "*"
+                   ))
+        
+        wilcox_result <- data %>%
+            filter(Type %in% valid_groups[[analysis_type]]) %>%
+            wilcox_test(Distance ~ Type) %>%
+            mutate(analysis = analysis_type,
+                   test_type = "wilcox",
+                   p.adj.signif = case_when(
+                       p >= 0.05 ~ "ns",
+                       p < 0.001 ~ "***",
+                       p < 0.01 ~ "**",
+                       p < 0.05 ~ "*"
+                   ))
+        
+        return(list(t_test = t_test_result, wilcox = wilcox_result))
+    }
+    return(NULL)
+}
+
+
 
 #' Perform Tissue-Specific Statistical Tests
 #'
@@ -280,8 +328,14 @@ perform_tissue_tests <- function(data, valid_groups, analysis_type) {
             t_test(Distance ~ Type, alternative = "greater") %>%
             adjust_pvalue(method = "BH") %>%
             mutate(analysis = analysis_type,
-                   test_type = "t-test")
-                   
+                   test_type = "t-test",
+                   p.adj.signif = case_when(
+                       p >= 0.05 ~ "ns",
+                       p < 0.001 ~ "***",
+                       p < 0.01 ~ "**",
+                       p < 0.05 ~ "*"
+                   ))
+        
         wilcox_result <- data %>%
             semi_join(valid_groups[[analysis_type]], by = c("Tissue", "Type")) %>%
             group_by(Tissue) %>%
@@ -290,7 +344,13 @@ perform_tissue_tests <- function(data, valid_groups, analysis_type) {
             wilcox_test(Distance ~ Type, alternative = "greater") %>%
             adjust_pvalue(method = "BH") %>%
             mutate(analysis = analysis_type,
-                   test_type = "wilcox")
+                   test_type = "wilcox",
+                   p.adj.signif = case_when(
+                       p >= 0.05 ~ "ns",
+                       p < 0.001 ~ "***",
+                       p < 0.01 ~ "**",
+                       p < 0.05 ~ "*"
+                   ))
         
         return(list(t_test = t_test_result, wilcox = wilcox_result))
     }

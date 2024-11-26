@@ -64,6 +64,19 @@ USAGE: Rscript exec/load_gene_expression_data.R <RPKM_counts_table.tsv>
 
 <br>
 
+- we need the mapping Information from the Fasta files to create rna.seq.exp.profiles, also to map the species name to the right gene we used the fasta file
+
+#### `<rna_seq_exp_profiles>`
+
+| FBpp_ID     | Parent_FBgn | Species | fat (tissue)| gut         | muscle      | whole_body |
+|-------------|-------------|---------|-------------|-------------|-------------|------------|
+| FBpp0291548 | FBgn0085506 | dmel    | 0.000000000 | 0.000000000 | 0.000000000 | 1.0000000  |
+| FBpp0289382 | FBgn0259817 | dmel    | 0.000000000 | 0.003827632 | 0.006253107 | 0.9899193  |
+| FBpp0312442 | FBgn0085692 | dmel    | 0.007196562 | 0.000000000 | 0.000000000 | 0.9928034  |
+| FBpp0077828 | FBgn0002121 | dmel    | 0.111506516 | 0.266536495 | 0.283942387 | 0.3380146  |
+| FBpp0111921 | FBgn0031209 | dmel    | 0.009854926 | 0.756561172 | 0.010681603 | 0.2229023  |
+
+
 ### 2. `load_gene_groups_data.R`
 
 Loads ortholog and paralog relationships across species, with files categorized by group type. Each file follows a specific header convention:

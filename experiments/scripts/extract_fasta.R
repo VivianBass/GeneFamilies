@@ -1,21 +1,4 @@
 
-require(GeneFamilies)
-options(mc.cores = getMcCores())
-library(parallel)
-
-message("USAGE: Rscript exec/plot_exp.prof.dists_angles.R")
-
-# Load environment variables to define directories for output data and results
-library(dotenv)
-output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
-results_dir <- Sys.getenv("RESULTS_DIR")
-
-# Libraries for efficient data handling
-library(dplyr)
-library(tidyr)
-library(purrr)
-
-# ------------------------------------------------------------------------
 
 # >FBpp0113192 type=protein; loc=scaffold_13337:join(17236694..17236810,17241571..17241816,17241904..17242057,17245092..17245726,17245789..17245947,17246015..17246324,17246412..17246706,17247147..17247429,17247619..17247861); ID=FBpp0113192; name=Dana\Om(2D)-PA; parent=FBgn0010400,FBtr0114700; dbxref=FlyBase:FBpp0113192,FlyBase_Annotation_IDs:GF10000-PA,GB_protein:EDV40849,REFSEQ:XP_001958043,FlyMine:FBpp0113192; MD5=f03f12164a7494c47fe0763bff201e8a; length=813; release=r1.3; species=Dana;
 

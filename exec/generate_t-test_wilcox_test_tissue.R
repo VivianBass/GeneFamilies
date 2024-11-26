@@ -1,6 +1,3 @@
-require(GeneFamilies)
-options(mc.cores = getMcCores())
-library(parallel)
 
 message("USAGE: Rscript exec/generate_t-test_wilcox_test_tissue.R")
 
@@ -13,6 +10,7 @@ results_dir <- Sys.getenv("RESULTS_DIR")
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(parallel)
 
 # Librarys for calculating t-tests and wilcox tests
 library(rstatix)
@@ -58,7 +56,7 @@ test_results_tissue <- tryCatch({
             median_results$wilcox, mean_results$wilcox
         )
         write.csv(test_summary_tissue, 
-                  file.path(results_dir, "statistical_tests_summary_tissue.csv"), 
+                  file.path(results_dir, "statistical_tests_summary_tissue1.csv"), 
                   row.names = FALSE)
         message("Tissue-specific statistical tests summary exported to CSV")
     }

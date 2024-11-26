@@ -1,6 +1,3 @@
-require(GeneFamilies)
-options(mc.cores = getMcCores())
-library(parallel)
 
 message("USAGE: Rscript exec/generate_t-test_wilcox_test.R")
 
@@ -13,6 +10,7 @@ results_dir <- Sys.getenv("RESULTS_DIR")
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(parallel)
 
 # Librarys for calculating t-tests and wilcox tests
 library(rstatix)
@@ -49,7 +47,7 @@ test_results <- tryCatch({
             median_results$wilcox, mean_results$wilcox
         )
         write.csv(test_summary, 
-                 file.path(results_dir, "statistical_tests_summary.csv"), 
+                 file.path(results_dir, "statistical_tests_summary4.csv"), 
                  row.names = FALSE)
         message("Statistical tests summary exported to CSV")
     }
@@ -69,3 +67,6 @@ test_results <- tryCatch({
     message("Error in statistical tests: ", e$message)
     return(NULL)
 })
+
+
+

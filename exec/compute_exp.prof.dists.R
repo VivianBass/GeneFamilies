@@ -1,6 +1,8 @@
-require(GeneFamilies)
+
 options(mc.cores = getMcCores())
 library(parallel)
+
+message("USAGE: Rscript exec/compute_exp.prof.dists.R")
 
 library(dotenv)
 # Define directories for output data and results using environment variables
@@ -11,12 +13,11 @@ results_dir <- Sys.getenv("RESULTS_DIR")
 library(dplyr)
 library(tidyr)
 library(purrr)
-library(tibble)
-
-message("USAGE: Rscript exec/compute_exp.prof.dists.R")
              
 # functions sourced from:
 source("R/compute_funks.R")
+
+# ------------------------------------------------------------------------
 
 # load gene-groups datasets and catch the object names
 load(file.path(output_data_dir, "gene_groups_filtered.RData")) 
