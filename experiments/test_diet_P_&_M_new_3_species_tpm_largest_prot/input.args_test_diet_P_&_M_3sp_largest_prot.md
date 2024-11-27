@@ -17,21 +17,21 @@ is configured to save generated files in the designated output path within the t
 
 1. example: Rscript exec/load_gene_expression_data.R <RPKM_counts_table.tsv>
 ```R
-    input.args[[1]] <- "experiments/test_diet_P_new_3_species_tpm_largest_prot/3sp_tpm_largest_prot.tsv"
+    input.args[[1]] <- "experiments/test_diet_P_&_M_new_3_species_tpm_largest_prot/3sp_tpm_largest_prot.tsv"
 ```
 2. example: Rscript exec/load_gene_groups_data.R 
     <conserved_orthologs.tsv> <in_paralogs.tsv> <out_paralogs.tsv> <special_in_paralogs.tsv>  <special_out_paralogs.tsv>
 ```R
-    input.args[[1]] <- "experiments/test_diet_P_new_3_species_tpm_largest_prot/dmel_dsec_dsim_conserved_orthologs.tsv"
-    input.args[[2]] <- "experiments/test_diet_P_new_3_species_tpm_largest_prot/dmel_dsec_dsim_in_paralogs.tsv"
-    input.args[[3]] <- "experiments/test_diet_P_new_3_species_tpm_largest_prot/dmel_dsec_dsim_out_paralogs.tsv"
-    input.args[[4]] <- "experiments/test_diet_P_new_3_species_tpm_largest_prot/dmel_dsec_dsim_special_in_paralogs.tsv"
-    input.args[[5]] <- "experiments/test_diet_P_new_3_species_tpm_largest_prot/dmel_dsec_dsim_special_out_paralogs.tsv"
+    input.args[[1]] <- "experiments/test_diet_P_&_M_new_3_species_tpm_largest_prot/dmel_dsec_dsim_conserved_orthologs.tsv"
+    input.args[[2]] <- "experiments/test_diet_P_&_M_new_3_species_tpm_largest_prot/dmel_dsec_dsim_in_paralogs.tsv"
+    input.args[[3]] <- "experiments/test_diet_P_&_M_new_3_species_tpm_largest_prot/dmel_dsec_dsim_out_paralogs.tsv"
+    input.args[[4]] <- "experiments/test_diet_P_&_M_new_3_species_tpm_largest_prot/dmel_dsec_dsim_special_in_paralogs.tsv"
+    input.args[[5]] <- "experiments/test_diet_P_&_M_new_3_species_tpm_largest_prot/dmel_dsec_dsim_special_out_paralogs.tsv"
 ```
 
 3. example: Rscript exec/load_gene_families_data.R <families_file> 
 ```R
-    input.args[[1]] <- "experiments/test_diet_P_new_3_species_tpm_largest_prot/orthogroups.tsv"
+    input.args[[1]] <- "experiments/test_diet_P_&_M_new_3_species_tpm_largest_prot/orthogroups.tsv"
 ```
 
 <br>

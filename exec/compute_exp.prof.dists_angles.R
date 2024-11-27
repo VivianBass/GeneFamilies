@@ -32,6 +32,7 @@ gene_groups <- loaded_objects[grepl("_v\\.lst$", loaded_objects)]
 # select your rna.seq.exp.profil data set and filter invalid Data, rows with NA etc
 load(file.path(output_data_dir, "gene_expression.RData"))
 
+tissues <- setdiff(colnames(rna.seq.exp.profils), c("FBpp_ID", "Species"))
 # --------------------------------------------------------------------------------
 
 angle_results <- list()
