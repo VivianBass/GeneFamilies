@@ -1,11 +1,15 @@
 
-
-message("USAGE: Rscript exec/plot_exp.prof.dists_angles.R")
-
 # Load environment variables to define directories for output data and results
 library(dotenv)
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
+
+# Create results directory if it doesn't exist
+if(!dir.exists(results_dir)) {
+    dir.create(results_dir, recursive = TRUE)
+}
+
+message("USAGE: Rscript exec/plot_exp.prof.dists_angles.R")
 
 # Libraries for efficient data handling
 library(dplyr)
@@ -58,10 +62,6 @@ plot.df$gene.type <- factor(plot.df$gene.type, levels = unique(plot.df$gene.type
 # Define color palette
 colors <- brewer.pal(length(unique(plot.df$gene.type)), "Pastel1")
 
-
-
-
-
 # --------------------------------------------------------------------------
 
 # Create gene type combinations first
@@ -94,7 +94,7 @@ ggplot_angle <- ggplot(plot.df, aes(x = gene.type, y = angle.diag, fill = gene.t
     vjust = 0.5,
     color = "black",
     size = 0.3,
-    textsize = 3
+    textsize = 2.5
   )
 
 # Save the angle plot
@@ -128,15 +128,12 @@ ggplot_angle <- ggplot(plot.df, aes(x = gene.type, y = angle.diag, fill = gene.t
     vjust = 0.5,
     color = "black",
     size = 0.3,
-    textsize = 3
+    textsize = 2.5
   )
-
 
 # Save the angle plot
 ggsave(file.path(results_dir, "expressionAngleToDiagonalBoxplot_wilcox.test.pdf"),
        ggplot_angle, width = 10, height = 8)
-
-
 
 # --------------------------------------------------------------------------
 
@@ -162,14 +159,14 @@ ggplot_vers <- ggplot(plot.df, aes(x = gene.type, y = rel.vers, fill = gene.type
   geom_signif(
     comparisons = type_combinations,
     test = "t.test",
-    test.args = list(alternative = "greater"),
+    test.args = list(alternative = "two.sided"),
     map_signif_level = c("***" = 0.001, "**" = 0.01, "*" = 0.05, "ns" = 1),
     step_increase = 0.05,
     tip_length = 0.005,
     vjust = 0.5,
     color = "black",
     size = 0.3,
-    textsize = 3
+    textsize = 2.5
   )
 
 # Save the versatility plot
@@ -202,7 +199,7 @@ ggplot_vers <- ggplot(plot.df, aes(x = gene.type, y = rel.vers, fill = gene.type
     vjust = 0.5,
     color = "black",
     size = 0.3,
-    textsize = 3
+    textsize = 2.5
   )
 
 

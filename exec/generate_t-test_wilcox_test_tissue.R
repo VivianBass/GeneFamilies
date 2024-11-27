@@ -1,10 +1,15 @@
 
-message("USAGE: Rscript exec/generate_t-test_wilcox_test_tissue.R")
-
 library(dotenv)
 # Define directories for output data and results using environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
+
+# Create results directory if it doesn't exist
+if(!dir.exists(results_dir)) {
+    dir.create(results_dir, recursive = TRUE)
+}
+
+message("USAGE: Rscript exec/generate_t-test_wilcox_test_tissue.R")
 
 # Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
@@ -56,7 +61,7 @@ test_results_tissue <- tryCatch({
             median_results$wilcox, mean_results$wilcox
         )
         write.csv(test_summary_tissue, 
-                  file.path(results_dir, "statistical_tests_summary_tissue1.csv"), 
+                  file.path(results_dir, "statistical_tests_summary_tissue.csv"), 
                   row.names = FALSE)
         message("Tissue-specific statistical tests summary exported to CSV")
     }

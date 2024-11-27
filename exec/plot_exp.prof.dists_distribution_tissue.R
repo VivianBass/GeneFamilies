@@ -1,18 +1,21 @@
-require(GeneFamilies)
-options(mc.cores = getMcCores())
-library(parallel)
-
-message("USAGE: Rscript exec/plot_exp.prof.dists_distribution_tissue.R")
 
 library(dotenv)
 # Define directories for output data and results using environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
 
+# Create results directory if it doesn't exist
+if(!dir.exists(results_dir)) {
+    dir.create(results_dir, recursive = TRUE)
+}
+
+message("USAGE: Rscript exec/plot_exp.prof.dists_distribution_tissue.R")
+
 # Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(parallel)
 
 # Librarys necessary for plotting
 library(ggplot2)
@@ -93,12 +96,13 @@ for (tissue in tissue_types) {
       geom_signif(
         comparisons = type_combinations,
         test = "t.test",
-        map_signif_level = TRUE,
+        test.args = list(alternative = "two.sided"),
+        map_signif_level = c("***" = 0.001, "**" = 0.01, "*" = 0.05, "ns" = 1),
         step_increase = 0.05,
         tip_length = 0.005,
         color = "black",
-        size = 0.4,
-        textsize = 3
+        size = 0.3,
+        textsize = 2.5
       )
   }
   
@@ -144,12 +148,13 @@ for (tissue in tissue_types) {
       geom_signif(
         comparisons = type_combinations,
         test = "wilcox.test",
-        map_signif_level = TRUE,
+        test.args = list(alternative = "two.sided"),
+        map_signif_level = c("***" = 0.001, "**" = 0.01, "*" = 0.05, "ns" = 1),
         step_increase = 0.05,
         tip_length = 0.005,
         color = "black",
-        size = 0.4,
-        textsize = 3
+        size = 0.3,
+        textsize = 2.5
       )
   }
   

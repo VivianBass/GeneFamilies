@@ -1,18 +1,21 @@
 
-options(mc.cores = getMcCores())
-library(parallel)
-
-message("USAGE: Rscript exec/compute_exp.prof.dists.R")
-
 library(dotenv)
 # Define directories for output data and results using environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
 
+# Create results directory if it doesn't exist
+if(!dir.exists(results_dir)) {
+    dir.create(results_dir, recursive = TRUE)
+}
+
+message("USAGE: Rscript exec/compute_exp.prof.dists.R")
+
 # Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(parallel)
              
 # functions sourced from:
 source("R/compute_funks.R")
@@ -39,6 +42,8 @@ rna.seq.exp.profils <- rna.seq.exp.profils %>%
     ~(. == "Invalid Number" | is.na(.) | . == "NA" | . == "" | . == "NaN" |
     . == "missing"))) != length(tissues))
 
+# ------------------------------------------------------------------------
+
 # Initialize created_objects vector before the loops
 created_objects <- c()
 
@@ -63,7 +68,36 @@ for (group in gene_groups) {
 }
 
 save(list = created_objects, file = file.path(output_data_dir, "exp.prof.dists.RData"))
-message("DONE")
+
+# ------------------------------------------------------------------------
+
+
+# other distance methods (angles)
+
+created_objects <- c()
+# compute euclidean distances
+for (group in gene_groups) {
+    if (exists(group, envir = .GlobalEnv)) {
+        data_object <- get(group)
+        dist_name <- paste0(group, "_log2_dists")
+        assign(dist_name, mclapply(data_object, exp.prof.dists_log2 ))
+        created_objects <- c(created_objects, dist_name)
+    }
+}
+
+
+
+
+created_objects <- c()
+# compute euclidean distances
+for (group in gene_groups) {
+    if (exists(group, envir = .GlobalEnv)) {
+        data_object <- get(group)
+        dist_name <- paste0(group, "_cosine_dists")
+        assign(dist_name, mclapply(data_object, exp.prof_cosine ))
+        created_objects <- c(created_objects, dist_name)
+    }
+}
 
 
 

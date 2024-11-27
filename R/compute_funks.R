@@ -43,6 +43,82 @@ exp.prof.dists <- function(gene.accessions,
     return(distances)
 }
 
+
+exp.prof.dists_log2 <- function(gene.accessions,
+                          expression.profiles = rna.seq.exp.profils,
+                          expr.prof.gene.col = "FBpp_ID",
+                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
+                          dist.method = "euclidean") {
+    
+
+    all_genes <- unlist(special_in_paralogs_v.lst)
+    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
+    species_groups <- split(exp.profs, exp.profs$Species)
+    
+    distances <- lapply(species_groups, function(species_data) {
+        if (nrow(species_data) > 1) {
+            rownames(species_data) <- species_data[[expr.prof.gene.col]]
+            species_data <- species_data[, tissues]
+            
+            # Ensure numeric conversion
+            species_data <- sapply(species_data, as.numeric)
+            dist_matrix <- abs(log2(as.vector(dist(species_data, method = dist.method))))
+            
+            return(dist_matrix)
+        }
+        return(NA)
+    })
+    
+    return(distances)
+}
+
+
+
+exp.prof.dists_cosine <- function(gene.accessions,
+                          expression.profiles = rna.seq.exp.profils,
+                          expr.prof.gene.col = "FBpp_ID",
+                          tissues = setdiff(colnames(expression.profiles), 
+                                          c(expr.prof.gene.col, "Parent_FBgn", "Species"))) {
+    
+    all_genes <- unlist(special_in_paralogs_v.lst)
+    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
+    species_groups <- split(exp.profs, exp.profs$Species)
+    
+    distances <- lapply(species_groups, function(species_data) {
+        if (nrow(species_data) > 1) {
+            rownames(species_data) <- species_data[[expr.prof.gene.col]]
+            species_data <- species_data[, tissues]
+            
+            # Ensure numeric conversion
+            species_data <- sapply(species_data, as.numeric)
+            
+            # Calculate pairwise cosine similarities
+            n <- nrow(species_data)
+            cosine_dists <- numeric()
+            
+            for(i in 1:(n-1)) {
+                for(j in (i+1):n) {
+                    # Cosine similarity calculation
+                    dot_product <- sum(species_data[i,] * species_data[j,])
+                    norm_i <- sqrt(sum(species_data[i,]^2))
+                    norm_j <- sqrt(sum(species_data[j,]^2))
+                    cosine_sim <- dot_product / (norm_i * norm_j)
+                    cosine_dists <- c(cosine_dists, cosine_sim)
+                }
+            }
+            
+            return(cosine_dists)
+        }
+        return(NA)
+    })
+    
+    return(distances)
+}
+
+
+
+
+
 #' Compute Euclidean Distances Between Gene Expression Profiles by Tissue
 #'
 #' @description Computes pairwise Euclidean distances between expression profiles of specified genes, optionally by each tissue. This function is useful for analyzing gene similarity within individual tissues or conditions.
@@ -240,9 +316,10 @@ validate_data <- function(loaded_objects, pattern) {
 #' perform_tissue_tests(data, valid_groups, "mean")
 perform_tests <- function(data, valid_groups, analysis_type) {
     if (length(valid_groups[[analysis_type]]) >= 2) {
+
         t_test_result <- data %>%
             filter(Type %in% valid_groups[[analysis_type]]) %>%
-            t_test(Distance ~ Type, alternative = "greater") %>%
+            t_test(Distance ~ Type, alternative = "two.sided") %>%
             adjust_pvalue(method = "BH") %>%
             mutate(analysis = analysis_type, 
                    test_type = "t-test",
@@ -255,7 +332,7 @@ perform_tests <- function(data, valid_groups, analysis_type) {
         
         wilcox_result <- data %>%
             filter(Type %in% valid_groups[[analysis_type]]) %>%
-            wilcox_test(Distance ~ Type, alternative = "greater") %>%
+            wilcox_test(Distance ~ Type, alternative = "two.sided") %>%
             adjust_pvalue(method = "BH") %>%
             mutate(analysis = analysis_type, 
                    test_type = "wilcox",
@@ -270,42 +347,6 @@ perform_tests <- function(data, valid_groups, analysis_type) {
     }
     return(NULL)
 }
-
-
-
-
-perform_standard_tests <- function(data, valid_groups, analysis_type) {
-    if (length(valid_groups[[analysis_type]]) >= 2) {
-        t_test_result <- data %>%
-            filter(Type %in% valid_groups[[analysis_type]]) %>%
-            t_test(Distance ~ Type) %>%
-            mutate(analysis = analysis_type,
-                   test_type = "t-test",
-                   p.adj.signif = case_when(
-                       p >= 0.05 ~ "ns",
-                       p < 0.001 ~ "***",
-                       p < 0.01 ~ "**",
-                       p < 0.05 ~ "*"
-                   ))
-        
-        wilcox_result <- data %>%
-            filter(Type %in% valid_groups[[analysis_type]]) %>%
-            wilcox_test(Distance ~ Type) %>%
-            mutate(analysis = analysis_type,
-                   test_type = "wilcox",
-                   p.adj.signif = case_when(
-                       p >= 0.05 ~ "ns",
-                       p < 0.001 ~ "***",
-                       p < 0.01 ~ "**",
-                       p < 0.05 ~ "*"
-                   ))
-        
-        return(list(t_test = t_test_result, wilcox = wilcox_result))
-    }
-    return(NULL)
-}
-
-
 
 #' Perform Tissue-Specific Statistical Tests
 #'
@@ -320,12 +361,13 @@ perform_standard_tests <- function(data, valid_groups, analysis_type) {
 #' perform_tissue_tests(data, valid_groups, "mean")
 perform_tissue_tests <- function(data, valid_groups, analysis_type) {
     if (nrow(valid_groups[[analysis_type]]) >= 2) {
+
         t_test_result <- data %>%
             semi_join(valid_groups[[analysis_type]], by = c("Tissue", "Type")) %>%
             group_by(Tissue) %>%
             filter(!is.na(Distance)) %>%
             filter(n_distinct(Type) >= 2) %>%
-            t_test(Distance ~ Type, alternative = "greater") %>%
+            t_test(Distance ~ Type, alternative = "two.sided") %>%
             adjust_pvalue(method = "BH") %>%
             mutate(analysis = analysis_type,
                    test_type = "t-test",
@@ -341,7 +383,7 @@ perform_tissue_tests <- function(data, valid_groups, analysis_type) {
             group_by(Tissue) %>%
             filter(!is.na(Distance)) %>%
             filter(n_distinct(Type) >= 2) %>%
-            wilcox_test(Distance ~ Type, alternative = "greater") %>%
+            wilcox_test(Distance ~ Type, alternative = "two.sided") %>%
             adjust_pvalue(method = "BH") %>%
             mutate(analysis = analysis_type,
                    test_type = "wilcox",
