@@ -15,6 +15,7 @@ message("USAGE: Rscript exec/generate_t-test_wilcox_test_tissue.R")
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(tibble)
 library(parallel)
 
 # Librarys for calculating t-tests and wilcox tests

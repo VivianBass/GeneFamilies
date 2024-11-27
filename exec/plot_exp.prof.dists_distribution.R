@@ -94,8 +94,6 @@ boxplot_mean <- ggplot(df_mean.dists, aes(x = Type, y = Distance, fill = Type)) 
     plot.margin = margin(r = 30)
   )
 
-
-
 boxplot_median <- ggplot(df_median.dists, aes(x = Type, y = Distance, fill = Type)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.1, alpha = 0.3, size = 1) +

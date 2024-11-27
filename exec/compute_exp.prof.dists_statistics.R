@@ -1,22 +1,27 @@
-require(GeneFamilies)
-options(mc.cores = getMcCores())
-library(parallel)
 
 library(dotenv)
 # Define directories for output data and results using environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
 
+# Create results directory if it doesn't exist
+if(!dir.exists(results_dir)) {
+    dir.create(results_dir, recursive = TRUE)
+}
+
+message("USAGE: Rscript exec/compute_exp.prof.dists_statistics.R")
+
 # Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
 library(tibble)
-
-message("USAGE: Rscript exec/compute_exp.prof.dists_statistics.R")
+library(parallel)
 
 # functions sourced from:
 source("R/compute_funks.R")
+
+# ------------------------------------------------------------------------
 
 # Automatically sort the loaded gene groups data into regular and tissue datasets
 load(file.path(output_data_dir, "exp.prof.dists.RData"))

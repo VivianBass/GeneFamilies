@@ -1,6 +1,13 @@
 
-options(mc.cores = getMcCores())
-library(parallel)
+library(dotenv)
+# Define directories for output data and results using environment variables
+output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
+results_dir <- Sys.getenv("RESULTS_DIR")
+
+# Create results directory if it doesn't exist
+if(!dir.exists(results_dir)) {
+    dir.create(results_dir, recursive = TRUE)
+}
 
 # Display usage information
 message("USAGE: Rscript exec/load_genefamilies_data.R <families_file>")
@@ -13,15 +20,12 @@ message("<families_file> contains gene-family clusters and their respective gene
 
 message("important Note: stick to the naming convention of the Headers, else the script will not process the data correctly.")
 
-library(dotenv)
-# Define directories for output data and results using environment variables
-output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
-results_dir <- Sys.getenv("RESULTS_DIR")
-
 # Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(tibble)
+library(parallel)
 
 # ------------------------------------------------------------------------
 

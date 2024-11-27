@@ -15,6 +15,7 @@ message("USAGE: Rscript exec/compute_exp.prof.dists.R")
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(tibble)
 library(parallel)
              
 # functions sourced from:
@@ -29,18 +30,6 @@ gene_groups <- loaded_objects[grepl("_v\\.lst$", loaded_objects)]
 
 # select your rna.seq.exp.profil data set and filter invalid Data, rows with NA etc
 load(file.path(output_data_dir, "gene_expression.RData"))
-
-rna.seq.exp.profils <- rna.seq.exp.profils %>%
-    distinct(Parent_FBgn, .keep_all = TRUE) %>%
-    filter(!is.na(FBpp_ID) & FBpp_ID != "NA" & FBpp_ID != "")
-
-tissues <- setdiff(colnames(rna.seq.exp.profils), c("FBpp_ID", "Parent_FBgn", "Species"))
-
-# filter rna.seq.exp.profils for invalid or na values etc
-rna.seq.exp.profils <- rna.seq.exp.profils %>%
-    filter(rowSums(across(all_of(tissues), 
-    ~(. == "Invalid Number" | is.na(.) | . == "NA" | . == "" | . == "NaN" |
-    . == "missing"))) != length(tissues))
 
 # ------------------------------------------------------------------------
 
@@ -74,30 +63,27 @@ save(list = created_objects, file = file.path(output_data_dir, "exp.prof.dists.R
 
 # other distance methods (angles)
 
-created_objects <- c()
+# created_objects <- c()
 # compute euclidean distances
-for (group in gene_groups) {
-    if (exists(group, envir = .GlobalEnv)) {
-        data_object <- get(group)
-        dist_name <- paste0(group, "_log2_dists")
-        assign(dist_name, mclapply(data_object, exp.prof.dists_log2 ))
-        created_objects <- c(created_objects, dist_name)
-    }
-}
+# for (group in gene_groups) {
+#    if (exists(group, envir = .GlobalEnv)) {
+#        data_object <- get(group)
+#        dist_name <- paste0(group, "_log2_dists")
+#        assign(dist_name, mclapply(data_object, exp.prof.dists_log2 ))
+#        created_objects <- c(created_objects, dist_name)
+#    }
+#}
 
-
-
-
-created_objects <- c()
+#created_objects <- c()
 # compute euclidean distances
-for (group in gene_groups) {
-    if (exists(group, envir = .GlobalEnv)) {
-        data_object <- get(group)
-        dist_name <- paste0(group, "_cosine_dists")
-        assign(dist_name, mclapply(data_object, exp.prof_cosine ))
-        created_objects <- c(created_objects, dist_name)
-    }
-}
+#for (group in gene_groups) {
+#    if (exists(group, envir = .GlobalEnv)) {
+#        data_object <- get(group)
+#        dist_name <- paste0(group, "_cosine_dists")
+#        assign(dist_name, mclapply(data_object, exp.prof_cosine ))
+#        created_objects <- c(created_objects, dist_name)
+#    }
+#}
 
 
 

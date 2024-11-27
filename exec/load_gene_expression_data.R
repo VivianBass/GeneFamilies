@@ -1,6 +1,13 @@
 
-options(mc.cores = getMcCores())
-library(parallel)
+library(dotenv)
+# Define directories for output data and results using environment variables
+output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
+results_dir <- Sys.getenv("RESULTS_DIR")
+
+# Create results directory if it doesn't exist
+if(!dir.exists(results_dir)) {
+    dir.create(results_dir, recursive = TRUE)
+}
 
 message("USAGE:  Rscript exec/load_expression_data.R <RPKM_counts_table.tsv>")
 
@@ -11,15 +18,12 @@ message("input.args[[1]]: <RPKM_counts_table.tsv>")
 message("<RPKM_counts_table.tsv> expected to be TAB-Delimited")
 message("<RPKM_counts_table.tsv> Header : \n", "id | tissue | expression")
 
-library(dotenv)
-# Define directories for output data and results using environment variables
-output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
-results_dir <- Sys.getenv("RESULTS_DIR")
-
 # Librarys for handling Dataframes, Lists etc. more efficiently
 library(dplyr)
 library(tidyr)
 library(purrr)
+library(tibble)
+library(parallel)
 
 # ------------------------------------------------------------------------
 
@@ -41,10 +45,30 @@ rna.seq.exp.profils <- expression_matrix %>% rowwise() %>%
         select(-row_sum) %>% ungroup()
 
 # filter rna.seq.exp.profils for invalid or na values etc.
-rna.seq.exp.profils <- rna.seq.exp.profils %>% rowwise() %>%
-        filter(if_all(everything(), ~(!is.na(.) && . != "" && . != "NULL")))
+# and rename the first column to FBpp_ID (column containing Gene IDs)
+rna.seq.exp.profils <- rna.seq.exp.profils %>%
+        rename(FBpp_ID = 1) %>%
+        rowwise() %>%
+        filter(if_all(everything(), ~(!is.na(.) && . != "" && . != "NULL"))) %>%
+        distinct(FBpp_ID, .keep_all = TRUE)
 
-                                      
+# filter rna.seq.exp.profils for invalid or na values etc
+tissues <- setdiff(colnames(rna.seq.exp.profils), c("FBpp_ID", "Species"))
+
+rna.seq.exp.profils <- rna.seq.exp.profils %>%
+        filter(rowSums(across(all_of(tissues), 
+        ~(. == "Invalid Number" | is.na(.) | . == "NA" | . == "" | . == "NaN" |
+        . == "missing"))) != length(tissues))
+
+# Merge expression profiles with mapping data, remove Parent_FBgn column,
+# and reorder columns to have FBpp_ID and Species first
+load(file.path(output_data_dir, "mapping_df.RData"))
+
+rna.seq.exp.profils <- rna.seq.exp.profils %>%
+        left_join(mapping_df, by = "FBpp_ID") %>%
+        select(-Parent_FBgn) %>% 
+        select(FBpp_ID, Species, everything())
+                               
 # Save results:
 save(rna.seq.exp.profils, rpkm.rna.seq.counts, file = file.path(output_data_dir,"gene_expression.RData"))
 

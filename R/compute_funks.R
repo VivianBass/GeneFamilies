@@ -14,12 +14,12 @@
 #' @examples
 #' # Compute overall distances for specified genes across all tissues
 #' distances <- exp.prof.dists(gene.accessions = list("gene1", "gene2", "gene3"))
-#'
+#' "Species"
 #' @export
 exp.prof.dists <- function(gene.accessions,
                           expression.profiles = rna.seq.exp.profils,
                           expr.prof.gene.col = "FBpp_ID",
-                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
+                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Species")),
                           dist.method = "euclidean") {
     
     all_genes <- unlist(gene.accessions)
@@ -47,7 +47,7 @@ exp.prof.dists <- function(gene.accessions,
 exp.prof.dists_log2 <- function(gene.accessions,
                           expression.profiles = rna.seq.exp.profils,
                           expr.prof.gene.col = "FBpp_ID",
-                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
+                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Species")),
                           dist.method = "euclidean") {
     
 
@@ -139,7 +139,7 @@ exp.prof.dists_cosine <- function(gene.accessions,
 exp.prof.dists_tissue <- function(gene.accessions,
                                  expression.profiles = rna.seq.exp.profils,
                                  expr.prof.gene.col = "FBpp_ID",
-                                 tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Parent_FBgn", "Species")),
+                                 tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Species")),
                                  dist.method = "euclidean") {
     
     all_genes <- unlist(gene.accessions)

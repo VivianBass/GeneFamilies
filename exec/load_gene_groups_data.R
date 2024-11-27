@@ -1,21 +1,19 @@
-require(GeneFamilies)
-options(mc.cores = getMcCores())
-library(parallel)
 
 library(dotenv)
 # Define directories for output data and results using environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
 
-# Librarys for handling Dataframes, Lists etc. more efficiently
-library(dplyr)
-library(tidyr)
-library(purrr)
-library(tibble)
+# Create results directory if it doesn't exist
+if(!dir.exists(results_dir)) {
+    dir.create(results_dir, recursive = TRUE)
+}
 
 message("USAGE: Rscript exec/load_gene_groups_data.R input.args ...")
 message("PURPOSE: This R script loads five different gene groups as stated in the messages below") 
 message("All files should follow the same header naming convention as stated in Header-Type messages below. ") 
+
+input.args <- commandArgs(trailingOnly = TRUE)
 
 message("input.args[[1]]:  path/2/<conserved_orthologs.tsv>")
 message("input.args[[2]]:  path/2/<in_paralogs.tsv>")
@@ -23,13 +21,20 @@ message("input.args[[3]]:  path/2/<out_paralogs.tsv>")
 message("input.args[[4]]:  path/2/<special_in_paralogs.tsv>")
 message("input.args[[5]]:  path/2/<special_out_paralogs.tsv>")
 
-input.args <- commandArgs(trailingOnly = TRUE)
-
-# required data and files loaded from:
-load(file.path(output_data_dir, "gene_expression.RData")) 
+# Librarys for handling Dataframes, Lists etc. more efficiently
+library(dplyr)
+library(tidyr)
+library(purrr)
+library(tibble)
+library(parallel)
 
 # Functions load_data_frame() & create_nested_list() sourced from:
 source("R/load_data_funks.R")
+
+# ------------------------------------------------------------------------
+
+# required data and files loaded from:
+load(file.path(output_data_dir, "gene_expression.RData")) 
 
 # define input file names and their corresponding types
 input_files <- list(
@@ -90,7 +95,7 @@ if (length(names(filtered_objects)) > 0) {
     save(list = names(filtered_objects), 
          file = file.path(output_data_dir, "gene_groups_filtered.RData"))
 }
-message("DONE")
+
 
 
 
