@@ -34,7 +34,7 @@ load(file.path(output_data_dir, "gene_expression.RData"))
 # ------------------------------------------------------------------------
 
 # Initialize created_objects vector before the loops
-created_objects <- c()
+created_objects_euclidean <- c()
 
 # compute euclidean distances
 for (group in gene_groups) {
@@ -42,7 +42,7 @@ for (group in gene_groups) {
         data_object <- get(group)
         dist_name <- paste0(group, "_dists")
         assign(dist_name, mclapply(data_object, exp.prof.dists))
-        created_objects <- c(created_objects, dist_name)
+        created_objects_euclidean <- c(created_objects_euclidean, dist_name)
     }
 }
 
@@ -52,38 +52,77 @@ for (group in gene_groups) {
         data_object <- get(group)
         tissue_dist_name <- paste0(group, "_dists_tissue")
         assign(tissue_dist_name, mclapply(data_object, exp.prof.dists_tissue))
-        created_objects <- c(created_objects, tissue_dist_name)
+        created_objects_euclidean <- c(created_objects_euclidean, tissue_dist_name)
     }
 }
 
-save(list = created_objects, file = file.path(output_data_dir, "exp.prof.dists.RData"))
+save(list = created_objects_euclidean, file = file.path(output_data_dir, "exp.prof.dists.RData"))
 
 # ------------------------------------------------------------------------
+# using log2 transformed expression values for distance calculation
 
+# Compute Euclidean distances with log2 transformed values
+created_objects_euclidean_log2 <- c()
 
-# other distance methods (angles)
+for (group in gene_groups) {
+    if (exists(group, envir = .GlobalEnv)) {
+        data_object <- get(group)
+        dist_name <- paste0(group, "_dists_log2")
+        
+        # Pass the log2-transformed data frame to the function
+        assign(dist_name, mclapply(data_object, exp.prof.dists, expression.profiles = rna.seq.exp.profils_log2))
+        
+        created_objects_euclidean_log2 <- c(created_objects_euclidean_log2, dist_name)
+    }
+}
 
-# created_objects <- c()
-# compute euclidean distances
-# for (group in gene_groups) {
-#    if (exists(group, envir = .GlobalEnv)) {
-#        data_object <- get(group)
-#        dist_name <- paste0(group, "_log2_dists")
-#        assign(dist_name, mclapply(data_object, exp.prof.dists_log2 ))
-#        created_objects <- c(created_objects, dist_name)
-#    }
-#}
+# Compute tissue-specific Euclidean distances with log2 transformed values
+for (group in gene_groups) {
+    if (exists(group, envir = .GlobalEnv)) {
+        data_object <- get(group)
+        tissue_dist_name <- paste0(group, "_dists_tissue_log2")
+        
+        # Pass the log2-transformed data frame to the function
+        assign(tissue_dist_name, mclapply(data_object, exp.prof.dists_tissue, expression.profiles = rna.seq.exp.profils_log2))
+        
+        created_objects_euclidean_log2 <- c(created_objects_euclidean_log2, tissue_dist_name)
+    }
+}
 
-#created_objects <- c()
-# compute euclidean distances
-#for (group in gene_groups) {
-#    if (exists(group, envir = .GlobalEnv)) {
-#        data_object <- get(group)
-#        dist_name <- paste0(group, "_cosine_dists")
-#        assign(dist_name, mclapply(data_object, exp.prof_cosine ))
-#        created_objects <- c(created_objects, dist_name)
-#    }
-#}
+# Save the log2-transformed distance objects
+save(list = created_objects_euclidean_log2, file = file.path(output_data_dir, "exp.prof.dists.log2.RData"))
 
+# ------------------------------------------------------------------------
+# using cosine angles for distance calculation
 
+# Initialize created_objects vector before the loops
+created_objects_angles <- c()
 
+# compute cosine angles distances
+for (group in gene_groups) {
+    if (exists(group, envir = .GlobalEnv)) {
+        data_object <- get(group)
+        dist_name <- paste0(group, "_cos_angles_dists")
+        assign(dist_name, mclapply(data_object, exp.prof.angles))
+        created_objects_angles <- c(created_objects_angles, dist_name)
+    }
+}
+
+save(list = created_objects_angles , file = file.path(output_data_dir, "exp.prof.angles.RData"))
+
+# ------------------------------------------------------------------------
+# using cosine angles for distance calculation with log2 transformed values
+
+created_objects_angles_log2 <- c()
+
+# compute cosine angles distances
+for (group in gene_groups) {
+    if (exists(group, envir = .GlobalEnv)) {
+        data_object <- get(group)
+        dist_name <- paste0(group, "_cos_angles_dists_log2")
+        assign(dist_name, mclapply(data_object, exp.prof.angles, expression.profiles = rna.seq.exp.profils_log2))
+        created_objects_angles_log2 <- c(created_objects_angles_log2, dist_name)
+    }
+}
+
+save(list = created_objects_angles_log2, file = file.path(output_data_dir, "exp.prof.angles.log2.RData"))

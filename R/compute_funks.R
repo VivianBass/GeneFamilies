@@ -44,81 +44,6 @@ exp.prof.dists <- function(gene.accessions,
 }
 
 
-exp.prof.dists_log2 <- function(gene.accessions,
-                          expression.profiles = rna.seq.exp.profils,
-                          expr.prof.gene.col = "FBpp_ID",
-                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Species")),
-                          dist.method = "euclidean") {
-    
-
-    all_genes <- unlist(special_in_paralogs_v.lst)
-    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
-    species_groups <- split(exp.profs, exp.profs$Species)
-    
-    distances <- lapply(species_groups, function(species_data) {
-        if (nrow(species_data) > 1) {
-            rownames(species_data) <- species_data[[expr.prof.gene.col]]
-            species_data <- species_data[, tissues]
-            
-            # Ensure numeric conversion
-            species_data <- sapply(species_data, as.numeric)
-            dist_matrix <- abs(log2(as.vector(dist(species_data, method = dist.method))))
-            
-            return(dist_matrix)
-        }
-        return(NA)
-    })
-    
-    return(distances)
-}
-
-
-
-exp.prof.dists_cosine <- function(gene.accessions,
-                          expression.profiles = rna.seq.exp.profils,
-                          expr.prof.gene.col = "FBpp_ID",
-                          tissues = setdiff(colnames(expression.profiles), 
-                                          c(expr.prof.gene.col, "Parent_FBgn", "Species"))) {
-    
-    all_genes <- unlist(special_in_paralogs_v.lst)
-    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
-    species_groups <- split(exp.profs, exp.profs$Species)
-    
-    distances <- lapply(species_groups, function(species_data) {
-        if (nrow(species_data) > 1) {
-            rownames(species_data) <- species_data[[expr.prof.gene.col]]
-            species_data <- species_data[, tissues]
-            
-            # Ensure numeric conversion
-            species_data <- sapply(species_data, as.numeric)
-            
-            # Calculate pairwise cosine similarities
-            n <- nrow(species_data)
-            cosine_dists <- numeric()
-            
-            for(i in 1:(n-1)) {
-                for(j in (i+1):n) {
-                    # Cosine similarity calculation
-                    dot_product <- sum(species_data[i,] * species_data[j,])
-                    norm_i <- sqrt(sum(species_data[i,]^2))
-                    norm_j <- sqrt(sum(species_data[j,]^2))
-                    cosine_sim <- dot_product / (norm_i * norm_j)
-                    cosine_dists <- c(cosine_dists, cosine_sim)
-                }
-            }
-            
-            return(cosine_dists)
-        }
-        return(NA)
-    })
-    
-    return(distances)
-}
-
-
-
-
-
 #' Compute Euclidean Distances Between Gene Expression Profiles by Tissue
 #'
 #' @description Computes pairwise Euclidean distances between expression profiles of specified genes, optionally by each tissue. This function is useful for analyzing gene similarity within individual tissues or conditions.
@@ -161,6 +86,91 @@ exp.prof.dists_tissue <- function(gene.accessions,
         return(tissue_distances)
     }
     return(NA)
+}
+
+#' Calculate Cosine Angle Between Two Vectors
+#'
+#' Computes the angle (in radians) between two vectors using their cosine similarity.
+#'
+#' @param vec1 A numeric vector.
+#' @param vec2 A numeric vector.
+#'
+#' @return The angle in radians between \code{vec1} and \code{vec2}. Returns \code{NA} if either vector has zero magnitude.
+#' 
+#' @examples
+#' calculate_cosine_angle(c(1, 0, 1), c(0, 1, 0))
+#' calculate_cosine_angle(c(0, 0, 0), c(1, 1, 1)) # Returns NA
+calculate_cosine_angle <- function(vec1, vec2) {
+    dot_product <- sum(vec1 * vec2)
+    magnitude1 <- sqrt(sum(vec1^2))
+    magnitude2 <- sqrt(sum(vec2^2))
+    
+    # Handle zero vectors
+    if (magnitude1 == 0 || magnitude2 == 0) {
+        return(NA)
+    }
+    
+    cosine <- dot_product / (magnitude1 * magnitude2)
+    # Handle numerical precision issues
+    cosine <- min(max(cosine, -1), 1)
+    return(acos(cosine))
+}
+
+#' Calculate Pairwise Expression Profile Angles
+#'
+#' Computes the pairwise cosine angles between gene expression profiles across multiple species and tissues.
+#'
+#' @param gene.accessions A vector or list of gene accessions to include in the analysis.
+#' @param expression.profiles A data frame containing gene expression profiles, with rows corresponding to genes and columns to tissues.
+#' @param expr.prof.gene.col A string specifying the column in \code{expression.profiles} that contains gene accession IDs. Default is \code{"FBpp_ID"}.
+#' @param tissues A vector of column names in \code{expression.profiles} corresponding to tissues to use in the analysis. By default, all columns except \code{expr.prof.gene.col} and \code{"Species"} are included.
+#'
+#' @return A list where each element contains the pairwise angles (in radians) for genes in a particular species. Returns \code{NA} if a species group has fewer than two genes.
+#'
+#' @examples
+#' gene.accessions <- c("gene1", "gene2", "gene3")
+#' expression.profiles <- data.frame(
+#'   FBpp_ID = c("gene1", "gene2", "gene3"),
+#'   Species = c("species1", "species1", "species2"),
+#'   Tissue1 = c(1, 0, 3),
+#'   Tissue2 = c(0, 2, 3)
+#' )
+#' exp.prof.angles(gene.accessions, expression.profiles)
+exp.prof.angles <- function(gene.accessions,
+                          expression.profiles = rna.seq.exp.profils,
+                          expr.prof.gene.col = "FBpp_ID",
+                          tissues = setdiff(colnames(expression.profiles),
+                                          c(expr.prof.gene.col, "Species"))) {
+    
+    all_genes <- unlist(gene.accessions)
+    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
+    species_groups <- split(exp.profs, exp.profs$Species)
+    
+    angles <- lapply(species_groups, function(species_data) {
+        if (nrow(species_data) > 1) {
+            rownames(species_data) <- species_data[[expr.prof.gene.col]]
+            species_data <- species_data[, tissues]
+            
+            # Convert to numeric matrix
+            expr_matrix <- sapply(species_data, as.numeric)
+            
+            # Calculate pairwise angles
+            n <- nrow(expr_matrix)
+            angle_vector <- numeric()
+            
+            for (i in 1:(n-1)) {
+                for (j in (i+1):n) {
+                    angle <- calculate_cosine_angle(expr_matrix[i,], expr_matrix[j,])
+                    angle_vector <- c(angle_vector, angle)
+                }
+            }
+            
+            return(angle_vector)
+        }
+        return(NA)
+    })
+    
+    return(angles)
 }
 
 #' Calculate Statistics for Expression Profile Distances

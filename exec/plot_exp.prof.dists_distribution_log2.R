@@ -9,7 +9,7 @@ if(!dir.exists(results_dir)) {
     dir.create(results_dir, recursive = TRUE)
 }
 
-message("USAGE: Rscript exec/plot_exp.prof.dists_distribution.R")
+message("USAGE: Rscript exec/plot_exp.prof.dists_distribution_tissue.R")
 
 # Libraries for efficient data handling
 library(dplyr)
@@ -26,9 +26,9 @@ library(ggpubr)
 # ------------------------------------------------------------------------
 
 # Load expression profile distance statistics, for each gene group (5 in total)
-load(file.path(output_data_dir, "exp.prof.dists_statistics.RData"))
+load(file.path(output_data_dir, "exp.prof.dists_statistics_log2.RData"))
 loaded_objects <- ls()
-data_names <- loaded_objects[grepl(".lst_dists_stats$", loaded_objects)]
+data_names <- loaded_objects[grepl(".lst_dists_log2_stats$", loaded_objects)]
 
 # Initialize empty data frames to store the mean and median distances for each dataset
 # Header Type and Distance, in long format, Type containing the gene-groups
@@ -38,7 +38,7 @@ df_median.dists <- data.frame()
 # Process each dataset to extract and compile mean and median distance information
 for (data_name in data_names) {
     current_data <- get(data_name)
-    type_name <- sub(".lst_dists_stats", "", data_name)
+    type_name <- sub(".lst_dists_log2_stats", "", data_name)
     
     # Compile mean distance data into a tibble, adding columns for type, cluster, and distance
     temp_mean_df <- tibble(
@@ -59,7 +59,7 @@ for (data_name in data_names) {
 
 # Save both dataframes to the output directory
 save(df_mean.dists, df_median.dists, 
-     file = file.path(output_data_dir, "exp.prof.dists_mean_median.RData"))
+     file = file.path(output_data_dir, "exp.prof.dists_mean_median_log2.RData"))
 
 # ---------------------------------------------------------------------------
 
@@ -72,7 +72,7 @@ type_combinations <- combn(types, 2, simplify = FALSE)
 boxplot_mean <- ggplot(df_mean.dists, aes(x = Type, y = Distance, fill = Type)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
-  labs(title = "Mean Expression Distances (t.test)", y = "Distance") +
+  labs(title = "Mean Expression Distances (log2) (t.test)", y = "Distance") +
   theme_pubr(border = TRUE) +
   scale_y_continuous(breaks = seq(0, max(df_mean.dists$Distance), by = 0.2)) +
   geom_signif(
@@ -97,7 +97,7 @@ boxplot_mean <- ggplot(df_mean.dists, aes(x = Type, y = Distance, fill = Type)) 
 boxplot_median <- ggplot(df_median.dists, aes(x = Type, y = Distance, fill = Type)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
-  labs(title = "Median Expression Distances (t.test)", y = "Distance") +
+  labs(title = "Median Expression Distances (log2) (t.test)", y = "Distance") +
   theme_pubr(border = TRUE) +
   scale_y_continuous(breaks = seq(0, max(df_median.dists$Distance), by = 0.2)) +
   geom_signif(
@@ -119,7 +119,7 @@ boxplot_median <- ggplot(df_median.dists, aes(x = Type, y = Distance, fill = Typ
     plot.margin = margin(r = 30)
   )
 # Save both plots to a multi-page PDF
-output_pdf <- file.path(results_dir, "boxplots_expression_distances_(t.test).pdf")
+output_pdf <- file.path(results_dir, "boxplots_expression_distances_log2_(t.test).pdf")
 
 # Combine plots into a list
 plot_list_tea <- list(boxplot_median, boxplot_mean)
@@ -132,7 +132,6 @@ ggsave(output_pdf, marrangeGrob(plot_list_tea, nrow=1, ncol=1, top=""),
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
 
-
 # Define combinations of types for pairwise significance annotations in boxplots
 types <- unique(df_mean.dists$Type)
 type_combinations <- combn(types, 2, simplify = FALSE)
@@ -142,7 +141,7 @@ type_combinations <- combn(types, 2, simplify = FALSE)
 boxplot_mean <- ggplot(df_mean.dists, aes(x = Type, y = Distance, fill = Type)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
-  labs(title = "Mean Expression Distances (wilcox.test)", y = "Distance") +
+  labs(title = "Mean Expression Distances (log2) (wilcox.test)", y = "Distance") +
   theme_pubr(border = TRUE) +
   scale_y_continuous(breaks = seq(0, max(df_mean.dists$Distance), by = 0.2)) +
   geom_signif(
@@ -167,7 +166,7 @@ boxplot_mean <- ggplot(df_mean.dists, aes(x = Type, y = Distance, fill = Type)) 
 boxplot_median <- ggplot(df_median.dists, aes(x = Type, y = Distance, fill = Type)) +
   geom_boxplot(outlier.shape = NA) +
   geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
-  labs(title = "Median Expression Distances (wilcox.test)", y = "Distance") +
+  labs(title = "Median Expression Distances (log2) (wilcox.test)", y = "Distance") +
   theme_pubr(border = TRUE) +
   scale_y_continuous(breaks = seq(0, max(df_median.dists$Distance), by = 0.2)) +
   geom_signif(
@@ -189,7 +188,7 @@ boxplot_median <- ggplot(df_median.dists, aes(x = Type, y = Distance, fill = Typ
     plot.margin = margin(r = 30)
   )
 # Save both plots to a multi-page PDF
-output_pdf <- file.path(results_dir, "boxplots_expression_distances_(wilcox.test).pdf")
+output_pdf <- file.path(results_dir, "boxplots_expression_distances_log2_(wilcox.test).pdf")
 
 # Combine plots into a list
 plot_list_wilcox <- list(boxplot_median, boxplot_mean)

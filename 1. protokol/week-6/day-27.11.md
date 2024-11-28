@@ -1,5 +1,5 @@
 
-**Date**:  
+**Date**:  27.11.2024 
 **Git Branch**: `Gene-Families-tests-Andre`
 
 ---
@@ -18,7 +18,7 @@
 	- All distances (euclidian)
 	- Mean (euclidian)
 	- Median (euclidean)
-    
+
 	- All distances (euclidian) LOG
 	- Mean (euclidian) LOG
 	- Median (euclidean) LOG
@@ -26,6 +26,8 @@
 	- All distances (angle)
 	- Mean (angle)
 	- Median (angle)
+
+    
 	- All distances (angle) LOG
 	- Mean (angle) LOG
 	- Median (angle) LOG
@@ -47,6 +49,10 @@
 
 
 **Doubts and Issues**:
+
+- does it make a diffrence if i transform the values log2 before i calculate the euclidean disttances or afterwards ?
+
+- log2 gives negative values, how to dispaly in the plots, should i add 1 before logs transform, or take absolute value ??
 
 **Next Steps**:
 

@@ -26,9 +26,9 @@ library(ggpubr)
 # ------------------------------------------------------------------------
 
 # Automatically select data objects that contain tissue-specific statistics
-load(file.path(output_data_dir, "exp.prof.dists_statistics.RData"))
+load(file.path(output_data_dir, "exp.prof.dists_statistics_log2.RData"))
 loaded_objects <- ls()
-data_names_tissue <- loaded_objects[grepl("_tissue_stats$", loaded_objects)]
+data_names_tissue <- loaded_objects[grepl("_tissue_log2_stats$", loaded_objects)]
 
 # Process each tissue dataset to extract and organize mean and median distances by tissue and type
 # Initialize empty data frames to hold tissue-specific mean and median distance data
@@ -38,7 +38,7 @@ df_median.dists_tissue <- data.frame()
 # Process each tissue dataset
 for (data_name in data_names_tissue) {
     current_data <- get(data_name)  
-    type_name <- sub(".lst_dists_tissue_stats", "", data_name)  
+    type_name <- sub(".lst_dists_tissue_log2_stats", "", data_name)  
     
     # Extract data and arrange columns with Type in second position
     temp_mean_df <- current_data %>%
@@ -59,12 +59,12 @@ for (data_name in data_names_tissue) {
 
 # Save both dataframes to the output directory
 save(df_mean.dists_tissue, df_median.dists_tissue, 
-     file = file.path(output_data_dir, "exp.prof.dists_mean_median_tissue.RData"))
+     file = file.path(output_data_dir, "exp.prof.dists_mean_median_tissue_log2.RData"))
 
 # ---------------------------------------------------------------------------
 
 # Generate boxplots for mean expression distances by tissue type
-output_pdf <- file.path(results_dir, "tissues_mean_boxplot_combined_(t.test).pdf")
+output_pdf <- file.path(results_dir, "tissues_mean_boxplot_combined_log2_(t.test).pdf")
 tissue_types <- unique(df_mean.dists_tissue$Tissue)
 
 # Create empty list to store plots
@@ -77,7 +77,7 @@ for (tissue in tissue_types) {
   boxplot_tissue <- ggplot(df_tissue, aes(x = Type, y = Distance, fill = Type)) +
     geom_boxplot(outlier.shape = NA) +
     geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
-    labs(title = paste("Mean Expression Distances (t.test) - ", tissue), y = "Distance", x = "Gene Type") +
+    labs(title = paste("Mean Expression Distances (log2) (t.test) - ", tissue), y = "Distance", x = "Gene Type") +
     theme_pubr(border = TRUE) +
     scale_y_continuous(breaks = seq(0, max(df_tissue$Distance), by = 0.1)) +
     theme(
@@ -116,7 +116,7 @@ ggsave(output_pdf, marrangeGrob(plot_list, nrow=1, ncol=1, top=""), width = 12, 
 # ---------------------------------------------------------------------------
 
 # Generate boxplots for median expression distances by tissue type
-output_pdf <- file.path(results_dir, "tissues_median_boxplot_combined_(t.test).pdf")
+output_pdf <- file.path(results_dir, "tissues_median_boxplot_combined_log2_(t.test).pdf")
 tissue_types <- unique(df_median.dists_tissue$Tissue)
 
 # Create empty list to store plots
@@ -129,7 +129,7 @@ for (tissue in tissue_types) {
   boxplot_tissue <- ggplot(df_tissue, aes(x = Type, y = Distance, fill = Type)) +
     geom_boxplot(outlier.shape = NA) +
     geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
-    labs(title = paste("Median Expression Distances (t.test) - ", tissue), y = "Distance", x = "Gene Type") +
+    labs(title = paste("Median Expression Distances (log2) (t.test) -", tissue), y = "Distance", x = "Gene Type") +
     theme_pubr(border = TRUE) +
     scale_y_continuous(breaks = seq(0, max(df_tissue$Distance), by = 0.1)) +
     theme(
@@ -165,13 +165,11 @@ for (tissue in tissue_types) {
 # Save all plots with minimal page numbers
 ggsave(output_pdf, marrangeGrob(plot_list, nrow=1, ncol=1, top=""), width = 12, height = 8)
 
-
 # ---------------------------------------------------------------------------
 # ---------------------------------------------------------------------------
-
 
 # Generate boxplots for mean expression distances by tissue type
-output_pdf <- file.path(results_dir, "tissues_mean_boxplot_combined_(wilcox.test).pdf")
+output_pdf <- file.path(results_dir, "tissues_mean_boxplot_combined_log2_(wilcox.test).pdf")
 tissue_types <- unique(df_mean.dists_tissue$Tissue)
 
 # Create empty list to store plots
@@ -184,7 +182,7 @@ for (tissue in tissue_types) {
   boxplot_tissue <- ggplot(df_tissue, aes(x = Type, y = Distance, fill = Type)) +
     geom_boxplot(outlier.shape = NA) +
     geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
-    labs(title = paste("Mean Expression Distances (wilcox.test) - ", tissue), y = "Distance", x = "Gene Type") +
+    labs(title = paste("Mean Expression Distances (log2) (wilcox.test) - ", tissue), y = "Distance", x = "Gene Type") +
     theme_pubr(border = TRUE) +
     scale_y_continuous(breaks = seq(0, max(df_tissue$Distance), by = 0.1)) +
     theme(
@@ -223,7 +221,7 @@ ggsave(output_pdf, marrangeGrob(plot_list, nrow=1, ncol=1, top=""), width = 12, 
 # ---------------------------------------------------------------------------
 
 # Generate boxplots for median expression distances by tissue type
-output_pdf <- file.path(results_dir, "tissues_median_boxplot_combined_(wilcox.test).pdf")
+output_pdf <- file.path(results_dir, "tissues_median_boxplot_combined_log2_(wilcox.test).pdf")
 tissue_types <- unique(df_median.dists_tissue$Tissue)
 
 # Create empty list to store plots
@@ -236,7 +234,7 @@ for (tissue in tissue_types) {
   boxplot_tissue <- ggplot(df_tissue, aes(x = Type, y = Distance, fill = Type)) +
     geom_boxplot(outlier.shape = NA) +
     geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
-    labs(title = paste("Median Expression Distances (wilcox.test) - ", tissue), y = "Distance", x = "Gene Type") +
+    labs(title = paste("Median Expression Distances (log2) (wilcox.test) - ", tissue), y = "Distance", x = "Gene Type") +
     theme_pubr(border = TRUE) +
     scale_y_continuous(breaks = seq(0, max(df_tissue$Distance), by = 0.1)) +
     theme(
@@ -271,4 +269,3 @@ for (tissue in tissue_types) {
 
 # Save all plots with minimal page numbers
 ggsave(output_pdf, marrangeGrob(plot_list, nrow=1, ncol=1, top=""), width = 12, height = 8)
-
