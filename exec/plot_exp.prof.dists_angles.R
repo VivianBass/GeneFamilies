@@ -202,8 +202,6 @@ ggplot_vers <- ggplot(plot.df, aes(x = gene.type, y = rel.vers, fill = gene.type
     textsize = 2.5
   )
 
-
-
 # Save the versatility plot
 ggsave(file.path(results_dir, "relativeExpressionVersatilityBoxplot_wilcox.test.pdf"),
        ggplot_vers, width = 10, height = 8)

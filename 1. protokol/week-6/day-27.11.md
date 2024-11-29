@@ -15,23 +15,32 @@
 - The function that calculates the distance should have the option to measure euclidean distance or angles distance.
 - The distances should be measured by log base 2 and not log. For all we need t test and wilcox:
 
-	- All distances (euclidian)
+	- All distances (euclidian)    		++
 	- Mean (euclidian)
 	- Median (euclidean)
 
-	- All distances (euclidian) LOG
+	- All distances (euclidian) LOG		++
 	- Mean (euclidian) LOG
 	- Median (euclidean) LOG
 
-	- All distances (angle)
+	- All distances (angle)				++
 	- Mean (angle)
 	- Median (angle)
 
-    
-	- All distances (angle) LOG
+	- All distances (angle) LOG			++
 	- Mean (angle) LOG
 	- Median (angle) LOG
+	
 - Experiment with complete transcripts values and one transcript per gene (largest seq)
+
+load(file.path(output_data_dir, "exp.prof.dists.RData"))
+load(file.path(output_data_dir, "exp.prof.dists.log2.RData"))
+
+load(file.path(output_data_dir, "exp.prof.angles.RData"))
+load(file.path(output_data_dir, "exp.prof.angles.log2.RData"))
+
+
+
 
 
 - vector space, comparing expressions

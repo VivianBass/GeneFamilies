@@ -7,8 +7,14 @@
 **Tasks**:
 
 
+- figure out , how to plot complete, create some plot scripts for complete
+- überlegen wie man t tests und wilcox für die completen machen kann
 
+load(file.path(output_data_dir, "exp.prof.dists.RData"))
+load(file.path(output_data_dir, "exp.prof.dists.log2.RData"))
 
+load(file.path(output_data_dir, "exp.prof.angles.RData"))
+load(file.path(output_data_dir, "exp.prof.angles.log2.RData"))
 
 
 

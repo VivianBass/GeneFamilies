@@ -55,8 +55,6 @@ for (name in valid_data_names_tissue ) {
 
 save(list = created_dfs, file = file.path(output_data_dir, "exp.prof.dists_statistics.RData"))
 
-
-
 # ------------------------------------------------------------------------
 
 # Automatically sort the loaded gene groups data into regular and tissue datasets
