@@ -72,7 +72,7 @@ load(file.path(output_data_dir, "exp.prof.angles.log2.RData"))
 [15] "special_out_paralogs_v.lst_cos_angles_dists_log2"
 
 
-
+- t-test, wilcox test for the complete expression distances
 
 - new experiment with filtered orthogroups ( with at least 6 gene pairs)
 
