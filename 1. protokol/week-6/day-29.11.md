@@ -74,11 +74,40 @@ load(file.path(output_data_dir, "exp.prof.angles.log2.RData"))
 
 - t-test, wilcox test for the complete expression distances
 
+
+
 - new experiment with filtered orthogroups ( with at least 6 gene pairs)
 
 - combine all plot scripts, redundant code etc. 
 
 - documentation 
+
+
+
+
+
+
+
+
+
+
+
+
+
+# Get all values from nested list
+all_values <- unlist(con_orthologs_v.lst_cos_angles_dists)
+
+# Check range
+range(all_values, na.rm = TRUE)
+
+
+> View(rna.seq.exp.profils)
+
+> all_values <- unlist(con_orthologs_v.lst_cos_angles_dists)
+> range(all_values, na.rm = TRUE)
+[1] 0.000000 1.570796
+
+
 
 
 

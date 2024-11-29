@@ -143,3 +143,82 @@ $$
 
 
 
+
+    input.args[[1]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_conserved_orthologs.tsv"
+    input.args[[2]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_in_paralogs.tsv"
+    input.args[[3]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_out_paralogs.tsv"
+    input.args[[4]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_special_in_paralogs.tsv"
+    input.args[[5]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_special_out_paralogs.tsv"
+
+
+
+ [1] "con_orthologs"            "con_orthologs.lst"
+
+             
+ [9] "in_paralogs.lst"          "in_paralogs"
+
+[15] "out_paralogs"             "out_paralogs.lst"
+
+[19] "special_in_paralogs"      "special_in_paralogs.lst"
+[21] "special_out_paralogs"     "special_out_paralogs.lst"
+
+
+df <- read.table("experiments/RPKM_flybase/RPKM.tsv", sep = "\t", header = TRUE, fill = TRUE, stringsAsFactors = FALSE)
+df <- read.table("experiments/RPKM_flybase/RPKM.tsv", sep = "\t", header = TRUE, fill = TRUE, stringsAsFactors = FALSE)
+df <- read.table("experiments/RPKM_flybase/RPKM.tsv", sep = "\t", header = TRUE, fill = TRUE, stringsAsFactors = FALSE)
+df <- read.table("experiments/RPKM_flybase/RPKM.tsv", sep = "\t", header = TRUE, fill = TRUE, stringsAsFactors = FALSE)
+df <- read.table("experiments/RPKM_flybase/RPKM.tsv", sep = "\t", header = TRUE, fill = TRUE, stringsAsFactors = FALSE)
+
+
+
+
+write.table(expression_matrix, "expression_matrix.tsv", header = TRUE, sep = "\t", row.names = FALSE, quote = FALSE)
+
+
+orthogroups_df <- read.table("experiments/test_diet_P_&_M_filtered/orthogroups_more_than_5.txt", 
+                            col.names = "Orthogroup", 
+                            stringsAsFactors = FALSE)
+
+con_orthologs              
+in_paralogs
+out_paralogs            
+special_in_paralogs      
+special_out_paralogs     
+
+dmel_dsec_dsim_filtered_
+
+dmel_dsec_dsim_conserved_orthologs.tsv
+
+con_orthologs <- con_orthologs %>% 
+  filter(Family %in% orthogroups_df$Orthogroup)
+
+in_paralogs <- in_paralogs %>% 
+  filter(Family %in% orthogroups_df$Orthogroup)
+
+out_paralogs <- out_paralogs %>% 
+  filter(Family %in% orthogroups_df$Orthogroup)
+
+special_in_paralogs <- special_in_paralogs %>% 
+  filter(Family %in% orthogroups_df$Orthogroup)
+
+special_out_paralogs <- special_out_paralogs %>% 
+  filter(Family %in% orthogroups_df$Orthogroup)
+
+families.df <- families.df %>% 
+  filter(Orthogroup %in% orthogroups_df$Orthogroup)
+
+
+write.table(families.df, "experiments/test_diet_P_&_M_filtered/orthogroups_filtered_more_than_5.tsv", 
+            header = TRUE, sep = "\t", row.names = FALSE, quote = FALSE)
+
+write.table(in_paralogs, "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_in_paralogs.tsv", 
+            header = TRUE, sep = "\t", row.names = FALSE, quote = FALSE)
+
+write.table(out_paralogs, "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_out_paralogs.tsv", 
+            header = TRUE, sep = "\t", row.names = FALSE, quote = FALSE)
+
+write.table(special_in_paralogs, "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_special_in_paralogs.tsv", 
+            header = TRUE, sep = "\t", row.names = FALSE, quote = FALSE)
+
+write.table(special_out_paralogs, "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_special_out_paralogs.tsv", 
+            header = TRUE, sep = "\t", row.names = FALSE, quote = FALSE)
