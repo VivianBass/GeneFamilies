@@ -337,37 +337,6 @@ aggregate_TPM("path/to/kallisto/output", "path/to/transcript_to_gene_map.txt", "
 ## Step 3: Quantify Gene Expression with Kallisto
 ## Step 4: Extract TPM values
 
-
-
-
-
-
-### ⚠️ **Important Note**
-
-- Ensure the GFF file is unzipped before running the `gffread` command, as compressed files are not supported. 
-
-```bash
-gunzip /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<gfffile.gff.gz>
-```
-
-- Clean and adjust FASTA files for both Drosophila melanogaster (dmel) and Drosophila sechellia (dsec) to ensure compatibility: 
-
-1. **Remove Line Breaks**:
-
-```bash
-zcat /media/BioNAS/ag_hallab/EasyVectorOmics/material/references/<species>/<fastafile.fasta.gz> | awk 'NF' > cleaned.fasta
-```
-
-2. **Adjust Headers**:  
-- Simplify headers to retain only the chromosome names. 
-
-```bash
-awk '/^>/ {print $1; next} {print}' cleaned.fasta > cleaned_final.fasta
-```
-- Perform these steps for both species and ensure the cleaned files are saved in their respective directories.
-
-
-
 We ran kallisto with 
 kallisto index -i dmel_transcriptome.idx dmel_transcriptome.fa
  

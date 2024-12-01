@@ -44,6 +44,64 @@ exp.prof.dists <- function(gene.accessions,
 }
 
 
+
+
+exp.prof.dists_all <- function(gene.accessions,
+                          expression.profiles = rna.seq.exp.profils,
+                          expr.prof.gene.col = "FBpp_ID",
+                          tissues = setdiff(colnames(expression.profiles), c(expr.prof.gene.col, "Species")),
+                          dist.method = "euclidean") {
+    
+    all_genes <- unlist(gene.accessions)
+    exp.profs <- as.data.frame(expression.profiles[expression.profiles[[expr.prof.gene.col]] %in% all_genes, ])
+    species_groups <- split(exp.profs, exp.profs$Species)
+    
+    if (dist.method == "euclidean") {
+        distances <- lapply(species_groups, function(species_data) {
+            if (nrow(species_data) > 1) {
+                rownames(species_data) <- species_data[[expr.prof.gene.col]]
+                species_data <- species_data[, tissues]
+                
+                # Ensure numeric conversion
+                species_data <- sapply(species_data, as.numeric)
+                dist_matrix <- as.vector(dist(species_data, method = dist.method))
+                
+                return(dist_matrix)
+            }
+            return(NA)
+        })
+        return(distances)
+    }
+    
+    if (dist.method == "angle") {
+        angles <- lapply(species_groups, function(species_data) {
+            if (nrow(species_data) > 1) {
+                rownames(species_data) <- species_data[[expr.prof.gene.col]]
+                species_data <- species_data[, tissues]
+                
+                # Convert to numeric matrix
+                expr_matrix <- sapply(species_data, as.numeric)
+                
+                # Calculate pairwise angles
+                n <- nrow(expr_matrix)
+                angle_vector <- numeric()
+                
+                for (i in 1:(n-1)) {
+                    for (j in (i+1):n) {
+                        angle <- calculate_cosine_angle(expr_matrix[i,], expr_matrix[j,])
+                        angle_vector <- c(angle_vector, angle)
+                    }
+                }
+                
+                return(angle_vector)
+            }
+            return(NA)
+        })
+        return(angles)
+    }
+}
+
+
 #' Compute Euclidean Distances Between Gene Expression Profiles by Tissue
 #'
 #' @description Computes pairwise Euclidean distances between expression profiles of specified genes, optionally by each tissue. This function is useful for analyzing gene similarity within individual tissues or conditions.

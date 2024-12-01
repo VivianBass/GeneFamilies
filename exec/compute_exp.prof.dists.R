@@ -108,6 +108,16 @@ for (group in gene_groups) {
     }
 }
 
+# compute cosine angles distances
+#for (group in gene_groups) {
+#    if (exists(group, envir = .GlobalEnv)) {
+#        data_object <- get(group)
+#        dist_name <- paste0(group, "_cos_angles_dists")
+#        assign(dist_name, mclapply(data_object, exp.prof.dists, dist.method = "angle"))
+#        created_objects_angles <- c(created_objects_angles, dist_name)
+#    }
+#}
+
 save(list = created_objects_angles , file = file.path(output_data_dir, "exp.prof.angles.RData"))
 
 # ------------------------------------------------------------------------
@@ -124,5 +134,14 @@ for (group in gene_groups) {
         created_objects_angles_log2 <- c(created_objects_angles_log2, dist_name)
     }
 }
+
+#for (group in gene_groups) {
+#    if (exists(group, envir = .GlobalEnv)) {
+#        data_object <- get(group)
+#        dist_name <- paste0(group, "_cos_angles_dists_log2")
+#        assign(dist_name, mclapply(data_object, exp.prof.dists, expression.profiles = rna.seq.exp.profils_log2, dist.method = "angle"))
+#        created_objects_angles <- c(created_objects_angles, dist_name)
+#    }
+#}
 
 save(list = created_objects_angles_log2, file = file.path(output_data_dir, "exp.prof.angles.log2.RData"))

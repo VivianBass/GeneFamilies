@@ -51,7 +51,7 @@ families.counts.df <- families.df %>%
 
 # Add size column as sum of counts per row
 families.counts.df <- families.counts.df %>% rowwise() %>%
-               mutate(size = sum(c_across(all_of(gene_columns)))) %>% ungroup()
+                mutate(size = sum(c_across(all_of(gene_columns)))) %>% ungroup()
 
 # Group by Family and create nested lists for each family and species column
 families.lst <- families.df %>%

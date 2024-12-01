@@ -30,6 +30,14 @@
 
 
 
+
+- Add background information on the experiments, data availability, and the research context.
+
+
+- Remove redundant code to streamline the process.
+
+
+
 **Doubts and Issues**:
 
 
@@ -44,15 +52,8 @@
 
 **Next Steps**:
 
-- Refine and document the workflow’s four steps in detail.
-- Add background information on the experiments, data availability, and the research context.
-- Remove redundant code to streamline the process.
-- Report data descriptions: include tissue types, species, experimental conditions, and the number of gene families used.
-- Explain the vector space analysis for comparing gene expression.
-- Use spreadsheets to calculate expression ratios, e.g., log (te/tc) = log(te) - log(tc), to assess gene fold changes.
-- Specify the log base (2, 10, natural log) used for calculations.
-- Analyze gene expression differences between paralogs and orthologs in vector space.
-- Define a control group (referencing the relevant paper).
-- Calculate fold changes for all experimental conditions: diet vs. control, tissue vs. whole body.
+- 
+
+
 
 
