@@ -1,94 +1,94 @@
 
-**Date**:  28.11.2024
+**Date**: 28.11.2024  
 **Git Branch**: `Gene-Families-tests-Andre`
 
 ---
 
-**Tasks**:
+### **Tasks**:
 
+- Determine how to plot complete distances without calculating mean and median; create plot scripts for "all distances."
+- Plan how to conduct t-tests and Wilcoxon tests for the complete distances.
 
-- figure out , how to plot complete, create some plot scripts for complete
-- überlegen wie man t tests und wilcox für die completen machen kann
-
+**Data Loaded**:
+```R
 load(file.path(output_data_dir, "exp.prof.dists.RData"))
 load(file.path(output_data_dir, "exp.prof.dists.log2.RData"))
 
 load(file.path(output_data_dir, "exp.prof.angles.RData"))
 load(file.path(output_data_dir, "exp.prof.angles.log2.RData"))
+```
 
+Loaded datasets:
 
+- **Distance Data**:  
+  - `con_orthologs_v.lst_dists`, `con_orthologs_v.lst_dists_tissue`
+  - `in_paralogs_v.lst_dists`, `in_paralogs_v.lst_dists_tissue`
+  - `out_paralogs_v.lst_dists`, `out_paralogs_v.lst_dists_tissue`
+  - `special_in_paralogs_v.lst_dists`, `special_in_paralogs_v.lst_dists_tissue`
+  - `special_out_paralogs_v.lst_dists`, `special_out_paralogs_v.lst_dists_tissue`
 
+- **Log2-Transformed Distance Data**:  
+  - `con_orthologs_v.lst_dists_log2`, `con_orthologs_v.lst_dists_tissue_log2`
+  - `in_paralogs_v.lst_dists_log2`, `in_paralogs_v.lst_dists_tissue_log2`
+  - `out_paralogs_v.lst_dists_log2`, `out_paralogs_v.lst_dists_tissue_log2`
+  - `special_in_paralogs_v.lst_dists_log2`, `special_in_paralogs_v.lst_dists_tissue_log2`
+  - `special_out_paralogs_v.lst_dists_log2`, `special_out_paralogs_v.lst_dists_tissue_log2`
 
-- maybe also both log2 for rpkm counts not normalized and normalized / any difference?
-- So please, get the logarithm of the original tpm values and after that normalize the values between 0 and 1, and then you can calculate the distances
-yes , so basically rpkm values (counts) -> log2 transform -> normalize -> distances etc
-- you can use a count so you don't get negative values, for example 1, as you said before. 
-Please check if you have negative values, if so:
-Get the log2(tpm+1), then normalize the values between 0 and 1 and then calculate the distances
-- exactly, if you get negative values you can add 1 to the counts so you get log2(value+1), don't add 1 before the log2 calculation
-- if i log2 transform normilezed values -> negative
+- **Cosine Angles Data**:  
+  - `con_orthologs_v.lst_cos_angles_dists`
+  - `in_paralogs_v.lst_cos_angles_dists`
+  - `out_paralogs_v.lst_cos_angles_dists`
+  - `special_in_paralogs_v.lst_cos_angles_dists`
+  - `special_out_paralogs_v.lst_cos_angles_dists`
 
-- log2 transform values before distance calculation -> rna.seq.exp.profils_log2
+- **Log2-Transformed Cosine Angles Data**:  
+  - `con_orthologs_v.lst_cos_angles_dists_log2`
+  - `in_paralogs_v.lst_cos_angles_dists_log2`
+  - `out_paralogs_v.lst_cos_angles_dists_log2`
+  - `special_in_paralogs_v.lst_cos_angles_dists_log2`
+  - `special_out_paralogs_v.lst_cos_angles_dists_log2`
 
+---
 
-- see if any negative values afterwards, and if this causes an issue
+### **Key Tasks**:
 
-- separate plots for t-test and wilcoxon
+- **Plot Complete Distances**:
+  - We need to create plots for **all distances** (without calculating mean or median).
+  - The script should handle plotting of complete distance matrices for both **Euclidean** and **Angular** distance measures, with and without log transformation.
 
-- calculate statistics for everything and make plots for everything
+- **t-Test and Wilcoxon Test**:
+  - Conduct t-tests and Wilcoxon tests on the **complete distances**.
+  - Separate plots should be created for **t-test** and **Wilcoxon test** results, as combining both annotations in a single plot is not feasible.
 
+- **Distance Methods**:
+  - The function should be flexible to handle both **Euclidean distance** and **Angular (Cosine) distance** measures.
+  - Both **raw** and **log2-transformed** distance measures should be included for the tests.
+  
+  **Required tests**:
+  - **All distances (Euclidean)**
+  - **Mean (Euclidean)**
+  - **Median (Euclidean)**
+  - **All distances (Euclidean) with Log2**
+  - **Mean (Euclidean) with Log2**
+  - **Median (Euclidean) with Log2**
+  - **All distances (Angular)**
+  - **Mean (Angular)**
+  - **Median (Angular)**
+  - **All distances (Angular) with Log2**
+  - **Mean (Angular) with Log2**
+  - **Median (Angular) with Log2**
 
+- **Separate Plots for t-test and Wilcoxon test**:
+  - Generate individual plots for t-tests and Wilcoxon tests for each experiment (i.e., for mean, median, and all distances).
 
+---
 
-- adding angles distance calculation scripts
-your vectors, as I understand your code, are the genes in all tissues, so for gene1 if you have 4 tissues you will have something like
- 
-gene_id | tissue1 | tissue2 | tissue3 | tissue4
-fbPP            0.9          3.4              5.4           0.2
- 
-so your vector will be [0.9,3.4,5.4,0.2]
- 
-this is how you are calculating the euclidiean distance now
-You can do something like this I think
-# Expression values in vector form
-gene1 <- c(23.19, 12.34, 8.45)
-gene2 <- c(2.50, 9.87, 11.23)
- 
-# Dot product
-dot_product <- sum(gene1 * gene2)
- 
-# Magnitudes
-magnitude_gene1 <- sqrt(sum(gene1^2))
-magnitude_gene2 <- sqrt(sum(gene2^2))
- 
-# Cosine
-cosine_angle <- dot_product / (magnitude_gene1 * magnitude_gene2)
+### **Next Steps**:
 
-
-
-
-
-**Doubts and Issues**:
-
-- should i make separate scripts for cosine angles distnaces and the euclidean distances? or all in one script?
-
-- how to handle log transformed negative values? 3 cases of log transformed values:
-- log transform before of after distance calculation?? i did afterwards 
-
-- for cosine angles distances, they are already per tissue, somehow, do i need per tissue and overall like in euclidean and how ?
-- there are cosine distances and also cosine angles , Which should i use, or basically just the formula i got 
-
-
-- need to clarify which statistics i need to calculate , 
-
-- what about genefamilies
-
-- log transform rna.seq.exp.profils first ??
-
-
-**Next Steps**:
 
 
 ---
 
-**Code:**
+**Doubts and Issues**:
+
+

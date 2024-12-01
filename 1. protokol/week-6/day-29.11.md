@@ -1,121 +1,58 @@
 
-**Date**:  28.11.2024
+**Date**: 29.11.2024  
 **Git Branch**: `Gene-Families-tests-Andre`
 
----
+### **Summary**:
 
-**Tasks**:
+- Conducted a new experiment with **filtered orthogroups** (at least 6 gene pairs per group) from 3 species, focusing only on distinct families/orthogroups.
+- Created a new test directory: `experiments/test_diet_P_&_M_filtered`.
+  
+### **Examples**:
 
+1. **Load Gene Expression Data**:
+   ```R
+   input.args[[1]] <- "experiments/test_diet_P_&_M_filtered/3sp_tpm_all.tsv"
+   ```
 
-- figure out , how to plot complete, create some plot scripts for complete
-- überlegen wie man t tests und wilcox für die completen machen kann
+2. **Load Gene Groups Data**:
+   ```R
+   input.args[[1]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_con_orthologs.tsv"
+   input.args[[2]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_in_paralogs.tsv"
+   input.args[[3]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_out_paralogs.tsv"
+   input.args[[4]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_special_in_paralogs.tsv"
+   input.args[[5]] <- "experiments/test_diet_P_&_M_filtered/dmel_dsec_dsim_filtered_special_out_paralogs.tsv"
+   ```
 
-load(file.path(output_data_dir, "exp.prof.dists.RData"))
-
- [4] "con_orthologs_v.lst_dists"
- [5] "con_orthologs_v.lst_dists_tissue"
-
- [9] "in_paralogs_v.lst_dists"
-[10] "in_paralogs_v.lst_dists_tissue"
-
-[11] "out_paralogs_v.lst_dists"
-[12] "out_paralogs_v.lst_dists_tissue"
-
-[17] "special_in_paralogs_v.lst_dists"
-[18] "special_in_paralogs_v.lst_dists_tissue"
-
-[19] "special_out_paralogs_v.lst_dists"
-[20] "special_out_paralogs_v.lst_dists_tissue"
-
-
-load(file.path(output_data_dir, "exp.prof.dists.log2.RData"))
-
- [4] "con_orthologs_v.lst_dists_log2"
- [5] "con_orthologs_v.lst_dists_tissue_log2"
-
- [9] "in_paralogs_v.lst_dists_log2"
-[10] "in_paralogs_v.lst_dists_tissue_log2"
-
-[11] "out_paralogs_v.lst_dists_log2"
-[12] "out_paralogs_v.lst_dists_tissue_log2"
-
-[17] "special_in_paralogs_v.lst_dists_log2"
-[18] "special_in_paralogs_v.lst_dists_tissue_log2"
-
-[19] "special_out_paralogs_v.lst_dists_log2"
-[20] "special_out_paralogs_v.lst_dists_tissue_log2"
-
-
-load(file.path(output_data_dir, "exp.prof.angles.RData"))
-
- [4] "con_orthologs_v.lst_cos_angles_dists"
-                     
- [8] "in_paralogs_v.lst_cos_angles_dists"
-
- [9] "out_paralogs_v.lst_cos_angles_dists"
-
-[14] "special_in_paralogs_v.lst_cos_angles_dists"
-
-[15] "special_out_paralogs_v.lst_cos_angles_dists"
-
-
-load(file.path(output_data_dir, "exp.prof.angles.log2.RData"))
-
- [4] "con_orthologs_v.lst_cos_angles_dists_log2"
-
- [8] "in_paralogs_v.lst_cos_angles_dists_log2"
-
- [9] "out_paralogs_v.lst_cos_angles_dists_log2"
-
-[14] "special_in_paralogs_v.lst_cos_angles_dists_log2"
-
-[15] "special_out_paralogs_v.lst_cos_angles_dists_log2"
-
-
-- t-test, wilcox test for the complete expression distances
+3. **Load Gene Families Data**:
+   ```R
+   input.args[[1]] <- "experiments/test_diet_P_&_M_filtered/orthogroups_filtered_more_than_5.tsv"
+   ```
 
 
 
-- new experiment with filtered orthogroups ( with at least 6 gene pairs)
-
-- combine all plot scripts, redundant code etc. 
-
-- documentation 
+**Doubts and Issues**:
 
 
+- how to accuratly interprete all those results ??
 
-
-
-
-
-
-
-
-
-
-
-# Get all values from nested list
-all_values <- unlist(con_orthologs_v.lst_cos_angles_dists)
-
-# Check range
-range(all_values, na.rm = TRUE)
-
-
-> View(rna.seq.exp.profils)
+- cos_angles_dists are only in range [1] 0.000000 1.570796 is that right ? 
 
 > all_values <- unlist(con_orthologs_v.lst_cos_angles_dists)
 > range(all_values, na.rm = TRUE)
 [1] 0.000000 1.570796
 
 
-
-
-
-**Doubts and Issues**:
-
 **Next Steps**:
 
+- Refine and document the workflow’s four steps in detail.
+- Add background information on the experiments, data availability, and the research context.
+- Remove redundant code to streamline the process.
+- Report data descriptions: include tissue types, species, experimental conditions, and the number of gene families used.
+- Explain the vector space analysis for comparing gene expression.
+- Use spreadsheets to calculate expression ratios, e.g., log (te/tc) = log(te) - log(tc), to assess gene fold changes.
+- Specify the log base (2, 10, natural log) used for calculations.
+- Analyze gene expression differences between paralogs and orthologs in vector space.
+- Define a control group (referencing the relevant paper).
+- Calculate fold changes for all experimental conditions: diet vs. control, tissue vs. whole body.
 
----
 
-**Code:**
