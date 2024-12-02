@@ -108,3 +108,54 @@ validate_angle_dataframes <- function(df_list) {
     
     return(valid_dfs)
 }
+
+
+
+
+create_angle_versatility_plot <- function(data, plot_type, test_type) {
+    # Set up variables based on plot type
+    if (plot_type == "angle") {
+        y_var <- "angle.diag"
+        title <- "Expression Angle To Diagonal"
+        y_label <- "Relative Tissue Specificity"
+        output_name <- "expressionAngleToDiagonalBoxplot"
+    } else {
+        y_var <- "rel.vers"
+        title <- "Relative Expression Versatility"
+        y_label <- "Relative Tissue Versatility"
+        output_name <- "relativeExpressionVersatilityBoxplot"
+    }
+    
+    # Create plot
+    plot <- ggplot(data, aes(x = gene.type, y = .data[[y_var]], fill = gene.type)) +
+        geom_boxplot(outlier.shape = NA) +
+        geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
+        labs(title = title, y = y_label, x = "Gene Type") +
+        theme_pubr(border = TRUE) +
+        scale_y_continuous(breaks = seq(0, max(data[[y_var]], na.rm = TRUE), by = 0.1)) +
+        theme(
+            plot.title = element_text(size = 12, face = "bold", margin = margin(t = 20, b = 20), hjust = 0.5),
+            axis.title.x = element_text(size = 10, margin = margin(t = 20, b = 20), hjust = 0.5),
+            axis.title.y = element_text(size = 10, margin = margin(t = 20, r = 20, b = 20, l = 20)),
+            axis.text.x = element_text(size = 10),
+            plot.margin = margin(r = 30)
+        ) +
+        geom_signif(
+            comparisons = type_combinations,
+            test = test_type,
+            test.args = list(alternative = if(plot_type == "angle" || test_type == "wilcox.test") "greater" else "two.sided"),
+            map_signif_level = c("***" = 0.001, "**" = 0.01, "*" = 0.05, "ns" = 1),
+            step_increase = 0.05,
+            tip_length = 0.005,
+            vjust = 0.5,
+            color = "black",
+            size = 0.3,
+            textsize = 2.5
+        )
+    
+    # Save plot
+    ggsave(file.path(results_dir, paste0(output_name, "_", test_type, ".pdf")),
+           plot, width = 10, height = 8)
+    
+    return(plot)
+}
