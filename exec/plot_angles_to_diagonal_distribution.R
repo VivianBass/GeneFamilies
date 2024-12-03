@@ -1,31 +1,33 @@
 
-# Load environment variables to define directories for output data and results
-library(dotenv)
+# Import necessary libraries
+library(dotenv) # Load environment variables for directory paths
+library(dplyr) # Data manipulation
+library(tidyr) # Data tidying
+library(purrr) # Functional programming for data
+library(tibble) # Handling tidy data frames
+library(parallel) # Parallel processing for performance optimization
+library(ggplot2) # Data visualization
+library(ggsignif) # Add significance annotations to ggplots
+library(gridExtra) # Arrange multiple plots
+library(ggpubr) # Publication-ready ggplots
+library(rstatix) # Perform statistical tests (t-tests, Wilcoxon tests)
+
+# Load user-defined functions
+source("R/compute_funks.R") # Functions for computing distance statistics
+source("R/statistical_tests_tissue_funks.R") # Functions for performing statistical tests
+source("R/plot_distribution_tissue_funks.R") # Functions for creating and saving plots
+source("R/angles_funks.R")
+
+# Set output directories from environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
 
-# Create results directory if it doesn't exist
-if(!dir.exists(results_dir)) {
+# Ensure the results directory exists, create it if not
+if (!dir.exists(results_dir)) {
     dir.create(results_dir, recursive = TRUE)
 }
 
-message("USAGE: Rscript exec/plot_exp.prof.dists_angles.R")
-
-# Libraries for efficient data handling
-library(dplyr)
-library(tidyr)
-library(purrr)
-library(parallel)
-
-# Libraries for data visualization
-library(RColorBrewer)
-library(ggplot2)
-library(ggsignif)
-library(gridExtra)
-library(ggpubr)
-
-# Source custom functions
-source("R/angles_funks.R")
+message("USAGE: Rscript exec/plot_angles_to_diagonal_distribution_tissue.R")
 
 # ------------------------------------------------------------------------
 
