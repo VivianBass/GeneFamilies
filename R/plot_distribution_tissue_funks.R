@@ -3,6 +3,9 @@ boxplots <- function(data, type_combinations, test_type, y_breaks, title_prefix 
     # Calculate counts per type
     counts <- table(data$Type)
     
+    # Calculate the mean of the Distance for the horizontal line
+    hline_value <- mean(aggregate(Distance ~ Type, data = data, FUN = mean)$Distance)
+
     ggplot(data, aes(x = Type, y = Distance, fill = Type)) +
         geom_boxplot(outlier.shape = NA) +
         geom_jitter(width = 0.1, alpha = 0.3, size = 1) +
@@ -15,15 +18,25 @@ boxplots <- function(data, type_combinations, test_type, y_breaks, title_prefix 
             color = "red"
         ) +
         geom_hline(
-            yintercept = mean(tapply(data$Distance, data$Type, mean)),
+            yintercept = hline_value,
             color = "red",
             linetype = "solid",
             linewidth = 0.5
         ) +
+        annotate(
+            "text",
+            x = -Inf,
+            y = hline_value,
+            label = sprintf("Mean: %.2f", hline_value),
+            hjust = -0.05,
+            vjust = -0.5,
+            color = "#009c22",
+            size = 3
+        ) +
         labs(
             title = paste(title_prefix, paste0("(", test_type, ")")), 
             y = "Distance",
-            fill = "Gene Groups"
+            fill = "Type: "
         ) +
         theme_pubr(border = TRUE) +
         scale_y_continuous(breaks = y_breaks) +

@@ -14,8 +14,8 @@ library(rstatix) # Perform statistical tests (t-tests, Wilcoxon tests)
 
 # Load user-defined functions
 source("R/compute_funks.R") # Functions for computing distance statistics
-source("R/statistical_tests_funks.R") # Functions for performing statistical tests
-source("R/plot_distribution_funks.R") # Functions for creating and saving plots
+source("R/statistical_tests_tissue_funks.R") # Functions for performing statistical tests
+source("R/plot_distribution_tissue_funks.R") # Functions for creating and saving plots
 
 # Set output directories from environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
@@ -29,23 +29,26 @@ if (!dir.exists(results_dir)) {
 message("USAGE: Rscript exec/plot_exp.prof.dists_euclidean_tissue_distributions.R")
 
 # ------------------------------------------------------------------------
+# Process and Analyze Euclidean Distance Statistics for Tissues
+# ------------------------------------------------------------------------
 
-# Process regular data
+# Process statistics (mean, median) for regular data
 regular_data <- process_tissue_statistics(
     file.path(output_data_dir, "exp.prof.dists_statistics.RData"),
     "_tissue_stats$",
     ".lst_dists_tissue_stats"
 )
 
-# Process log2 data
+# Process summary statistics (mean, median) for log2-transformed data
 log2_data <- process_tissue_statistics(
     file.path(output_data_dir, "exp.prof.dists_statistics_log2.RData"),
     "_tissue_log2_stats$",
     ".lst_dists_tissue_log2_stats"
 )
 
-# Perform statistical tests (t-test, Wilcoxon test) for computed distances
-# Save the results in a CSV summary
+# Perform statistical tests (t-test, Wilcoxon test) on statistics (mean and median)
+# and save results in a CSV summary
+
 # For regular data
 mean_data <- regular_data$mean
 median_data <- regular_data$median
@@ -59,7 +62,7 @@ log2_median_data <- log2_data$median
 test_results_log2 <- perform_tissue_statistical_analysis(log2_mean_data, log2_median_data, results_dir, is_log2 = TRUE)
 
 
-# Generate and save boxplots for Euclidean distance distributions
+# Generate and save boxplots comparing Euclidean distance distributions for tissues
 create_tissue_boxplots_combined(
     mean_data = regular_data$mean,
     median_data = regular_data$median,
@@ -72,19 +75,20 @@ create_tissue_boxplots_combined(
 # Euclidean Distances All (without mean/median statistics)
 # ------------------------------------------------------------------------
 
-# For regular data 
+# Load and process full Euclidean distance for regular data
 load(file.path(output_data_dir, "exp.prof.dists.RData"))
 loaded_objects <- ls()
 complete_dists_tissue <- process_tissue_distances(".lst_dists_tissue$", loaded_objects)
 
-# For log2 data
+# Load and process full Euclidean distance for log2-transformed data
 load(file.path(output_data_dir, "exp.prof.dists.log2.RData"))
 loaded_objects <- ls()
 complete_dists_tissue_log2 <- process_tissue_distances(".lst_dists_tissue_log2$", loaded_objects)
 
 
-# Perform statistical tests (t-test, Wilcoxon test) for computed distances
-# Save the results in a CSV summary
+# Perform statistical tests (t-test, Wilcoxon test) on full Euclidean distance distributions
+# and save results in a CSV summary
+
 # For regular data
 test_results_regular_complete <- perform_tissue_statistical_analysis_complete(
     complete_dists_tissue,
@@ -101,10 +105,18 @@ test_results_log2_complete <- perform_tissue_statistical_analysis_complete(
     is_log2 = TRUE
 )
 
-# Generate and save boxplots for all Euclidean distance distributions
+# Generate and save boxplots for full Euclidean distance distributions
 create_tissue_boxplots_all_combined(
     complete_dists_tissue,
     complete_dists_tissue_log2,
     results_dir, "tissue_boxplot_all"
 )
+
+
+
+
+
+
+
+
 

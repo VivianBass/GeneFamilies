@@ -16,6 +16,9 @@
 
 - also need the statistics for the angles_to_diagonals
 
+- angles to diagonal also for log2 data
+- angles to diagonal also for angles distances data
+
 - improve documentation, 
 - improve Lab Book
 - documentation for the slurm scripts for running the tools etc. 
@@ -25,7 +28,13 @@
 - you have to put in the presentation the figures that you want to use
 
 
+- add the detailed Descriptions of the functions into roxagen2 documentation
 **Doubts and Issues**:
+
+- have to reassure the values in the plots are right and also the annotated values
+- also account for mean and median values (not only mean )
+
+- angle to diagonal for which data / distances
 
 **Next Steps**:
 

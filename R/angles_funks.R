@@ -61,8 +61,6 @@ calculate_angles <- function(genes, rna.seq.exp.profils, tissues) {
     filter(!is.na(angle.diag) & angle.diag != "NA" & angle.diag != "")
 }
 
-
-
 #' Validate Data Frames and Retain Original Names
 #'
 #' This function validates a list of data frames, keeping only those that are non-null and have at least one row. 
@@ -109,9 +107,59 @@ validate_angle_dataframes <- function(df_list) {
     return(valid_dfs)
 }
 
-
-
-
+#' Create Angle or Versatility Plot
+#'
+#' Creates a boxplot visualization for either expression angle to diagonal or relative expression versatility,
+#' including statistical significance comparisons between gene types.
+#'
+#' @param data A data frame containing the following columns:
+#'   \itemize{
+#'     \item gene.type: Factor indicating the type of gene
+#'     \item angle.diag or rel.vers: Numeric values for plotting (depending on plot_type)
+#'   }
+#' @param plot_type Character string specifying the type of plot to create:
+#'   \itemize{
+#'     \item "angle": Creates an Expression Angle to Diagonal plot
+#'     \item "versatility": Creates a Relative Expression Versatility plot
+#'   }
+#' @param test_type Character string specifying the statistical test to use (e.g., "wilcox.test")
+#'
+#' @return A ggplot object containing the generated plot
+#'
+#' @details
+#' The function creates a boxplot with jittered points and statistical significance indicators.
+#' For angle plots, the statistical test uses a "greater" alternative hypothesis,
+#' while versatility plots use a "two.sided" alternative.
+#'
+#' @note
+#' Requires the following global variables to be defined:
+#' \itemize{
+#'   \item type_combinations: List of gene type pairs for statistical comparison
+#'   \item results_dir: Directory path for saving the plot
+#' }
+#'
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_jitter labs scale_y_continuous theme ggsave
+#' @importFrom ggpubr theme_pubr
+#' @importFrom ggsignif geom_signif
+#'
+#' @examples
+#' \dontrun{
+#' data <- data.frame(
+#'   gene.type = factor(rep(c("TypeA", "TypeB"), each = 100)),
+#'   angle.diag = rnorm(200),
+#'   rel.vers = rnorm(200)
+#' )
+#' type_combinations <- list(c("TypeA", "TypeB"))
+#' results_dir <- "path/to/results"
+#' 
+#' # Create angle plot
+#' plot1 <- create_angle_versatility_plot(data, "angle", "wilcox.test")
+#' 
+#' # Create versatility plot
+#' plot2 <- create_angle_versatility_plot(data, "versatility", "wilcox.test")
+#' }
+#'
+#' @export
 create_angle_versatility_plot <- function(data, plot_type, test_type) {
     # Set up variables based on plot type
     if (plot_type == "angle") {
@@ -159,3 +207,59 @@ create_angle_versatility_plot <- function(data, plot_type, test_type) {
     
     return(plot)
 }
+
+
+
+#' Create Angle or Versatility Plot
+#'
+#' Creates a boxplot visualization for either expression angle to diagonal or relative expression versatility,
+#' including statistical significance comparisons between gene types.
+#'
+#' @param data A data frame containing the following columns:
+#'   \itemize{
+#'     \item gene.type: Factor indicating the type of gene
+#'     \item angle.diag or rel.vers: Numeric values for plotting (depending on plot_type)
+#'   }
+#' @param plot_type Character string specifying the type of plot to create:
+#'   \itemize{
+#'     \item "angle": Creates an Expression Angle to Diagonal plot
+#'     \item "versatility": Creates a Relative Expression Versatility plot
+#'   }
+#' @param test_type Character string specifying the statistical test to use (e.g., "wilcox.test")
+#'
+#' @return A ggplot object containing the generated plot
+#'
+#' @details
+#' The function creates a boxplot with jittered points and statistical significance indicators.
+#' For angle plots, the statistical test uses a "greater" alternative hypothesis,
+#' while versatility plots use a "two.sided" alternative.
+#'
+#' @note
+#' Requires the following global variables to be defined:
+#' \itemize{
+#'   \item type_combinations: List of gene type pairs for statistical comparison
+#'   \item results_dir: Directory path for saving the plot
+#' }
+#'
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_jitter labs scale_y_continuous theme ggsave
+#' @importFrom ggpubr theme_pubr
+#' @importFrom ggsignif geom_signif
+#'
+#' @examples
+#' \dontrun{
+#' data <- data.frame(
+#'   gene.type = factor(rep(c("TypeA", "TypeB"), each = 100)),
+#'   angle.diag = rnorm(200),
+#'   rel.vers = rnorm(200)
+#' )
+#' type_combinations <- list(c("TypeA", "TypeB"))
+#' results_dir <- "path/to/results"
+#' 
+#' # Create angle plot
+#' plot1 <- create_angle_versatility_plot(data, "angle", "wilcox.test")
+#' 
+#' # Create versatility plot
+#' plot2 <- create_angle_versatility_plot(data, "versatility", "wilcox.test")
+#' }
+#'
+#' @export

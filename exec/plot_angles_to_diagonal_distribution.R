@@ -14,8 +14,6 @@ library(rstatix) # Perform statistical tests (t-tests, Wilcoxon tests)
 
 # Load user-defined functions
 source("R/compute_funks.R") # Functions for computing distance statistics
-source("R/statistical_tests_tissue_funks.R") # Functions for performing statistical tests
-source("R/plot_distribution_tissue_funks.R") # Functions for creating and saving plots
 source("R/angles_funks.R")
 
 # Set output directories from environment variables
@@ -27,7 +25,7 @@ if (!dir.exists(results_dir)) {
     dir.create(results_dir, recursive = TRUE)
 }
 
-message("USAGE: Rscript exec/plot_angles_to_diagonal_distribution_tissue.R")
+message("USAGE: Rscript exec/plot_angles_to_diagonal_distribution.R")
 
 # ------------------------------------------------------------------------
 
