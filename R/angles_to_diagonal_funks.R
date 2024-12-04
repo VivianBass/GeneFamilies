@@ -214,6 +214,7 @@ create_single_plot <- function(data, plot_type, test_type) {
 #' @param data Data frame with gene expression data
 #' @param test_types Vector of statistical tests to perform
 #' @param results_dir Directory path for saving output PDFs
+#' @param suffix Suffix to add to the output file names
 #'
 #' @importFrom gridExtra grid.arrange
 #' @importFrom ggplot2 ggsave
@@ -224,11 +225,18 @@ create_single_plot <- function(data, plot_type, test_type) {
 #' }
 #'
 #' @export
-create_angle_versatility_plots <- function(data, test_types, results_dir) {
+create_angle_versatility_plots <- function(data, test_types, results_dir, suffix = "") {
     angle_plots <- list()
     versatility_plots <- list()
     
+    # Setup type combinations for significance testing
+    gene_types <- levels(data$gene.type)
+    type_combinations <- combn(gene_types, 2, simplify = FALSE)
+    
     for (test in test_types) {
+        # Assign type_combinations to global environment for create_single_plot
+        assign("type_combinations", type_combinations, envir = .GlobalEnv)
+        
         angle_plots[[test]] <- create_single_plot(data, "angle", test)
         versatility_plots[[test]] <- create_single_plot(data, "versatility", test)
     }
@@ -237,10 +245,10 @@ create_angle_versatility_plots <- function(data, test_types, results_dir) {
     combined_angle_plots <- grid.arrange(
         grobs = list(angle_plots[["t.test"]], angle_plots[["wilcox.test"]]),
         ncol = 2,
-        top = "Expression Angle Plots"
+        top = paste0("Expression Angle Plots", suffix)
     )
     ggsave(
-        file.path(results_dir, "combined_angle_plots.pdf"),
+        file.path(results_dir, paste0("combined_angle_plots", suffix, ".pdf")),
         combined_angle_plots,
         width = 20, height = 8
     )
@@ -249,12 +257,155 @@ create_angle_versatility_plots <- function(data, test_types, results_dir) {
     combined_versatility_plots <- grid.arrange(
         grobs = list(versatility_plots[["t.test"]], versatility_plots[["wilcox.test"]]),
         ncol = 2,
-        top = "Expression Versatility Plots"
+        top = paste0("Expression Versatility Plots", suffix)
     )
     ggsave(
-        file.path(results_dir, "combined_versatility_plots.pdf"),
+        file.path(results_dir, paste0("combined_versatility_plots", suffix, ".pdf")),
         combined_versatility_plots,
         width = 20, height = 8
     )
 }
 
+
+# --------------------------------------------------------------------------------
+
+#' Perform Statistical Tests on Gene Expression Data
+#'
+#' @param data Data frame containing gene expression data with columns:
+#'   - gene.type: Factor indicating gene groups for comparison
+#'   - Additional columns specified by column_name parameter
+#' @param valid_groups List containing valid gene groups for comparison
+#' @param column_name String specifying which column to analyze (e.g., "angle.diag" or "rel.vers")
+#'
+#' @return List containing two elements:
+#'   - t_test: Results of t-test with adjusted p-values and significance levels
+#'   - wilcox: Results of Wilcoxon test with adjusted p-values and significance levels
+#'   Returns NULL if fewer than 2 valid groups are available
+#'
+#' @details
+#' Performs both t-test and Wilcoxon test with "greater" alternative hypothesis.
+#' P-values are adjusted using Benjamini-Hochberg method.
+#' Significance levels are coded as:
+#'   - "ns": p >= 0.05
+#'   - "*": p < 0.05
+#'   - "**": p < 0.01
+#'   - "***": p < 0.001
+#'
+#' @importFrom dplyr filter mutate case_when
+#' @importFrom rstatix t_test wilcox_test adjust_pvalue
+#'
+#' @examples
+#' \dontrun{
+#' data <- data.frame(
+#'   gene.type = factor(c("type1", "type2", "type1", "type2")),
+#'   angle.diag = c(0.5, 0.7, 0.6, 0.8)
+#' )
+#' valid_groups <- list(groups = c("type1", "type2"))
+#' results <- perform_tests(data, valid_groups, "angle.diag")
+#' }
+perform_tests <- function(data, valid_groups, column_name) {
+    if (length(valid_groups[[1]]) >= 2) {
+        formula <- as.formula(paste(column_name, "~ gene.type"))
+        
+        t_test_result <- data %>%
+            filter(gene.type %in% valid_groups[[1]]) %>%
+            t_test(formula, alternative = "greater") %>%
+            adjust_pvalue(method = "BH") %>%
+            mutate(analysis = column_name, 
+                   test_type = "t-test",
+                   p.adj.signif = case_when(
+                       p.adj >= 0.05 ~ "ns",
+                       p.adj < 0.001 ~ "***",
+                       p.adj < 0.01 ~ "**",
+                       p.adj < 0.05 ~ "*"
+                   ))
+        
+        wilcox_result <- data %>%
+            filter(gene.type %in% valid_groups[[1]]) %>%
+            wilcox_test(formula, alternative = "greater") %>%
+            adjust_pvalue(method = "BH") %>%
+            mutate(analysis = column_name, 
+                   test_type = "wilcox",
+                   p.adj.signif = case_when(
+                       p.adj >= 0.05 ~ "ns",
+                       p.adj < 0.001 ~ "***",
+                       p.adj < 0.01 ~ "**",
+                       p.adj < 0.05 ~ "*"
+                   ))
+        
+        return(list(t_test = t_test_result, wilcox = wilcox_result))
+    }
+    return(NULL)
+}
+
+
+#' Perform Statistical Tests for Two Data Frames
+#'
+#' @param df1 First data frame with columns 'gene.type', 'angle.diag', and 'rel.vers'
+#' @param df2 Second data frame with same structure as df1
+#' @param output_file Name of CSV file to save test results
+#'
+#' @return List containing test results:
+#'   - angle_t_test: T-test results for angle.diag
+#'   - angle_wilcox: Wilcoxon test results for angle.diag
+#'   - relvers_t_test: T-test results for rel.vers
+#'   - relvers_wilcox: Wilcoxon test results for rel.vers
+#'   - summary: Combined test results
+#'
+#' @importFrom dplyr bind_rows group_by summarise filter pull
+#' @importFrom utils write.csv
+#'
+#' @examples
+#' \dontrun{
+#' results <- perform_statistical_tests_for_columns(plot.df, plot.df_log2, "test_results.csv")
+#' }
+perform_statistical_tests_for_columns <- function(df1, df2, output_file) {
+    # Combine data frames and add a source column
+    combined_df <- bind_rows(
+        df1 %>% mutate(source = "df1"),
+        df2 %>% mutate(source = "df2")
+    )
+    
+    # Check for valid groups
+    valid_groups <- combined_df %>%
+        group_by(gene.type) %>%
+        summarise(n = n(), .groups = 'drop') %>%
+        filter(n > 1) %>%
+        pull(gene.type)
+    
+    # Perform tests
+    test_results <- tryCatch({
+        # Perform tests for angle.diag
+        angle_tests <- perform_tests(combined_df, list(angle = valid_groups), "angle.diag")
+        
+        # Perform tests for rel.vers
+        relvers_tests <- perform_tests(combined_df, list(relvers = valid_groups), "rel.vers")
+        
+        if (!is.null(angle_tests) && !is.null(relvers_tests)) {
+            test_summary <- bind_rows(
+                angle_tests$t_test,
+                angle_tests$wilcox,
+                relvers_tests$t_test,
+                relvers_tests$wilcox
+            )
+            
+            write.csv(test_summary,
+                     file.path(results_dir, output_file),
+                     row.names = FALSE)
+            message("Statistical tests summary exported to CSV")
+        }
+        
+        list(
+            angle_t_test = if(!is.null(angle_tests)) angle_tests$t_test else NULL,
+            angle_wilcox = if(!is.null(angle_tests)) angle_tests$wilcox else NULL,
+            relvers_t_test = if(!is.null(relvers_tests)) relvers_tests$t_test else NULL,
+            relvers_wilcox = if(!is.null(relvers_tests)) relvers_tests$wilcox else NULL,
+            summary = if(exists("test_summary")) test_summary else NULL
+        )
+    }, error = function(e) {
+        message("Error in statistical tests: ", e$message)
+        return(NULL)
+    })
+    
+    return(test_results)
+}

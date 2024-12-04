@@ -19,8 +19,8 @@ library(tibble)
 library(parallel)
                     
 # functions sourced from:
-source("R/angles_funks.R")
-source("R/expression_funks.R")
+source("R/angles_to_diagonal_funks.R")
+source("R/compute_funks.R")
 
 # ------------------------------------------------------------------------
 
@@ -31,10 +31,12 @@ gene_groups <- loaded_objects[grepl("_v\\.lst$", loaded_objects)]
 
 # select your rna.seq.exp.profil data set and filter invalid Data, rows with NA etc
 load(file.path(output_data_dir, "gene_expression.RData"))
-
 tissues <- setdiff(colnames(rna.seq.exp.profils), c("FBpp_ID", "Species"))
+tissues_log2 <- setdiff(colnames(rna.seq.exp.profils_log2), c("FBpp_ID", "Species"))
+
 # --------------------------------------------------------------------------------
 
+# compute angles to diagonal with regular data
 angle_results <- list()
 
 for(group in gene_groups) {
@@ -49,6 +51,23 @@ for(group in gene_groups) {
 if(length(angle_results) == 0) {stop("No results to save")}
 
 save(list = names(angle_results), file = file.path(output_data_dir, "exp.prof.dists_angles.RData"))
+
+
+# compute angles to diagonal with log2 transformed data
+angle_results_log2 <- list()
+
+for(group in gene_groups) {
+
+  gene_list <- get(group)
+  df_name <- paste0(gsub("_v\\.lst$", "", group), ".expr.angle.diag_log2.df")
+  angle_results_log2[[df_name]] <- calculate_angles(gene_list, rna.seq.exp.profils_log2, tissues_log2)
+  assign(df_name, angle_results_log2[[df_name]])
+}
+
+# Save the results
+if(length(angle_results_log2) == 0) {stop("No results to save")}
+
+save(list = names(angle_results_log2), file = file.path(output_data_dir, "exp.prof.dists_angles_log2.RData"))
 
 
 
