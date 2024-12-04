@@ -68,42 +68,26 @@ load_data_frame <- function(file_path, file_type = NULL) {
     return(as.data.frame(df))
 }
 
-
-#' Create Nested List from Data Frame
+#' Create Nested List from Gene Family Data
 #'
-#' @description 
-#' Creates a nested list from a data frame containing gene family information.
-#' The structure of the output list depends on the `header_type` argument, which 
-#' determines whether the data contains ortholog or paralog information.
+#' @param df Data frame with gene family information (Family, Gene, Gene_species, and Ortholog/Paralog data)
+#' @param header_type String specifying data type ("Ortholog" or "Paralog")
 #'
-#' @param df A data frame containing gene family data. The data should include 
-#'   columns for `Family`, `Gene`, `Gene_species`, and either `Ortholog` or `Paralog`
-#'   information, depending on the `header_type`.
-#' @param header_type A string specifying the type of information to use for the list. 
-#'   It can either be `"Ortholog"` or `"Paralog"`, indicating which gene column to use.
-#'
-#' @return A nested list, where each family is represented as a list of genes, 
-#'   with each gene further nested by species, containing either ortholog or paralog 
-#'   data depending on the `header_type`. 
-#'
-#' @details 
-#' This function expects a data frame where the columns represent gene family data.
-#' The columns are checked against the required ones for either ortholog or paralog information, 
-#' and an error is raised if any are missing. The resulting list is organized by family, 
-#' and each family contains nested gene and species-level information.
+#' @return Nested list organized by family, containing gene and species-level information
 #'
 #' @examples
-#' # Example: Create a nested list from a data frame with ortholog information
+#' \dontrun{
 #' df <- data.frame(
-#'   Family = c("Fam1", "Fam1", "Fam2"),
-#'   Gene = c("GeneA", "GeneB", "GeneC"),
-#'   Gene_species = c("Species1", "Species2", "Species1"),
-#'   Ortholog = c("Ortholog1", "Ortholog2", "Ortholog3"),
-#'   Ortholog_species = c("Species1", "Species2", "Species3")
+#'   Family = c("Fam1", "Fam1"),
+#'   Gene = c("GeneA", "GeneB"),
+#'   Gene_species = c("Sp1", "Sp2"),
+#'   Ortholog = c("Orth1", "Orth2"),
+#'   Ortholog_species = c("Sp1", "Sp2")
 #' )
-#' nested_list <- create_nested_list(df, header_type = "Ortholog")
-#' print(nested_list)
+#' nested_list <- create_nested_list(df, "Ortholog")
+#' }
 #'
+#' @importFrom dplyr group_by summarise across mutate
 #' @export
 create_nested_list <- function(df, header_type) {
     # Handle empty dataframe

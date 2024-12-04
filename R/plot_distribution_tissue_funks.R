@@ -1,10 +1,22 @@
-
+#' Create Statistical Boxplots with Annotations
+#'
+#' @param data A data frame containing columns 'Type' and 'Distance'
+#' @param type_combinations List of vectors, each containing two group names to compare
+#' @param test_type Character string specifying the statistical test
+#' @param y_breaks Numeric vector specifying the breaks for y-axis
+#' @param title_prefix Character string for plot title prefix
+#'
+#' @return A ggplot object with annotated boxplot
+#'
+#' @importFrom ggplot2 ggplot aes geom_boxplot geom_jitter stat_summary
+#' @importFrom ggpubr theme_pubr
 boxplots <- function(data, type_combinations, test_type, y_breaks, title_prefix = "Complete Expression Distances") {
     # Calculate counts per type
     counts <- table(data$Type)
     
-    # Calculate the mean of the Distance for the horizontal line
-    hline_value <- mean(aggregate(Distance ~ Type, data = data, FUN = mean)$Distance)
+    # Calculate the mean of means for each group using the Distance column
+    group_means <- tapply(data$Distance, data$Type, mean, na.rm = TRUE)
+    hline_value <- mean(group_means, na.rm = TRUE)
 
     ggplot(data, aes(x = Type, y = Distance, fill = Type)) +
         geom_boxplot(outlier.shape = NA) +
@@ -13,15 +25,27 @@ boxplots <- function(data, type_combinations, test_type, y_breaks, title_prefix 
             fun = mean,
             geom = "text",
             aes(label = sprintf("%.2f", after_stat(y))),
-            position = position_nudge(x = 0.5, y = 0),
-            size = 3,
-            color = "red"
+            position = position_dodge(width = 0.75),
+            size = 2.5,
+            color = "#470050",
+            vjust = 0.5,
+            hjust = -2.75
+        ) +
+        stat_summary(
+            fun = mean,
+            geom = "errorbar",
+            aes(ymin = after_stat(y), ymax = after_stat(y)),
+            width = 0.5,
+            linetype = "dashed",
+            linewidth = 1,
+            color = "#9b0000"
         ) +
         geom_hline(
             yintercept = hline_value,
             color = "red",
-            linetype = "solid",
-            linewidth = 0.5
+            linetype = "dotted",
+            linewidth = 0.5,
+            alpha = 0.7
         ) +
         annotate(
             "text",
@@ -30,8 +54,8 @@ boxplots <- function(data, type_combinations, test_type, y_breaks, title_prefix 
             label = sprintf("Mean: %.2f", hline_value),
             hjust = -0.05,
             vjust = -0.5,
-            color = "#009c22",
-            size = 3
+            color = "#470050",
+            size = 2.5
         ) +
         labs(
             title = paste(title_prefix, paste0("(", test_type, ")")), 
@@ -62,6 +86,18 @@ boxplots <- function(data, type_combinations, test_type, y_breaks, title_prefix 
         )
 }
 
+#' Create Combined Tissue Boxplots for Mean and Median Data
+#'
+#' @param mean_data Data frame containing mean expression distances
+#' @param median_data Data frame containing median expression distances
+#' @param log2_mean_data Data frame containing log2 mean distances
+#' @param log2_median_data Data frame containing log2 median distances
+#' @param results_dir Directory path for saving output files
+#'
+#' @return None (saves plots to files)
+#'
+#' @importFrom gridExtra marrangeGrob
+#' @importFrom ggplot2 ggsave
 create_tissue_boxplots_combined <- function(mean_data, median_data, log2_mean_data, log2_median_data, results_dir) {
     tissue_types <- unique(mean_data$Tissue)
     
@@ -119,7 +155,18 @@ create_tissue_boxplots_combined <- function(mean_data, median_data, log2_mean_da
     }
 }
 
-
+#' Create Combined Tissue Boxplots for Regular and Log2 Data
+#'
+#' @param regular_data Data frame containing regular expression distances
+#' @param log2_data Data frame containing log2 expression distances
+#' @param results_dir Directory path for saving output files
+#' @param filename_prefix Prefix for output filenames
+#'
+#' @return None (saves plots to files)
+#'
+#' @importFrom dplyr filter
+#' @importFrom gridExtra marrangeGrob
+#' @importFrom ggplot2 ggsave
 create_tissue_boxplots_all_combined <- function(regular_data, log2_data, results_dir, filename_prefix) {
     # Filter data
     df_regular_filtered <- regular_data %>% filter(is.finite(Distance))

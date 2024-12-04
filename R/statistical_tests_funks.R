@@ -1,15 +1,13 @@
 
-#' Perform Tissue-Specific Statistical Tests
+#' Perform Statistical Tests on Distance Data
 #'
-#' Conducts t-tests and Wilcoxon tests for comparing gene distances between types within tissues. 
-#' Results are adjusted for multiple comparisons using the Benjamini-Hochberg method.
+#' @param data Data frame with columns 'Type' and 'Distance'
+#' @param valid_groups List of valid groups for comparison
+#' @param analysis_type String indicating "mean" or "median" analysis
+#' @return List containing t-test and Wilcoxon test results, or NULL
 #'
-#' @param data A dataframe containing distance data with columns `Tissue`, `Type`, and `Distance`.
-#' @param valid_groups A named list of dataframes with valid `Tissue` and `Type` combinations for analysis.
-#' @param analysis_type A string indicating the analysis type ("mean" or "median").
-#' @return A list containing t-test and Wilcoxon test results as dataframes, or `NULL` if no valid groups are available.
-#' @examples
-#' perform_tissue_tests(data, valid_groups, "mean")
+#' @importFrom dplyr filter mutate case_when
+#' @importFrom rstatix t_test wilcox_test adjust_pvalue
 perform_tests <- function(data, valid_groups, analysis_type) {
     if (length(valid_groups[[analysis_type]]) >= 2) {
 
@@ -44,14 +42,18 @@ perform_tests <- function(data, valid_groups, analysis_type) {
     return(NULL)
 }
 
-
-
 # ---------------------------------------------------------------------------------
 
-# tp process the mean / median dataframes of euclidean and angles distances
-# to perform t-test and wilcox for euclidean and angles distances 
-
-
+#' Process Mean and Median Distance Data
+#'
+#' @param input_file Path to input RData file
+#' @param stats_pattern Pattern to match statistics objects
+#' @param output_file Name for output file
+#' @param output_data_dir Directory for output
+#' @return List containing processed mean and median data frames
+#'
+#' @importFrom tibble tibble
+#' @importFrom dplyr bind_rows
 process_distances <- function(input_file, stats_pattern, output_file, output_data_dir) {
     # Load data
     load(file.path(output_data_dir, input_file))
@@ -92,7 +94,14 @@ process_distances <- function(input_file, stats_pattern, output_file, output_dat
 }
 
 
-# t-tests and wilcocs test for mean and mendian statistics separately
+#' Perform Statistical Tests on Mean and Median Data
+#'
+#' @param data_list List containing mean and median data frames
+#' @param output_file Name for output CSV file
+#' @return List of test results for mean and median data
+#'
+#' @importFrom dplyr group_by summarise filter pull bind_rows
+#' @importFrom utils write.csv
 perform_statistical_tests <- function(data_list, output_file) {
     # Extract mean and median dataframes from the list
     df_mean <- data_list$mean
@@ -145,9 +154,14 @@ perform_statistical_tests <- function(data_list, output_file) {
 # ---------------------------------------------------------------------------------
 
 
-# tp process complete dataframes of euclidean and angles distances
-# to perform t-test and wilcox for euclidean and angles distances 
-
+#' Process Complete Distance Data
+#'
+#' @param data_pattern Pattern to match distance data objects
+#' @param loaded_objects List of loaded R objects
+#' @return Data frame of processed distances
+#'
+#' @importFrom purrr map_df
+#' @importFrom tibble tibble
 process_complete_distances <- function(data_pattern, loaded_objects) {
     data_names <- loaded_objects[grepl(data_pattern, loaded_objects)]
     
@@ -173,7 +187,14 @@ process_complete_distances <- function(data_pattern, loaded_objects) {
 
 
 
-# t-tests and wilcocs test for all distances (without mean and median statistics)
+#' Perform Statistical Tests on Complete Distance Data
+#'
+#' @param df_complete Data frame containing complete distance data
+#' @param output_file Name for output CSV file
+#' @return List containing t-test and Wilcoxon test results
+#'
+#' @importFrom dplyr group_by summarise filter pull bind_rows
+#' @importFrom rstatix t_test wilcox_test adjust_pvalue
 perform_statistical_tests_complete <- function(df_complete, output_file) {
     # Check for valid groups
     valid_groups <- df_complete %>%

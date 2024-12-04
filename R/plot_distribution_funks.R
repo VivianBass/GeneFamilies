@@ -58,7 +58,9 @@ distance_boxplot <- function(data,
         y_breaks <- seq(0, max(data[[metric]], na.rm = TRUE), by = 0.2)
     }
 
-    hline_value <- mean(aggregate(as.formula(paste(metric, "~ Type")), data = data, FUN = mean)[[metric]])
+    # Calculate the mean of means for each group
+    group_means <- tapply(data[[metric]], data$Type, mean, na.rm = TRUE)
+    hline_value <- mean(group_means, na.rm = TRUE)
     
     ggplot(data, aes(x = Type, y = .data[[metric]], fill = Type)) +
         geom_boxplot(outlier.shape = NA) +
@@ -67,15 +69,27 @@ distance_boxplot <- function(data,
             fun = mean,
             geom = "text",
             aes(label = sprintf("%.2f", after_stat(y))),
-            position = position_nudge(x = 0.5, y = 0),
-            size = 3,
-            color = "red"
+            position = position_dodge(width = 0.75),
+            size = 2.5,
+            color = "#470050",
+            vjust = 0.5,
+            hjust = -2.75
+        ) +
+        stat_summary(
+            fun = mean,
+            geom = "errorbar",
+            aes(ymin = after_stat(y), ymax = after_stat(y)),
+            width = 0.5,
+            linetype = "dashed",
+            linewidth = 1,
+            color = "#9b0000"
         ) +
         geom_hline(
             yintercept = hline_value,
             color = "red",
-            linetype = "solid",
-            linewidth = 0.5
+            linetype = "dotted",
+            linewidth = 0.5,
+            alpha = 0.7
         ) +
         annotate(
             "text",
@@ -84,8 +98,8 @@ distance_boxplot <- function(data,
             label = sprintf("Mean: %.2f", hline_value),
             hjust = -0.05,
             vjust = -0.5,
-            color = "#009c22",
-            size = 3
+            color = "#470050",
+            size = 2.5
         ) +
         labs(
             title = paste(title_prefix, paste0("(", test_type, ")")),
@@ -115,9 +129,6 @@ distance_boxplot <- function(data,
             plot.margin = margin(r = 30)
         )
 }
-
-
-
 
 #' Create Multiple Distance/Angle Boxplots with Statistical Tests
 #'
@@ -215,9 +226,7 @@ create_distance_boxplots <- function(mean_data,
     return(plot_list)
 }
 
-
 # -------------------------------------------------------------------
-
 
 #' Create Comprehensive Boxplot with Statistical Analysis
 #'
@@ -258,7 +267,9 @@ distance_boxplots_all <- function(data,
     # Use metric parameter for y-axis mapping
     y_col <- sym(metric)
 
-    hline_value <- mean(aggregate(as.formula(paste(metric, "~ Type")), data = data, FUN = mean)[[metric]])
+    # Calculate the mean of means for each group
+    group_means <- tapply(data[[metric]], data$Type, mean, na.rm = TRUE)
+    hline_value <- mean(group_means, na.rm = TRUE)
     
     ggplot(data, aes(x = Type, y = !!y_col, fill = Type)) +
         geom_boxplot(outlier.shape = NA) +
@@ -267,15 +278,27 @@ distance_boxplots_all <- function(data,
             fun = mean,
             geom = "text",
             aes(label = sprintf("%.2f", after_stat(y))),
-            position = position_nudge(x = 0.5, y = 0),
-            size = 3,
-            color = "red"
+            position = position_dodge(width = 0.75),
+            size = 2.5,
+            color = "#470050",
+            vjust = 0.5,
+            hjust = -2.75
+        ) +
+        stat_summary(
+            fun = mean,
+            geom = "errorbar",
+            aes(ymin = after_stat(y), ymax = after_stat(y)),
+            width = 0.5,
+            linetype = "dashed",
+            linewidth = 1,
+            color = "#9b0000"
         ) +
         geom_hline(
             yintercept = hline_value,
             color = "red",
-            linetype = "solid",
-            linewidth = 0.5
+            linetype = "dotted",
+            linewidth = 0.5,
+            alpha = 0.7
         ) +
         annotate(
             "text",
@@ -284,8 +307,8 @@ distance_boxplots_all <- function(data,
             label = sprintf("Mean: %.2f", hline_value),
             hjust = -0.05,
             vjust = -0.5,
-            color = "#009c22",
-            size = 3
+            color = "#470050",
+            size = 2.5
         ) +
         labs(
             title = paste(title_prefix, paste0("(", test_type, ")")),
@@ -315,8 +338,6 @@ distance_boxplots_all <- function(data,
             plot.margin = margin(r = 30)
         )
 }
-
-
 
 #' Create Comprehensive Boxplot with Statistical Analysis
 #'

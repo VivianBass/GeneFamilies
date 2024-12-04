@@ -16,6 +16,10 @@ library(rstatix) # Perform statistical tests (t-tests, Wilcoxon tests)
 source("R/compute_funks.R") # Functions for computing distance statistics
 source("R/angles_funks.R")
 
+source("R/plot_distribution_angle_to_diagonal_funks.R")
+source("R/statistical_tests_angle_to_diagonal_funks.R")
+
+
 # Set output directories from environment variables
 output_data_dir <- Sys.getenv("OUTPUT_DATA_DIR")
 results_dir <- Sys.getenv("RESULTS_DIR")
@@ -62,8 +66,15 @@ plot.df$rel.vers <- 1 - plot.df$angle.diag
 gene_types <- levels(plot.df$gene.type)
 type_combinations <- combn(gene_types, 2, simplify = FALSE)
 
-# Generate all plots
-for (test in c("t.test", "wilcox.test")) {
-    create_angle_versatility_plot(plot.df, "angle", test)
-    create_angle_versatility_plot(plot.df, "versatility", test)
-}
+# Call the function with the list of test types
+create_angle_versatility_plots(plot.df, c("t.test", "wilcox.test"), results_dir)
+
+
+
+# 2 in 1 Boxplots  -> t-test + wilcox.test  left and right
+# display the mean values in the plots
+# horizontal line
+
+# statistical tests csv file for angle to diagonal
+
+# also other distances

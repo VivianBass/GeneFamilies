@@ -50,8 +50,28 @@ perform_tissue_tests <- function(data, valid_groups, analysis_type) {
     return(NULL)
 }
 
-
-# Function to process tissue statistics data
+#' Process Tissue-Specific Statistical Data
+#'
+#' @param file_path Path to RData file containing tissue statistics
+#' @param stats_pattern Pattern to match statistics objects in loaded data
+#' @param type_suffix Suffix to remove from data names to get type names
+#'
+#' @return List containing two data frames:
+#'   \itemize{
+#'     \item mean: Tissue-specific mean distances with columns Family, Type, Tissue, Distance
+#'     \item median: Tissue-specific median distances with same columns
+#'   }
+#'
+#' @importFrom dplyr select rename mutate bind_rows
+#'
+#' @examples
+#' \dontrun{
+#' stats <- process_tissue_statistics(
+#'   "data/tissue_stats.RData",
+#'   "^tissue_stats_",
+#'   "_tissue_stats$"
+#' )
+#' }
 process_tissue_statistics <- function(file_path, stats_pattern, type_suffix) {
     load(file_path)
     loaded_objects <- ls()
@@ -83,7 +103,30 @@ process_tissue_statistics <- function(file_path, stats_pattern, type_suffix) {
     return(list(mean = df_mean.dists_tissue, median = df_median.dists_tissue))
 }
 
-
+#' @param df_median.dists_tissue Data frame of tissue-specific median distances
+#' @param results_dir Directory path for saving output files
+#' @param is_log2 Logical indicating if data is log2-transformed (default: FALSE)
+#'
+#' @return List containing:
+#'   \itemize{
+#'     \item t_test: List of mean and median t-test results
+#'     \item wilcox: List of mean and median Wilcoxon test results
+#'     \item summary: Combined test results data frame
+#'   }
+#'
+#' @importFrom dplyr bind_rows mutate group_by summarise filter select
+#' @importFrom purrr map
+#' @importFrom utils write.csv
+#'
+#' @examples
+#' \dontrun{
+#' results <- perform_tissue_statistical_analysis(
+#'   mean_data,
+#'   median_data,
+#'   "results/",
+#'   is_log2 = FALSE
+#' )
+#' }
 perform_tissue_statistical_analysis <- function(df_mean.dists_tissue, df_median.dists_tissue, results_dir, is_log2 = FALSE) {
     # Create output filename with appropriate suffix
     output_filename <- if(is_log2) {
@@ -138,11 +181,33 @@ perform_tissue_statistical_analysis <- function(df_mean.dists_tissue, df_median.
     return(test_results_tissue)
 }
 
-
 # -------------------------------------------------------------------
 
-
-
+#' Process Tissue-Specific Distance Data
+#'
+#' @param data_pattern Pattern to match distance data objects
+#' @param loaded_objects List of loaded R objects
+#'
+#' @return Data frame containing processed tissue-specific distances with columns:
+#'   \itemize{
+#'     \item Family: Identifier for gene family
+#'     \item Type: Type of distance measurement
+#'     \item Tissue: Tissue type
+#'     \item Distance: Distance value
+#'   }
+#'
+#' @importFrom purrr map_df
+#' @importFrom dplyr mutate select rename
+#' @importFrom tidyr unnest_longer
+#' @importFrom tibble enframe
+#'
+#' @examples
+#' \dontrun{
+#' tissue_distances <- process_tissue_distances(
+#'   "^distance_data_",
+#'   loaded_objects
+#' )
+#' }
 process_tissue_distances <- function(data_pattern, loaded_objects) {
     data_names <- loaded_objects[grepl(data_pattern, loaded_objects)]
     
@@ -163,11 +228,31 @@ process_tissue_distances <- function(data_pattern, loaded_objects) {
         })
 }
 
-
-
-
-
-
+#' Perform Statistical Analysis on Complete Tissue-Specific Dataset
+#'
+#' @param df_complete_dists Data frame containing complete tissue-specific distances
+#' @param output_name Name of output CSV file
+#' @param results_dir Directory path for saving output
+#' @param is_log2 Logical indicating if data is log2-transformed (default: FALSE)
+#'
+#' @return List containing:
+#'   \itemize{
+#'     \item t_test: Results of tissue-specific t-tests
+#'     \item wilcox: Results of tissue-specific Wilcoxon tests
+#'   }
+#' or NULL if analysis fails
+#'
+#' @importFrom dplyr group_by summarise filter select bind_rows
+#' @importFrom utils write.csv
+#'
+#' @examples
+#' \dontrun{
+#' results <- perform_tissue_statistical_analysis_complete(
+#'   tissue_data,
+#'   "tissue_stats.csv",
+#'   "results/"
+#' )
+#' }
 perform_tissue_statistical_analysis_complete <- function(df_complete_dists, output_name, results_dir, is_log2 = FALSE) {
     valid_groups <- list(
         complete = df_complete_dists %>%
