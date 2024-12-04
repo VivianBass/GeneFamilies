@@ -32,22 +32,29 @@ distance_boxplot <- function(data,
                              alternative = "greater",
                              y_breaks = NULL) {
     
-    # Rename Distance column to Angle if needed
+    # Rename Distance column to appropriate metric name
     if (metric == "Angle" && "Distance" %in% names(data)) {
         data$Angle <- data$Distance
+    } else if (metric == "Angle (Degrees)" && "Distance" %in% names(data)) {
+        data[["Angle (Degrees)"]] <- data$Distance
     }
     
     # Validate data has valid values for the metric
-    if (all(is.na(data[[metric]]))) {
+    metric_col <- if(metric %in% names(data)) metric else "Distance"
+    if (all(is.na(data[[metric_col]]))) {
         stop(paste("No valid values found in", metric, "column"))
     }
     
     # Get valid range for y-axis
-    valid_values <- data[[metric]][!is.na(data[[metric]])]
+    valid_values <- data[[metric_col]][!is.na(data[[metric_col]])]
     if (length(valid_values) == 0) {
         y_breaks <- seq(0, 1, 0.2)  # Default range if no valid values
     } else {
-        y_breaks <- seq(0, max(valid_values), by = 0.2)
+        if (metric == "Angle (Degrees)") {
+            y_breaks <- seq(0, max(valid_values), by = 30)  # Use 30-degree intervals for degrees
+        } else {
+            y_breaks <- seq(0, max(valid_values), by = 0.2)
+        }
     }
     
     # Calculate counts per type
@@ -55,11 +62,15 @@ distance_boxplot <- function(data,
     
     # Calculate y_breaks if not provided
     if (is.null(y_breaks)) {
-        y_breaks <- seq(0, max(data[[metric]], na.rm = TRUE), by = 0.2)
+        if (metric == "Angle (Degrees)") {
+            y_breaks <- seq(0, max(data[[metric_col]], na.rm = TRUE), by = 30)
+        } else {
+            y_breaks <- seq(0, max(data[[metric_col]], na.rm = TRUE), by = 0.2)
+        }
     }
 
     # Calculate the mean of means for each group
-    group_means <- tapply(data[[metric]], data$Type, mean, na.rm = TRUE)
+    group_means <- tapply(data[[metric_col]], data$Type, mean, na.rm = TRUE)
     hline_value <- mean(group_means, na.rm = TRUE)
     
     ggplot(data, aes(x = Type, y = .data[[metric]], fill = Type)) +
@@ -73,7 +84,7 @@ distance_boxplot <- function(data,
             size = 2.5,
             color = "#470050",
             vjust = 0.5,
-            hjust = -2.75
+            hjust = -2.0
         ) +
         stat_summary(
             fun = mean,

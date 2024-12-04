@@ -409,3 +409,46 @@ perform_statistical_tests_for_columns <- function(df1, df2, output_file) {
     
     return(test_results)
 }
+
+# --------------------------------------------------------------------------------
+
+#' Convert Radians to Degrees
+#'
+#' This function converts angle measurements from radians to degrees.
+#'
+#' @param radians A numeric value or vector of values in radians
+#' @return A numeric value or vector of values in degrees
+#' @examples
+#' rad2deg(pi)  # returns 180
+#' rad2deg(c(pi/2, pi/4))  # returns c(90, 45)
+#' @export
+rad2deg <- function(radians) {
+  return(radians * (180 / pi))
+}
+
+#' Convert Radians to Degrees in Nested Lists
+#'
+#' This function recursively converts all numeric values in a nested list structure
+#' from radians to degrees. Non-numeric values are left unchanged.
+#'
+#' @param data A nested list containing numeric values in radians
+#' @return A nested list with the same structure where all numeric values
+#'         have been converted from radians to degrees
+#' @examples
+#' data <- list(
+#'   a = list(x = pi, y = "NA"),
+#'   b = list(z = pi/2)
+#' )
+#' convert_radians_to_degrees(data)
+#' @export
+convert_radians_to_degrees <- function(data) {
+  lapply(data, function(sublist) {
+    lapply(sublist, function(value) {
+      if (is.numeric(value)) {
+        return(rad2deg(value))
+      } else {
+        return(value)
+      }
+    })
+  })
+}

@@ -132,3 +132,56 @@ for (name in valid_data_names_angles_log2) {
 }
 
 save(list = created_dfs_angles_log2, file = file.path(output_data_dir, "exp.prof.angels_statistics_log2.RData"))
+
+
+
+# ------------------------------------------------------------------------
+# ------------------------------------------------------------------------
+
+
+# Statistics for regular cosine angles in degrees
+
+# Automatically sort the loaded gene groups data into regular and tissue datasets
+load(file.path(output_data_dir, "exp.prof.angles.RData"))
+loaded_objects <- ls()
+# This function validates loaded data, and returns a vector of valid names.
+valid_data_names_angles_degree <- validate_data(loaded_objects, "(.lst_cos_angles_dists_degree$)")
+
+created_dfs_angles_degree <- character()
+
+# compute mean/median statistics
+for (name in valid_data_names_angles_degree) {
+    if (exists(name, envir = .GlobalEnv)) {
+        data_object <- get(name)
+        df_name <- paste0(name, "_stats")
+        assign(df_name, calculate_exp.prof.dists.statistics(data_object))
+        created_dfs_angles_degree <- c(created_dfs_angles_degree, df_name)
+    }
+}
+
+save(list = created_dfs_angles_degree, file = file.path(output_data_dir, "exp.prof.angels_statistics_degree.RData"))
+
+# ------------------------------------------------------------------------
+# Statistics for log2 transformed cosine angles in degrees
+
+# Automatically sort the loaded gene groups data into regular and tissue datasets
+load(file.path(output_data_dir, "exp.prof.angles.log2.RData"))
+loaded_objects <- ls()
+# This function validates loaded data, and returns a vector of valid names.
+valid_data_names_angles_log2_degree <- validate_data(loaded_objects, "(.lst_cos_angles_dists_log2_degree$)")
+
+created_dfs_angles_log2_degree <- character()
+
+# compute mean/median statistics
+for (name in valid_data_names_angles_log2_degree) {
+    if (exists(name, envir = .GlobalEnv)) {
+        data_object <- get(name)
+        df_name <- paste0(name, "_stats")
+        assign(df_name, calculate_exp.prof.dists.statistics(data_object))
+        created_dfs_angles_log2_degree <- c(created_dfs_angles_log2_degree, df_name)
+    }
+}
+
+save(list = created_dfs_angles_log2_degree, file = file.path(output_data_dir, "exp.prof.angels_statistics_log2_degree.RData"))
+
+

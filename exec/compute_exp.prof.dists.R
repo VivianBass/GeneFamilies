@@ -108,17 +108,23 @@ for (group in gene_groups) {
     }
 }
 
-# compute cosine angles distances
-#for (group in gene_groups) {
-#    if (exists(group, envir = .GlobalEnv)) {
-#        data_object <- get(group)
-#        dist_name <- paste0(group, "_cos_angles_dists")
-#        assign(dist_name, mclapply(data_object, exp.prof.dists, dist.method = "angle"))
-#        created_objects_angles <- c(created_objects_angles, dist_name)
-#    }
-#}
+# Initialize vector for storing new object names
+created_objects_angles_degree <- c()
 
-save(list = created_objects_angles , file = file.path(output_data_dir, "exp.prof.angles.RData"))
+# Convert each object and create new degree versions
+for (object_name in created_objects_angles) {
+    if (exists(object_name, envir = .GlobalEnv)) {
+        data_object <- get(object_name)
+        degree_name <- gsub("_cos_angles_dists$", "_cos_angles_dists_degree", object_name)
+        converted_data <- convert_radians_to_degrees(data_object)
+        assign(degree_name, converted_data)
+        created_objects_angles_degree <- c(created_objects_angles_degree, degree_name)
+    }
+}
+
+# Save both radian and degree objects in the same file
+save(list = c(created_objects_angles, created_objects_angles_degree), 
+     file = file.path(output_data_dir, "exp.prof.angles.RData"))
 
 # ------------------------------------------------------------------------
 # using cosine angles for distance calculation with log2 transformed values
@@ -135,13 +141,20 @@ for (group in gene_groups) {
     }
 }
 
-#for (group in gene_groups) {
-#    if (exists(group, envir = .GlobalEnv)) {
-#        data_object <- get(group)
-#        dist_name <- paste0(group, "_cos_angles_dists_log2")
-#        assign(dist_name, mclapply(data_object, exp.prof.dists, expression.profiles = rna.seq.exp.profils_log2, dist.method = "angle"))
-#        created_objects_angles <- c(created_objects_angles, dist_name)
-#    }
-#}
+# Initialize vector for storing new object names
+created_objects_angles_log2_degree <- c()
 
-save(list = created_objects_angles_log2, file = file.path(output_data_dir, "exp.prof.angles.log2.RData"))
+# Convert each object and create new degree versions
+for (object_name in created_objects_angles_log2) {
+    if (exists(object_name, envir = .GlobalEnv)) {
+        data_object <- get(object_name)
+        degree_name <- gsub("_cos_angles_dists_log2$", "_cos_angles_dists_log2_degree", object_name)
+        converted_data <- convert_radians_to_degrees(data_object)
+        assign(degree_name, converted_data)
+        created_objects_angles_log2_degree <- c(created_objects_angles_log2_degree, degree_name)
+    }
+}
+
+# Save both radian and degree objects in the same file
+save(list = c(created_objects_angles_log2, created_objects_angles_log2_degree), 
+     file = file.path(output_data_dir, "exp.prof.angles.log2.RData"))

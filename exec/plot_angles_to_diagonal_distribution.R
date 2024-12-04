@@ -104,9 +104,6 @@ type_combinations <- combn(gene_types, 2, simplify = FALSE)
 # Call the function with the list of test types and specify log2 in the output
 create_angle_versatility_plots(plot.df_log2, c("t.test", "wilcox.test"), results_dir, suffix = "_log2")
 
-
-
-
 # --------------------------------------------------------------------------------
 
 # Perform statistical tests for columns "angle.diag" "rel.vers" in both dataframes

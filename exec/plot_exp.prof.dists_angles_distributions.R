@@ -117,3 +117,67 @@ combined_angle_plots <- create_distance_boxplots_all(
     filename_prefix = "boxplots_angles_distances_all",
     metric = "Angle"
 )
+
+
+
+
+
+
+
+
+
+# ------------------------------------------------------------------------
+# Angles Distances regular in degrees (with mean/median statistics) 
+# ------------------------------------------------------------------------
+
+# Process angles distance statistics for degree data
+regular_angles_degree <- process_distances(
+    input_file = "exp.prof.angels_statistics_degree.RData",
+    stats_pattern = ".lst_cos_angles_dists_degree_stats$",
+    output_file = "exp.prof.angles_mean_median_degree.RData",
+    output_data_dir = output_data_dir
+)
+
+# Perform statistical tests (t-test, Wilcoxon test) for computed distances in degrees
+# Save the results in a CSV summary
+regular_results_degree <- perform_statistical_tests(regular_angles_degree, "statistical_tests_summary_angles_degree.csv")
+
+# Generate type combinations before creating plots for degree data
+types_degree <- unique(regular_angles_degree$mean$Type)
+type_combinations_degree <- combn(types_degree, 2, simplify = FALSE)
+plots_angles_degree <- create_distance_boxplots(
+    mean_data = regular_angles_degree$mean,
+    median_data = regular_angles_degree$median,
+    type_combinations = type_combinations_degree,
+    metric = "Angle (Degrees)",
+    results_dir = results_dir,
+    filename = "boxplots_angles_distances_regular_degree.pdf"
+)
+
+# ------------------------------------------------------------------------
+# Angles Distances log2 in degrees (with mean/median statistics) 
+# ------------------------------------------------------------------------
+
+# Process angles log2 distance statistics for degree data
+log2_angles_degree <- process_distances(
+    input_file = "exp.prof.angels_statistics_log2_degree.RData",
+    stats_pattern = ".lst_cos_angles_dists_log2_degree_stats$",
+    output_file = "exp.prof.angles_mean_median_log2_degree.RData",
+    output_data_dir = output_data_dir
+)
+
+# Perform statistical tests for log2 transformed degree data
+log2_results_degree <- perform_statistical_tests(log2_angles_degree, "statistical_tests_summary_angles_log2_degree.csv")
+
+# Create plots for log2 transformed cosine angles distances data in degrees
+types_log2_degree <- unique(log2_angles_degree$mean$Type)
+type_combinations_log2_degree <- combn(types_log2_degree, 2, simplify = FALSE)
+plots_angles_log2_degree <- create_distance_boxplots(
+    mean_data = log2_angles_degree$mean,
+    median_data = log2_angles_degree$median,
+    type_combinations = type_combinations_log2_degree,
+    metric = "Angle (Degrees)",
+    results_dir = results_dir,
+    filename = "boxplots_angles_distances_log2_degree.pdf"
+)
+
