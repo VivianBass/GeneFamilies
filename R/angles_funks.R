@@ -143,7 +143,7 @@ validate_angle_dataframes <- function(df_list) {
 #' @importFrom ggsignif geom_signif
 #'
 #' @examples
-#' \dontrun{
+#' \dontrun{    
 #' data <- data.frame(
 #'   gene.type = factor(rep(c("TypeA", "TypeB"), each = 100)),
 #'   angle.diag = rnorm(200),
