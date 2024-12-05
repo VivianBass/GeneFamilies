@@ -43,9 +43,27 @@ exp.prof.dists <- function(gene.accessions,
     return(distances)
 }
 
-
-
-
+#' Calculate Expression Profile Distances
+#'
+#' This function calculates distances or angles between expression profiles for given gene accessions.
+#'
+#' @param gene.accessions A list of gene accessions to calculate distances for.
+#' @param expression.profiles A data frame containing expression profiles, with genes in rows and tissues in columns.
+#' @param expr.prof.gene.col A string specifying the column name in `expression.profiles` that contains gene identifiers. Default is "FBpp_ID".
+#' @param tissues A character vector specifying the tissue columns to use for distance calculations. Default is all columns except `expr.prof.gene.col` and "Species".
+#' @param dist.method A string specifying the distance method to use. Options are "euclidean" or "angle". Default is "euclidean".
+#' @return A list of distance or angle vectors for each species group.
+#' @examples
+#' # Example usage
+#' gene_accessions <- list(c("gene1", "gene2"), c("gene3", "gene4"))
+#' expression_profiles <- data.frame(
+#'   FBpp_ID = c("gene1", "gene2", "gene3", "gene4"),
+#'   Species = c("species1", "species1", "species2", "species2"),
+#'   Tissue1 = c(1, 2, 3, 4),
+#'   Tissue2 = c(2, 3, 4, 5)
+#' )
+#' distances <- exp.prof.dists_all(gene_accessions, expression_profiles)
+#' @export
 exp.prof.dists_all <- function(gene.accessions,
                           expression.profiles = rna.seq.exp.profils,
                           expr.prof.gene.col = "FBpp_ID",

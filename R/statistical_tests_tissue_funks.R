@@ -1,5 +1,7 @@
 
 #' Perform Tissue-Specific Statistical Tests
+#' 
+#' FUNCTION FOR ONE DIRECTIONAL TESTS
 #'
 #' Conducts t-tests and Wilcoxon tests for comparing gene distances between types within tissues. 
 #' Results are adjusted for multiple comparisons using the Benjamini-Hochberg method.
@@ -10,7 +12,7 @@
 #' @return A list containing t-test and Wilcoxon test results as dataframes, or `NULL` if no valid groups are available.
 #' @examples
 #' perform_tissue_tests(data, valid_groups, "mean")
-perform_tissue_tests <- function(data, valid_groups, analysis_type) {
+perform_tissue_tests_X <- function(data, valid_groups, analysis_type) {
     if (nrow(valid_groups[[analysis_type]]) >= 2) {
 
         t_test_result <- data %>%
@@ -46,6 +48,102 @@ perform_tissue_tests <- function(data, valid_groups, analysis_type) {
                    ))
         
         return(list(t_test = t_test_result, wilcox = wilcox_result))
+    }
+    return(NULL)
+}
+
+#' Perform Tissue-Specific Statistical Tests
+#' 
+#' FUNCTION FOR TWO DIRECTIONAL TESTS (group1 vs group2 and group2 vs group1)
+#'
+#' Performs t-tests and Wilcoxon tests for comparing gene distances between types within tissues.
+#' Tests each pair bidirectionally (A vs B and B vs A).
+#'
+#' @param data Data frame with columns `Tissue`, `Type`, and `Distance`
+#' @param valid_groups List of valid group combinations by tissue
+#' @param analysis_type Analysis type ("mean", "median", "complete")
+#' @return List of t-test and Wilcoxon test results, or NULL if no valid results
+#'
+#' @details
+#' - Requires ≥2 observations per group per tissue
+#' - Adjusts p-values using BH method
+#' - Tests each pair in both directions
+perform_tissue_tests <- function(data, valid_groups, analysis_type) {
+    if (nrow(valid_groups[[analysis_type]]) >= 2) {
+        # Get valid data and ensure Type is character
+        valid_data <- data %>%
+            semi_join(valid_groups[[analysis_type]], by = c("Tissue", "Type")) %>%
+            filter(!is.na(Distance)) %>%
+            mutate(Type = as.character(Type))
+        
+        # Initialize results lists
+        t_test_results <- list()
+        wilcox_results <- list()
+        
+        # Process each tissue
+        for(tissue in unique(valid_data$Tissue)) {
+            tissue_data <- valid_data %>% filter(Tissue == tissue)
+            types <- unique(tissue_data$Type)
+            
+            if(length(types) >= 2) {
+                # Create all possible pairs for bidirectional testing
+                type_pairs <- expand.grid(group1 = types, group2 = types)
+                type_pairs <- type_pairs[type_pairs$group1 != type_pairs$group2,]
+                
+                for(i in 1:nrow(type_pairs)) {
+                    g1 <- type_pairs$group1[i]
+                    g2 <- type_pairs$group2[i]
+                    
+                    # Get pair data and set factor levels for comparison direction
+                    pair_data <- tissue_data %>% 
+                        filter(Type %in% c(g1, g2)) %>%
+                        mutate(Type = factor(Type, levels = c(g2, g1)))
+                    
+                    # T-test
+                    t_result <- t_test(pair_data, Distance ~ Type, alternative = "greater") %>%
+                        mutate(
+                            Tissue = tissue,
+                            analysis = analysis_type,
+                            test_type = "t-test",
+                            group1 = g1,
+                            group2 = g2,
+                            p.adj.signif = case_when(
+                                p >= 0.05 ~ "ns",
+                                p < 0.001 ~ "***",
+                                p < 0.01 ~ "**",
+                                p < 0.05 ~ "*"
+                            ))
+                    t_test_results[[length(t_test_results) + 1]] <- t_result
+                    
+                    # Wilcoxon test
+                    w_result <- wilcox_test(pair_data, Distance ~ Type, alternative = "greater") %>%
+                        mutate(
+                            Tissue = tissue,
+                            analysis = analysis_type,
+                            test_type = "wilcox",
+                            group1 = g1,
+                            group2 = g2,
+                            p.adj.signif = case_when(
+                                p >= 0.05 ~ "ns",
+                                p < 0.001 ~ "***",
+                                p < 0.01 ~ "**",
+                                p < 0.05 ~ "*"
+                            ))
+                    wilcox_results[[length(wilcox_results) + 1]] <- w_result
+                }
+            }
+        }
+        
+        # Combine results and adjust p-values
+        if(length(t_test_results) > 0 && length(wilcox_results) > 0) {
+            t_test_result <- bind_rows(t_test_results) %>%
+                adjust_pvalue(method = "BH")
+            
+            wilcox_result <- bind_rows(wilcox_results) %>%
+                adjust_pvalue(method = "BH")
+            
+            return(list(t_test = t_test_result, wilcox = wilcox_result))
+        }
     }
     return(NULL)
 }

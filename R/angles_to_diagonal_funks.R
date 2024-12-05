@@ -270,6 +270,8 @@ create_angle_versatility_plots <- function(data, test_types, results_dir, suffix
 # --------------------------------------------------------------------------------
 
 #' Perform Statistical Tests on Gene Expression Data
+#' 
+#' FUNCTION FOR ONE DIRECTIONAL TESTS
 #'
 #' @param data Data frame containing gene expression data with columns:
 #'   - gene.type: Factor indicating gene groups for comparison
@@ -303,7 +305,7 @@ create_angle_versatility_plots <- function(data, test_types, results_dir, suffix
 #' valid_groups <- list(groups = c("type1", "type2"))
 #' results <- perform_tests(data, valid_groups, "angle.diag")
 #' }
-perform_tests <- function(data, valid_groups, column_name) {
+perform_tests_X <- function(data, valid_groups, column_name) {
     if (length(valid_groups[[1]]) >= 2) {
         formula <- as.formula(paste(column_name, "~ gene.type"))
         
@@ -332,6 +334,107 @@ perform_tests <- function(data, valid_groups, column_name) {
                        p.adj < 0.01 ~ "**",
                        p.adj < 0.05 ~ "*"
                    ))
+        
+        return(list(t_test = t_test_result, wilcox = wilcox_result))
+    }
+    return(NULL)
+}
+
+#' Perform Statistical Tests on Gene Expression Data
+#'
+#' Conducts t-tests and Wilcoxon tests on all possible pairs of groups in both directions
+#' (e.g., group1 vs group2 and group2 vs group1) for a specified metric column.
+#'
+#' @param data Data frame containing 'gene.type' and the metric column to be tested.
+#' @param valid_groups List of valid groups for analysis, each as a character vector.
+#' @param column_name Name of the metric column to perform tests on.
+#'
+#' @return A list with t-test and Wilcoxon test results for each group pair, or NULL if no valid results.
+#'
+#' @details
+#' - Requires at least 2 observations per group.
+#' - Adjusts p-values using the Benjamini-Hochberg method.
+#' - Tests each group pair in both directions, ensuring the order of comparison is considered.
+#'
+#' @importFrom dplyr filter mutate arrange bind_rows
+#' @importFrom rstatix t_test wilcox_test adjust_pvalue
+#'
+#' @examples
+#' data <- data.frame(gene.type = c("A", "A", "B", "B"), Distance = c(1.2, 1.5, 2.3, 2.1))
+#' results <- perform_tests(data, list(c("A", "B")), "Distance")
+#'
+#' @export
+perform_tests <- function(data, valid_groups, column_name) {
+    if (length(valid_groups[[1]]) >= 2) {
+        # Create all possible combinations of groups in both directions
+        groups <- valid_groups[[1]]
+        group_pairs <- expand.grid(group1 = groups, group2 = groups)
+        # Remove self-comparisons
+        group_pairs <- group_pairs[group_pairs$group1 != group_pairs$group2,]
+        
+        # Initialize empty results
+        t_test_results <- list()
+        wilcox_results <- list()
+        
+        formula <- as.formula(paste(column_name, "~ gene.type"))
+        
+        # Loop through each pair
+        for(i in 1:nrow(group_pairs)) {
+            g1 <- group_pairs$group1[i]
+            g2 <- group_pairs$group2[i]
+            
+            # Get data for current pair and ensure correct order for comparison
+            test_data <- data %>% 
+                filter(gene.type %in% c(g1, g2)) %>%
+                mutate(gene.type = factor(gene.type, levels = c(g2, g1)))  # Order matters for alternative="greater"
+            
+            # T-test
+            t_result <- test_data %>%
+                t_test(formula, alternative = "greater") %>%
+                mutate(
+                    analysis = column_name,
+                    test_type = "t-test",
+                    group1 = g1,
+                    group2 = g2
+                )
+            t_test_results[[i]] <- t_result
+            
+            # Wilcoxon test
+            w_result <- test_data %>%
+                wilcox_test(formula, alternative = "greater") %>%
+                mutate(
+                    analysis = column_name,
+                    test_type = "wilcox",
+                    group1 = g1,
+                    group2 = g2
+                )
+            wilcox_results[[i]] <- w_result
+        }
+        
+        # Combine results
+        t_test_result <- bind_rows(t_test_results) %>%
+            adjust_pvalue(method = "BH") %>%
+            mutate(
+                p.adj.signif = case_when(
+                    p.adj >= 0.05 ~ "ns",
+                    p.adj < 0.001 ~ "***",
+                    p.adj < 0.01 ~ "**",
+                    p.adj < 0.05 ~ "*"
+                )
+            ) %>%
+            arrange(test_type)
+        
+        wilcox_result <- bind_rows(wilcox_results) %>%
+            adjust_pvalue(method = "BH") %>%
+            mutate(
+                p.adj.signif = case_when(
+                    p.adj >= 0.05 ~ "ns",
+                    p.adj < 0.001 ~ "***",
+                    p.adj < 0.01 ~ "**",
+                    p.adj < 0.05 ~ "*"
+                )
+            ) %>%
+            arrange(test_type)
         
         return(list(t_test = t_test_result, wilcox = wilcox_result))
     }
