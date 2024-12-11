@@ -1,34 +1,59 @@
-
-**Date**:  04.12.2024 
+**Date**: 04.12.2024  
 **Git Branch**: `Gene-Families-tests-Andre`
 
 ---
 
-**Tasks**:
+**Completed Tasks**:
 
+1. **Documentation**:
 
+   - Completed roxygen2 documentation for each function.
 
-- added the horizontal lines representing the mean values for each boxplot 
-- they are as .. lines within the box , and also the mean value to the left of the line
+2. **Visualization Enhancements**:
 
-- horizontal line which represents the mean of the means, in dotted style
+   - Improved annotations and adjusted code to handle them more effectively.
+   - Added horizontal lines representing mean values for each boxplot:
+      - Lines are drawn within the box, with the mean value displayed to the left of the line.
+      - Included an overall mean of the means of the 5 groups, represented by a dotted horizontal line.
 
-- did roxygen2 documentations for each function
+3. **Statistical Analyses**:
 
-- Implement angle-to-diagonal statistics (wilcox test, t-test)
-experiments\test_diet_P_&_M_filtered\results\statistical_tests_angle_to_diagonal_and_rel.vers.csv
+   - Implemented angle-to-diagonal statistics (Wilcoxon test, t-test).
+   - Generated angles-to-diagonal data for log2-transformed values.
 
-- also added the code for generating the angles to diagonal for log2 data 
+4. **Cosine Angle Distances**:
 
-- also calculated the degrees instead of radiance, but i kept both, 
-- so we have the angles plots and also the degrees plots
+   - Calculated both radians and degrees for cosine angle distances.
+   - Plots now include both angles and degrees.
 
+     ```R
+     degrees = radians * (180 / math.pi)
+     ```
+
+     $$\text{degrees} = \text{radians} \times \frac{180^{\circ}}{\pi}$$
+
+---
 
 **Doubts and Issues**:
-
-**Next Steps**:
 
 
 ---
 
-**Code:**
+**Next Steps**:
+
+
+
+---
+
+**Code**:
+
+- The functions for boxplots and statistical tests are also organized into dedicated files.
+
+     ```
+     R/
+     ├── plot_distribution_funks.R         # General plotting utilities
+     ├── plot_distribution_tissue_funks.R  # Tissue-specific plotting
+     ├── statistical_tests_funks.R         # Core statistical functions
+     └── statistical_tests_tissue_funks.R  # Tissue-specific statistics
+     ```
+

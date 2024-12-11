@@ -1,40 +1,40 @@
-
-**Date**:  05.12.2024
+**Date**: 05.12.2024  
 **Git Branch**: `Gene-Families-tests-Andre`
 
 ---
 
-**Tasks**:
+**Completed Tasks**:
 
-- i finished the try t-test/wilcox with other order of the groups
-- so that it also reverse order, i recreated every statistical test 
-to have both orders
+1. **Statistical Analyses**:
 
-- worked on presentation, and Thesis structure, etc. 
+   - Finished implementing t-test/Wilcoxon tests with reverse group order.
+   - Adjusted code for all statistical tests to handle both regular and reverse orders:
+      - Each test is now performed twice: once comparing A to B and once comparing B to A.
+      - This is especially important for tests using paired instead of two-sided alternative hypotheses
 
+2. **Presentation and Thesis**:
 
-
-- work on the presentation
-   - Outline key sections: intro, methods, results, discussion
-   - Select and prepare figures
-   - Create bullet-point overview for thesis structure
-   - share the google link of the presentation or something
-
-
-- do the documentation
-   - Improve lab book documentation
-   - Document SLURM scripts and tool usage
-
-- Algorythm look up how the algorythm is implemented on the server
-    - and documentation for that
-
-
-
-**Doubts and Issues**:
-
-**Next Steps**:
-
+   - Began working on presentation and thesis structure.
+   - Outlined key sections to include in the presentation.
+   - Started drafting thesis structure and bullet-point overview.
 
 ---
 
-**Code:**
+**Doubts and Issues**:
+
+---
+
+**Next Steps**:
+
+1. **Presentation Preparation**:
+
+   - Outline key sections: Introduction, Methods, Results, Discussion.
+   - Select and prepare figures.
+   - Create a bullet-point overview for the thesis structure.
+   - Share a link to the presentation draft.
+
+---
+
+**Code**:
+
+

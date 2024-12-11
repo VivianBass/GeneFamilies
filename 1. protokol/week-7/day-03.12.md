@@ -1,4 +1,3 @@
-
 **Date**: 03.12.2024  
 **Git Branch**: `Gene-Families-tests-Andre`
 
@@ -6,52 +5,50 @@
 
 **Completed Tasks**:
 
-1. Statistical Test Consolidation
-   - Removed redundant statistical test code
-   - Unified test functions (t-test/Wilcoxon) into single implementation
-   - Integrated statistical tests directly into plotting scripts
+1. **Statistical Test Consolidation**:
 
-2. Visualization Enhancements
-   - Removed redundant code and organized functions into dedicated modules 
-   - Created 4-in-1 boxplot layouts (regular euclidean/log2 with t-test/Wilcox)
-   - Added gene group count annotations for all plots
-   - Implemented mean/median value annotations
-   - Added horizontal reference line showing overall mean
+   - Removed redundant statistical test code.
+   - Unified test functions (t-test/Wilcoxon) into a single implementation.
+   - Integrated statistical tests directly into plotting scripts.
 
-3. Affected Files
-   - exec/plot_exp.prof.dists_angles_distributions.R
-   - exec/plot_exp.prof.dists_euclidean_distributions.R
-   - exec/plot_exp.prof.dists_euclidean_tissue_distributions.R
+2. **Visualization Enhancements**:
 
-**Open Questions**:
+   - Removed redundant code and organized functions into dedicated modules.
+   - Created 4-in-1 boxplot layouts (regular Euclidean/log2 with t-test/Wilcox).
+   - Added gene group count annotations for all plots.
+   - Added mean lines and values for each box in the boxplots.
+   - Added horizontal reference line showing overall mean. of the 5 groups in the plots
+   - Optimized the annotations in the plots and the code to handle them.
 
-1. Validation needed for mean/median annotations in plots. To reassure they are right
-2. Clarification needed: Should angle-to-diagonal calculations be applied to:
-   - Euclidean distances
-   - Log2 distances
-   - Angle distances
 
-**Next Steps**:
+3. **Affected Files**:
 
-1. Documentation
-   - Enhance roxygen2 documentation for all functions
-   - Improve lab book documentation
-   - Document SLURM scripts and tool usage
-
-2. Analysis Extensions
-   - Implement angle-to-diagonal statistics
-   - Add angle-to-diagonal calculations for log2 data
-   - Add angle-to-diagonal calculations for angle distances
-
-3. Presentation Preparation
-   - Outline key sections: intro, methods, results, discussion
-   - Select and prepare figures
-   - Create bullet-point overview for thesis structure
-
+   - `exec/plot_exp.prof.dists_angles_distributions.R`
+   - `exec/plot_exp.prof.dists_euclidean_distributions.R`
+   - `exec/plot_exp.prof.dists_euclidean_tissue_distributions.R`
 
 ---
 
-**Code:**
+**Open Questions**:
+
+1. Validation needed for mean/median annotations in plots to ensure accuracy.
+2. Clarification needed: Should angle-to-diagonal calculations be applied to:
+
+   - Euclidean distances?
+   - Log2 distances?
+   - Angle distances?
+
+---
+
+**Next Steps**:
+
+   - Implement angle-to-diagonal statistics.
+   - Add angle-to-diagonal calculations for log2 data.
+   - Add angle-to-diagonal calculations for angle distances.
+
+---
+
+**Code**:
 
 - The functions for boxplots and statistical tests are also organized into dedicated files.
 
@@ -62,3 +59,4 @@
      ├── statistical_tests_funks.R         # Core statistical functions
      └── statistical_tests_tissue_funks.R  # Tissue-specific statistics
      ```
+

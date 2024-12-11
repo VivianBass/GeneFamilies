@@ -1,35 +1,41 @@
-
-**Date**:  
+**Date**: 06.12.2024  
 **Git Branch**: `Gene-Families-tests-Andre`
 
 ---
 
-**Tasks**:
+**Completed Tasks**:
 
+1. **Thesis Outline**:
 
+   - Created a basic outline of the thesis and identified key topics to include.
 
+2. **Presentation Creation**:
 
-- work on the presentation
-   - Outline key sections: intro, methods, results, discussion
-   - Select and prepare figures
-   - Create bullet-point overview for thesis structure
-   - share the google link of the presentation or something
+   - Installed Marp extension for Markdown presentations.
+   - Created a Markdown presentation and exported it to PDF.
+   - Included headers in Markdown files to enable direct creation of presentation slides:
 
+     ```m
+     ---
+     marp: true
+     theme: default
+     paginate: true
+     size: 16:9
+     ---
+     ```
 
-- do the documentation
-   - Improve lab book documentation
-   - Document SLURM scripts and tool usage
+   - Drafted and outlined slides for the presentation.
+   - Adjusted CSS design of the presentation using Marp.
 
-- Algorythm look up how the algorythm is implemented on the server
-    - and documentation for that
-
-
+---
 
 **Doubts and Issues**:
+
+---
 
 **Next Steps**:
 
 
 ---
 
-**Code:**
+**Code**:
