@@ -1,3 +1,59 @@
+
+## **Statistical Analysis Methods**
+
+### 1. T-Test Analysis
+
+- **Purpose**: Compare means between groups (orthologs vs. paralogs)
+- **Requirements**:
+  - Normal distribution
+  - Equal variances
+- **Hypotheses**:
+  - H₀: Group means are equal
+  - H₁: Group means differ
+
+### 2. Wilcoxon Rank-Sum Test
+
+- **Purpose**: Non-parametric alternative to t-test
+- **Use Case**: When normality assumptions aren't met
+- **Approach**: Compares rank distributions
+- **Effect Size**: 
+  - Small: ≈0.1
+  - Medium: ≈0.3
+  - Large: ≈0.5
+
+### 3. Implementation Notes
+
+- **Test Direction**:
+  - Use "two.sided" for unbiased comparison
+  - Directional tests ("greater"/"less") affect interpretation
+- **Group Order**:
+  - Matters for one-sided tests
+  - Irrelevant for two-sided tests
+
+### 4. Multiple Testing Correction
+
+- **Method**: Benjamini-Hochberg (BH)
+- **Purpose**: Control False Discovery Rate (FDR)
+- **Implementation**:
+  ```R
+  p.adjust(p_values, method = "BH")
+  ```
+
+### 5. Key Considerations
+
+- Choose test based on data distribution
+- Consider sample size and variance
+- Apply appropriate multiple testing correction
+- Interpret results in biological context
+
+
+
+
+
+
+# ---------------------------------------------------------------------
+
+
 ### Detailed Summary: T-Test Analysis and P-Value Adjustments
 
 #### **1. T-Test Basics**
