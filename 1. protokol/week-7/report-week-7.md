@@ -1,6 +1,3 @@
-Here is a weekly protocol summary based on the details provided:
-
----
 
 ### **Weekly Protocol (02.12.2024 – 06.12.2024)**
 
