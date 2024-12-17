@@ -14,12 +14,7 @@
     - installed extension for math formulas
     - tryed to generate math formulas using extensions based on latex
 
-    ```R
-    sudo apt-get install texlive-xetex
 
-    sudo apt-get install texlive texlive-latex-extra
-
-    ```
 
 
 - _give the exact day when thesis should end_
